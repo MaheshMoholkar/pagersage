@@ -20,7 +20,7 @@ right owner, cite the last time this happened, and write down what fixed it.
 | `frontend/` | Next.js 16 + Tailwind: war room, graph canvas, live agent timeline |
 | `kestrel-pay/` | the fictional payments company PagerSage watches, and the scenarios that break it |
 
-![Architecture: Kestrel Pay feeds the FastAPI backend, the agents read and write FalkorDB, and the web UI streams the timeline](docs/architecture.png)
+![Company brain: ask questions about the system above a graph of all 26 Kestrel Pay services, coloured by team](docs/company-brain.png)
 
 ## Features
 
