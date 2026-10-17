@@ -1,6 +1,6 @@
 "use client";
 
-// U03 root-cause path (design: Main.dc.html, "Root-cause path"): the incident's services on the
+// U03 root-cause path: the incident's services on the
 // canvas with the path in amber and particles flowing along it (lib/format rootCausePath +
 // withAlert), the failing service breathing red with its health, the rejected suspect dashed
 // and struck through, fragile services ringed red, and Blast radius: dashed blue rings

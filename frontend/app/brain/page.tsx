@@ -1,4 +1,4 @@
-// Company brain (design: docs/ui-handoff/design/CompanyBrain.dc.html): U08 Ask box and U02
+// Company brain: U08 Ask box and U02
 // company graph, the answer's evidence lit on it. `?q=` (from the command palette) asks on
 // arrival. The insight panels (most fragile, one-person knowledge, no owner) and the "who
 // actually ships together" toggle are optional in the handoff: ask before building them.

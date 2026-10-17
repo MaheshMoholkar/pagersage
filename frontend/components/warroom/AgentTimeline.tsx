@@ -1,6 +1,6 @@
 "use client";
 
-// U04 agent run (design: Main.dc.html, "Agent run"): the five agents as a pipeline, then the
+// U04 agent run: the five agents as a pipeline, then the
 // timeline on a rail, live over SSE (lib/useIncidentEvents). Pipeline state comes from the
 // events themselves, so it moves as they stream in; new events slide onto the rail. Each event
 // kind has its own look:

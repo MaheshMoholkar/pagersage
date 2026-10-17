@@ -1,6 +1,6 @@
 "use client";
 
-// U07 memory (design: Investigation.dc.html, "Has this happened before"): the same candidates
+// U07 memory: the same candidates
 // in vector order and re-ranked with the graph. One list, two orderings: it opens on text
 // similarity and, a beat later, re-ranks itself with the graph so you watch the incidents that
 // broke the same way rise; the toggle switches back and forth. Each row says where it moved

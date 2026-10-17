@@ -54,10 +54,8 @@ export const age = (ts: number | null, now = Date.now() / 1000) => {
   return `${Math.round(s / 86400)} d`;
 };
 
-/** Team colours for the company graph (HANDOFF.md), as hex because the graph is drawn on a
- *  <canvas>, which can't read CSS variables (the same values are --team-* in globals.css).
- *  Ledger, Risk & Identity and Merchant Experience are not in the handoff yet: placeholders
- *  until the designer picks them. */
+/** Team colours for the company graph, as hex because the graph is drawn on a
+ *  <canvas>, which can't read CSS variables (the same values are --team-* in globals.css). */
 export const TEAM_COLORS: Record<string, string> = {
   Payments: "#79b4ff",
   Checkout: "#c79bff",

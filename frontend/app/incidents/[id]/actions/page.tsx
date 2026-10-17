@@ -1,4 +1,4 @@
-// Actions and Resolve (design: docs/ui-handoff/design/Resolve.dc.html), U09: the page sent,
+// Actions and Resolve, U09: the page sent,
 // the issue opened, reverting the cause (simulated), then Resolve, the Scribe's postmortem and
 // the runbook counter.
 

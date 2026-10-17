@@ -1,6 +1,6 @@
 "use client";
 
-// U09 actions and resolve (design: Resolve.dc.html), as the response it is: a flow of steps on
+// U09 actions and resolve, as the response it is: a flow of steps on
 // a rail, the step that needs you lit amber with its one button, the ones behind it checked off
 // in green and the line between them filling as they complete.
 //   1 Paged the owner      the Responder's page (timeline `action` events)

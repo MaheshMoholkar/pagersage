@@ -44,7 +44,7 @@ backend/                  Python 3.12 API + agents (uv, FastAPI)
   Dockerfile
 frontend/                 Next.js 16 + Tailwind (read frontend/AGENTS.md, then frontend/README.md)
   app/                    routes: / (war room), /brain, /incidents/[id]/{investigation,actions}
-  components/             ui kit, shell, one folder per screen; TaskSlot boxes mark unbuilt U tasks
+  components/             ui kit, shell, one folder per screen
   lib/                    types.ts (API formats), api.ts (all fetching, stub fallback), stubs/
 kestrel-pay/              separate project: the fictional company PagerSage watches
   README.md               start here: what the files stand for and how data flows
@@ -56,7 +56,7 @@ kestrel-pay/              separate project: the fictional company PagerSage watc
   scripts/repo_files.py   regenerates service READMEs and CODEOWNERS
   tests/                  Kestrel Pay's own tests, run by `make test`; never import pagersage
 scripts/                  one-off scripts
-docs/                     build-plan.md, contracts.md, setup-accounts.md, ui-handoff/ (UI design)
+docs/                     build-plan.md, contracts.md, cypher.md, setup-accounts.md
 docker-compose.yml        FalkorDB 6.0.2 + API
 Makefile                  all common commands (`make help`)
 ```

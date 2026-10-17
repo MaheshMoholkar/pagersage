@@ -1,6 +1,6 @@
 "use client";
 
-// U02 company graph (design: CompanyBrain.dc.html, "Services and people"): every service,
+// U02 company graph: every service,
 // coloured by owning team, sized by criticality (pageRank), fragile ones ringed red (top
 // betweenness), unowned ones dashed. `evidence` (U08 Ask) lights its nodes and edges in amber
 // with particles flowing (see withEvidence); `focus` glides the view to one of them. The "Who

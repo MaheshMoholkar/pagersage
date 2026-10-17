@@ -1,8 +1,6 @@
 # PagerSage web
 
-Next.js 16 + Tailwind 4. The design is in [`docs/ui-handoff/`](../docs/ui-handoff/): read
-`HANDOFF.md` first, then open the screen's `.dc.html` (structure, copy, exact styles; don't copy
-its `<script>`). Next 16 differs from older versions: check `node_modules/next/dist/docs/` before
+Next.js 16 + Tailwind 4. Next 16 differs from older versions: check `node_modules/next/dist/docs/` before
 using a Next API (see `AGENTS.md`).
 
 ```bash
@@ -70,12 +68,12 @@ Where things live:
     `withAlert()` and `failingNode()`.
 - **UI kit** (`components/ui`): `index.tsx` has `SectionHeader`, `SevPill`, `StatusPill`,
   `Dot` / `LiveDot`, `Mono`, `Chip` (`found` = amber), `Kbd`, `Button`, `ButtonLink`
-  (`primary` = amber), `StubBadge`, `Empty` and `TaskSlot`; `motion.tsx` has the animated
+  (`primary` = amber), `StubBadge` and `Empty`; `motion.tsx` has the animated
   ones: `Panel`, `Reveal`, `CountUp`, `Meter`, `Segmented` and `spotlight`.
 
 ## Design system
 
-The handoff set the screens and their content. The look is a calm, cinematic control room:
+The look is a calm, cinematic control room:
 ink and glass, light that means something, and motion that explains. Keep to these rules:
 
 - **App shell** (`app/layout.tsx`): a 56px top bar, then `<main>`, which fills the rest of the
@@ -129,10 +127,8 @@ ink and glass, light that means something, and motion that explains. Keep to the
   reload asks again. The backend has no ack record.
 - **The workspace name and "Live" in the top bar are fixed text.** Who is on call comes
   from `GET /oncall` (one person per team).
-- **Team colours:** the handoff names Payments, Checkout, Platform and Data. Kestrel Pay's
-  teams are Payments, Checkout, Platform, Ledger, Risk & Identity and Merchant Experience.
-  Ledger uses the "Data" pink; Risk and Merchant use placeholder colours until the designer
-  picks them.
+- **Team colours:** one per Kestrel Pay team: Payments, Checkout, Platform, Ledger,
+  Risk & Identity and Merchant Experience.
 - **Not built (optional in the handoff):** the Company brain insight panels (most fragile,
   knowledge held by one person, no owning team) and the "Who actually ships together" toggle
   (G18).

@@ -1,6 +1,6 @@
 "use client";
 
-// U06 suspects and score breakdown (design: Investigation.dc.html). Left: one selectable row
+// U06 suspects and score breakdown. Left: one selectable row
 // per change, best first: rank, verdict (Cause = amber, Decoy = red with the title struck
 // through, Ruled out = grey), title, kind / id / service / author / time, the score counting
 // up and a bar scaled to the top score; the selection glides between rows. Right: the four

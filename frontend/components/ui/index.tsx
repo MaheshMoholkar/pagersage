@@ -270,32 +270,3 @@ export function Empty({
     </div>
   );
 }
-
-/** Placeholder for a piece nobody has built yet. Delete it when you build the real thing. */
-export function TaskSlot({
-  task,
-  title,
-  design,
-  data,
-  children,
-}: {
-  task: string;
-  title: string;
-  design: string;
-  data: string;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-2 rounded-card border border-dashed border-line-strong bg-bg-deep p-4">
-      <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <Mono className="text-xs text-blue">{task}</Mono>
-        <span className="font-medium">{title}</span>
-      </div>
-      <p className="m-0 text-xs [overflow-wrap:anywhere] text-muted">
-        Design: <Mono>docs/ui-handoff/design/{design}</Mono>. Data:{" "}
-        <Mono>{data}</Mono>.
-      </p>
-      {children}
-    </div>
-  );
-}

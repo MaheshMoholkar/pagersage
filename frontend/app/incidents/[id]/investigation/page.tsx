@@ -1,4 +1,4 @@
-// Investigation (design: docs/ui-handoff/design/Investigation.dc.html): U06 suspects and the
+// Investigation: U06 suspects and the
 // score breakdown, U07 memory (text similarity vs re-ranked with the graph) and the runbook.
 
 import { IncidentHeader } from "@/components/incident/IncidentHeader";

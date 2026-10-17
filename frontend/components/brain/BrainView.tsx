@@ -1,6 +1,6 @@
 "use client";
 
-// U08 Ask (design: CompanyBrain.dc.html): a centred question box with an amber Ask button and
+// U08 Ask: a centred question box with an amber Ask button and
 // suggested questions, then the company graph. Asking opens the answer panel beside the
 // graph: the question, the Brain walking the graph, then the answer (aria-live) and its
 // evidence, each row a button that glides the graph to that node. The evidence lights up on

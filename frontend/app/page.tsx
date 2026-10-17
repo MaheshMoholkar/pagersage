@@ -1,4 +1,4 @@
-// War room (design: docs/ui-handoff/design/Main.dc.html). On wide screens: the incident feed
+// War room. On wide screens: the incident feed
 // as a rail down the left (U05); beside it the selected incident's header and tabs, the
 // verdict (what broke it, what to do), then the root-cause path (U02/U03) next to the live
 // agent run (U04). Narrower: stacked, the incident first and the feed last.
