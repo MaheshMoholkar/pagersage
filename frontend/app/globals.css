@@ -1,0 +1,512 @@
+@import "tailwindcss";
+
+/* Design tokens. Use them through the Tailwind names below (bg-panel, text-muted, border-line,
+   ...) or var(--...) in inline SVG and canvas code.
+
+   The system (see frontend/README.md, "Design system"):
+   - Ink, not grey: a blue-black ground lit by a faint ambient glow, glass surfaces with a
+     light top edge, and depth from shadow instead of boxes.
+   - Amber marks only what PagerSage found (root-cause path, Ask evidence, the cause, the
+     primary action). Blue marks agent activity (live, blast radius, links, focus). Green is
+     healthy / done. Red is severity and failure. Nothing else is coloured.
+   - Motion explains: things arrive in reading order, selection slides, numbers count, the
+     root-cause path flows. All of it stops under prefers-reduced-motion. */
+:root {
+  --bg: #07080c;
+  --bg-deep: #05060a;
+  --panel: #0c0e14;
+  --raised: #151821;
+  --hover: #12141c;
+  --line: #1d2029;
+  --line-soft: #15171f;
+  --line-strong: #2b2f3c;
+  --input-line: #2a2e3a;
+  --text: #eef0f5;
+  --text-2: #b8bcc8;
+  --muted: #868b99;
+  --faint: #5b606d;
+  --amber: #ffb224;
+  --amber-2: #ff8a3d;
+  --amber-tint: #261c0a;
+  --on-amber-tint: #ffd889;
+  --on-amber: #1d1302;
+  --blue: #6aa8ff;
+  --blue-tint: #0f1d36;
+  --danger: #ff5d6c;
+  --sev1-bg: #2a0f16;
+  --sev1-fg: #ff9099;
+  --sev2-bg: #2a1c09;
+  --sev2-fg: #ffc062;
+  --ok: #3ddc97;
+  --ok-bg: #0b2318;
+  --ok-fg: #78ecb9;
+  /* team colours, company graph only */
+  --team-payments: #79b4ff;
+  --team-checkout: #c79bff;
+  --team-platform: #6fd3b0;
+  --team-data: #f2a0c8;
+  --team-none: #8a93b3;
+  --team-risk: #ffa96b;
+  --team-merchant: #e8d27a;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-panel:
+    inset 0 1px 0 rgb(255 255 255 / 0.045), 0 1px 2px rgb(0 0 0 / 0.4),
+    0 24px 48px -28px rgb(0 0 0 / 0.8);
+  --shadow-float:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 6px rgb(0 0 0 / 0.35),
+    0 24px 60px -12px rgb(0 0 0 / 0.75);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-panel: var(--panel);
+  --color-raised: var(--raised);
+  --color-hover: var(--hover);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-input-line: var(--input-line);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-amber: var(--amber);
+  --color-amber-2: var(--amber-2);
+  --color-amber-tint: var(--amber-tint);
+  --color-on-amber-tint: var(--on-amber-tint);
+  --color-on-amber: var(--on-amber);
+  --color-blue: var(--blue);
+  --color-blue-tint: var(--blue-tint);
+  --color-danger: var(--danger);
+  --color-sev1-bg: var(--sev1-bg);
+  --color-sev1-fg: var(--sev1-fg);
+  --color-sev2-bg: var(--sev2-bg);
+  --color-sev2-fg: var(--sev2-fg);
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-ok-fg: var(--ok-fg);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
+  --radius-panel: 16px;
+  --radius-card: 12px;
+  --radius-button: 10px;
+  --radius-chip: 7px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* In the base layer so Tailwind utilities (text-*, bg-*) win over these defaults. */
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 20px;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: var(--blue);
+    text-decoration: none;
+    transition: color 150ms;
+  }
+  a:hover {
+    color: #9cc6ff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: #2a4a7a;
+  }
+
+  /* Thin, quiet scrollbars that don't eat into panels. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #262a35 transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: #262a35;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Surfaces. `glass` is every panel; `glass-float` is anything that floats over content
+   (top bar, canvas overlays, the command palette) and blurs what is behind it. */
+@utility glass {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.028), rgb(255 255 255 / 0.008) 40%),
+    color-mix(in oklab, var(--panel) 88%, transparent);
+  border: 1px solid rgb(255 255 255 / 0.065);
+  box-shadow: var(--shadow-panel);
+}
+@utility glass-float {
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.015)),
+    color-mix(in oklab, var(--panel) 72%, transparent);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  box-shadow: var(--shadow-float);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+
+/* The canvas well behind a graph: a dot grid that fades out at the edges. */
+@utility dot-grid {
+  background-color: var(--bg-deep);
+  background-image:
+    radial-gradient(circle at 50% 40%, rgb(106 168 255 / 0.05), transparent 65%),
+    radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1.2px);
+  background-size:
+    100% 100%,
+    22px 22px;
+}
+
+/* Gradient text for display moments (brain hero, resolved banner). */
+@utility text-sheen {
+  background: linear-gradient(180deg, #ffffff 20%, #9aa0ae 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Ambient light: a faint amber and blue glow from the top, plus film grain ─────────── */
+.ps-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 12% -12%, rgb(255 178 36 / 0.07), transparent 62%),
+    radial-gradient(800px 560px at 92% -18%, rgb(106 168 255 / 0.09), transparent 62%),
+    radial-gradient(1200px 600px at 50% 120%, rgb(106 168 255 / 0.035), transparent 70%);
+}
+.ps-ambient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ── Motion ─────────────────────────────────────────────────────────────────────────── */
+
+/* Live dot: a steady core with a ring that ripples out. */
+@keyframes ps-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.ps-ping {
+  animation: ps-ping 1.8s var(--ease-out) infinite;
+}
+
+@keyframes ps-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.ps-live {
+  animation: ps-blink 1.6s ease-in-out infinite;
+}
+
+/* Shimmer: skeletons and "thinking" text. */
+@keyframes ps-shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+.ps-skeleton {
+  background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(255 255 255 / 0.05) 50%,
+      transparent 100%
+    )
+    var(--raised);
+  background-size: 200% 100%;
+  animation: ps-shimmer 1.6s linear infinite;
+}
+.ps-shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--muted) 0%,
+    var(--muted) 35%,
+    var(--text) 50%,
+    var(--muted) 65%,
+    var(--muted) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ps-shimmer 2.2s linear infinite;
+}
+
+/* Border beam: a light that runs around an element's border (the decision being made,
+   the focused Ask box). Put .ps-beam on a relatively positioned element. */
+@property --ps-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes ps-spin-angle {
+  to {
+    --ps-angle: 360deg;
+  }
+}
+.ps-beam::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--ps-angle),
+    transparent 0deg,
+    var(--beam, var(--amber)) 60deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: ps-spin-angle 3s linear infinite;
+  pointer-events: none;
+}
+
+/* Border runner: a short light that travels along an element's border at a steady speed
+   (the focused Ask box). A conic beam's lit length swings with the box's shape; this one
+   stays short. Put a <span class="ps-runner"> inside a relatively positioned, rounded box. */
+@keyframes ps-run {
+  to {
+    offset-distance: 100%;
+  }
+}
+.ps-runner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--beam, var(--amber)), transparent);
+  box-shadow: 0 0 8px var(--beam, var(--amber));
+  offset-path: inset(0.5px round 15.5px);
+  offset-rotate: auto;
+  offset-distance: 0%;
+  animation: ps-run 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Primary button: a sheen that sweeps across on hover. */
+@keyframes ps-sweep {
+  from {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(220%) skewX(-20deg);
+  }
+}
+.ps-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ps-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  transform: translateX(-120%) skewX(-20deg);
+  pointer-events: none;
+}
+.ps-sheen:hover:not(:disabled)::after {
+  animation: ps-sweep 750ms var(--ease-out);
+}
+
+@keyframes ps-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.ps-spin {
+  animation: ps-spin 1.2s linear infinite;
+}
+
+/* Dashed connectors that flow (path trail arrows, the "is next" line). */
+@keyframes ps-dash {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+.ps-dash {
+  stroke-dasharray: 4 4;
+  animation: ps-dash 900ms linear infinite;
+}
+
+/* Spotlight: a soft light under the pointer on cards (set by components/ui Spotlight). */
+.ps-spotlight {
+  position: relative;
+}
+.ps-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(255 255 255 / 0.045),
+    transparent 45%
+  );
+}
+.ps-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ── Route transitions (React <ViewTransition>, see app/layout.tsx and each page) ─────── */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-group(ps-topbar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(ps-topbar) {
+  display: none;
+}
+::view-transition-new(ps-topbar) {
+  animation: none;
+}
+::view-transition-group(.ps-morph) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(.ps-page) {
+  animation: 160ms ease-in both ps-vt-fade reverse;
+}
+::view-transition-new(.ps-page) {
+  animation:
+    260ms var(--ease-out) 90ms both ps-vt-fade,
+    420ms var(--ease-out) both ps-vt-rise;
+}
+::view-transition-old(.nav-forward) {
+  --ps-slide: -40px;
+  animation:
+    160ms ease-in both ps-vt-fade reverse,
+    360ms var(--ease-out) both ps-vt-slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --ps-slide: 40px;
+  animation:
+    240ms var(--ease-out) 100ms both ps-vt-fade,
+    420ms var(--ease-out) both ps-vt-slide;
+}
+::view-transition-old(.nav-back) {
+  --ps-slide: 40px;
+  animation:
+    160ms ease-in both ps-vt-fade reverse,
+    360ms var(--ease-out) both ps-vt-slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --ps-slide: -40px;
+  animation:
+    240ms var(--ease-out) 100ms both ps-vt-fade,
+    420ms var(--ease-out) both ps-vt-slide;
+}
+@keyframes ps-vt-fade {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@keyframes ps-vt-rise {
+  from {
+    translate: 0 12px;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes ps-vt-slide {
+  from {
+    translate: var(--ps-slide) 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ps-ping,
+  .ps-live,
+  .ps-skeleton,
+  .ps-shimmer-text,
+  .ps-spin,
+  .ps-dash,
+  .ps-beam::before,
+  .ps-sheen:hover::after {
+    animation: none !important;
+  }
+  .ps-runner {
+    display: none;
+  }
+  .ps-shimmer-text {
+    color: var(--muted);
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}

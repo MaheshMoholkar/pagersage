@@ -1,0 +1,6 @@
+# checkout-api runtime config. A change here is a config change (cfg-*) for PagerSage.
+workers: 16
+cart_ttl_s: 1800
+payments_timeout_ms: 2500
+enable_saved_cards: true
+enable_apple_pay: false

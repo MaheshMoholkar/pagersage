@@ -1,0 +1,4 @@
+# ledger-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+consumer_batch_size: 500
+commit_interval_ms: 1000
+replicas: 6

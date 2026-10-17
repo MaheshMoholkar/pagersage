@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PagerSage investigation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#121628}
+a{color:#79B4FF}a:hover{color:#A9CFFF}
+:focus-visible{outline:2px solid #79B4FF;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #121628; color: #E9EBF4; font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 1440px; margin: 0 auto; padding: 0 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 18px 0; border-bottom: 1px solid #262D4A">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #E9EBF4">
+<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" style="display: block"><path d="M5 21 L12 8 L21 15" style="fill: none; stroke: {{accent}}; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round"></path><circle cx="5" cy="21" r="3" style="fill: #121628; stroke: {{accent}}; stroke-width: 2"></circle><circle cx="12" cy="8" r="3" style="fill: #121628; stroke: {{accent}}; stroke-width: 2"></circle><circle cx="21" cy="15" r="3.5" style="fill: {{accent}}"></circle></svg>
+<span style="font-size: 19px; font-weight: 700; letter-spacing: -0.01em">PagerSage</span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Main.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">War room</a>
+<a href="CompanyBrain.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">Company brain</a>
+<a href="Investigation.dc.html" aria-current="page" style="padding: 10px 14px; border-radius: 8px; background: #232A45; color: #E9EBF4; text-decoration: none; font-weight: 500">Investigation</a>
+<a href="Resolve.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">Actions</a>
+</nav>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #98A1BF"><span style="width: 32px; height: 32px; border-radius: 50%; background: #2F375A; color: #E9EBF4; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">MM</span>On call: Mahesh</span>
+</header>
+
+<div style="display: flex; flex-direction: column; gap: 6px">
+<a href="Main.dc.html" style="font-size: 13px; text-decoration: none"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">INC-057</span> Checkout failing: payments-db connection pool exhausted</a>
+<h1 style="margin: 0; font-size: 32px; line-height: 38px; font-weight: 600; letter-spacing: -0.02em">Which change broke it</h1>
+<p style="margin: 0; color: #98A1BF; max-width: 720px">Every change in the last two hours, scored by how recent it is, how close it sits to the failing service on the graph, how fragile that service is and how abnormal it looks right now.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<section aria-label="Suspects" style="flex: 999 1 560px; min-width: 0; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 6px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Suspects</h2>
+<span style="font-size: 13px; color: #98A1BF">4 changes since 00:14</span>
+</div>
+<sc-for list="{{suspects}}" as="s" hint-placeholder-count="4">
+<button type="button" onClick="{{s.pick}}" aria-pressed="{{s.pressed}}" style="width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; padding: 14px 16px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; {{s.cardStyle}}">
+<span style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-size: 12px; color: #98A1BF">{{s.kind}} by {{s.who}} at {{s.at}}</span>
+<span style="font-size: 15px; font-weight: 600; {{s.titleStyle}}">{{s.title}}</span>
+</span>
+<span style="display: flex; align-items: center; gap: 10px">
+<span style="font-size: 12px; padding: 2px 8px; border-radius: 999px; {{s.verdictStyle}}">{{s.verdict}}</span>
+<span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 15px; font-weight: 500">{{s.scoreText}}</span>
+</span>
+</span>
+<span style="display: block; height: 6px; border-radius: 3px; background: #262D4A"><span style="display: block; height: 6px; border-radius: 3px; {{s.barStyle}}"></span></span>
+</button>
+</sc-for>
+</section>
+
+<section aria-label="Score breakdown" aria-live="polite" style="flex: 1 1 380px; min-width: 0; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #98A1BF">Why it scored {{sel.scoreText}}</span>
+<h2 style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600">{{sel.title}}</h2>
+</div>
+<div style="display: flex; flex-direction: column">
+<sc-for list="{{sel.factors}}" as="f" hint-placeholder-count="4">
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 0; border-top: 1px solid #2F375A">
+<span style="display: flex; justify-content: space-between; gap: 12px"><span style="font-size: 14px; font-weight: 500">{{f.name}}</span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px">{{f.valueText}}</span></span>
+<span style="font-size: 13px; line-height: 19px; color: #98A1BF">{{f.why}}</span>
+</div>
+</sc-for>
+</div>
+<div style="padding: 14px; border-radius: 12px; background: #232A45; font-size: 14px; line-height: 20px">{{sel.reason}}</div>
+<div style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; line-height: 18px; color: #6B7497">score = recency × 1/(1+hops) × (1+fragility) × anomaly</div>
+</section>
+
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 6px; padding-top: 12px">
+<h2 style="margin: 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.015em">Has this happened before</h2>
+<p style="margin: 0; color: #98A1BF; max-width: 720px">Text similarity alone finds incidents that sound alike. Re-ranking with the graph keeps the ones that broke the same way.</p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+
+<section aria-label="Text similarity only" style="flex: 1 1 300px; min-width: 0; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0 0 8px; font-size: 15px; font-weight: 600; color: #98A1BF">Text similarity only</h3>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF; width: 18px">1</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px">Checkout 5xx after CDN config push</span><span style="font-size: 12px; color: #98A1BF"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">INC-049</span>, root cause in edge-proxy</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF">0.83</span></div>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF; width: 18px">2</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px">payments-db pool exhausted at peak</span><span style="font-size: 12px; color: #98A1BF"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">INC-042</span>, root cause in payments-db</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF">0.79</span></div>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF; width: 18px">3</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px">Checkout timeouts during the sale</span><span style="font-size: 12px; color: #98A1BF"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">INC-038</span>, root cause in cart-svc</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF">0.77</span></div>
+</section>
+
+<section aria-label="Re-ranked with the graph" style="flex: 1 1 300px; min-width: 0; background: #1A1F35; border: 1px solid {{accent}}; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 4px">
+<h3 style="margin: 0 0 8px; font-size: 15px; font-weight: 600">Re-ranked with the graph</h3>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: {{accent}}; width: 18px">1</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px; font-weight: 500">payments-db pool exhausted at peak</span><span style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px"><span style="padding: 2px 8px; border-radius: 999px; background: #2C2718; color: #F4E6CC">same root service</span><span style="padding: 2px 8px; border-radius: 999px; background: #2C2718; color: #F4E6CC">same change type</span><span style="padding: 2px 8px; border-radius: 999px; background: #232A45; color: #C9CEE0">up from 2nd</span></span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px">INC-042</span></div>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF; width: 18px">2</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px">payments-db connection leak after driver upgrade</span><span style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px"><span style="padding: 2px 8px; border-radius: 999px; background: #2C2718; color: #F4E6CC">same root service</span><span style="padding: 2px 8px; border-radius: 999px; background: #232A45; color: #C9CEE0">new in top 3</span></span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px">INC-031</span></div>
+<div style="display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid #2F375A"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #98A1BF; width: 18px">3</span><span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 14px">Checkout 5xx after CDN config push</span><span style="display: flex; flex-wrap: wrap; gap: 6px; font-size: 12px"><span style="padding: 2px 8px; border-radius: 999px; background: #232A45; color: #C9CEE0">down from 1st, different root service</span></span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px">INC-049</span></div>
+</section>
+
+<section aria-label="Best runbook" style="flex: 1 1 280px; min-width: 0; background: #232A45; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+<h3 style="margin: 0; font-size: 15px; font-weight: 600; color: #98A1BF">Runbook that worked</h3>
+<div style="font-size: 18px; line-height: 25px; font-weight: 600">Raise the payments-db pool, then restart payments-svc</div>
+<div style="display: flex; align-items: center; gap: 12px">
+<span style="display: flex; gap: 4px" aria-hidden="true"><span style="width: 18px; height: 18px; border-radius: 5px; background: #6FD3B0"></span><span style="width: 18px; height: 18px; border-radius: 5px; background: #6FD3B0"></span><span style="width: 18px; height: 18px; border-radius: 5px; background: #6FD3B0"></span></span>
+<span style="font-size: 14px">Worked 3 of 3 times</span>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #98A1BF">Used on INC-042, INC-031 and INC-019. The Scribe adds this incident to the count when you resolve it.</p>
+<a href="Resolve.dc.html" style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 10px; background: {{accent}}; color: #1A1406; font-weight: 600; text-decoration: none">Use this runbook</a>
+</section>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB547","options":["#FFB547","#FF9F43","#F5D06F"]},"$preview":{"width":1440,"height":1160}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { selected: 'cfg-2291' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#FFB547';
+    const raw = [
+      { id: 'cfg-2291', kind: 'Config change', who: 'ananya.k', at: '01:58', title: 'payments-db max connections 100 → 40', recency: 0.92, hops: 0, fragility: 0.18, anomaly: 0.95, verdict: 'Cause', reason: 'Changed the failing service itself, 16 minutes before the alert. The pool is now full at exactly the new limit.' },
+      { id: 'dep-payments-2140', kind: 'Deploy', who: 'rohit.s', at: '01:20', title: 'payments-svc v2.14.0', recency: 0.71, hops: 1, fragility: 0.29, anomaly: 0.6, verdict: 'Ruled out', reason: 'One hop from the failing service, but it ran cleanly for 54 minutes before errors began. Kept as a fallback.' },
+      { id: 'dep-checkout-381', kind: 'Deploy', who: 'dev.r', at: '02:05', title: 'checkout-api v3.8.1', recency: 0.97, hops: 3, fragility: 0.12, anomaly: 0.3, verdict: 'Decoy', reason: 'The most recent change, which is why a human would look here first. It sits upstream of payments-db, so nothing in it can exhaust that pool.' },
+      { id: 'cfg-2277', kind: 'Config change', who: 'platform-bot', at: '00:40', title: 'kafka retention 7 days → 3 days', recency: 0.4, hops: 3, fragility: 0.41, anomaly: 0.2, verdict: 'Ruled out', reason: 'Kafka is fragile, but it is three hops away and shows no anomaly right now.' }
+    ];
+    const verdictStyles = {
+      'Cause': 'background: #2C2718; color: #FFCB7A',
+      'Ruled out': 'background: #262D4A; color: #C9CEE0',
+      'Decoy': 'background: #3A1F28; color: #FF9C9C'
+    };
+    const scored = raw.map((r) => Object.assign({}, r, { score: r.recency * (1 / (1 + r.hops)) * (1 + r.fragility) * r.anomaly }));
+    const top = Math.max.apply(null, scored.map((s) => s.score));
+    const suspects = scored.map((s) => {
+      const on = s.id === this.state.selected;
+      const isCause = s.verdict === 'Cause';
+      return Object.assign({}, s, {
+        scoreText: s.score.toFixed(2),
+        pressed: on ? 'true' : 'false',
+        cardStyle: on ? 'background: #232A45; border: 1px solid #4A5480' : 'background: transparent; border: 1px solid #262D4A',
+        titleStyle: s.verdict === 'Decoy' ? 'color: #C9CEE0; text-decoration: line-through' : '',
+        verdictStyle: verdictStyles[s.verdict],
+        barStyle: 'width: ' + Math.max(3, Math.round((s.score / top) * 100)) + '%; background: ' + (isCause ? accent : '#5A6488'),
+        pick: () => this.setState({ selected: s.id })
+      });
+    });
+    const cur = suspects.find((s) => s.id === this.state.selected) || suspects[0];
+    const sel = {
+      title: cur.title,
+      scoreText: cur.scoreText,
+      reason: cur.reason,
+      factors: [
+        { name: 'Recency', valueText: '× ' + cur.recency.toFixed(2), why: 'Changed at ' + cur.at + '. Newer changes score closer to 1.' },
+        { name: 'Distance on the graph', valueText: '× ' + (1 / (1 + cur.hops)).toFixed(2), why: cur.hops === 0 ? 'Changed the failing service itself.' : cur.hops + ' hops from payments-db along the dependency graph.' },
+        { name: 'Fragility', valueText: '× ' + (1 + cur.fragility).toFixed(2), why: 'Betweenness of the changed service is ' + cur.fragility.toFixed(2) + '.' },
+        { name: 'Anomaly now', valueText: '× ' + cur.anomaly.toFixed(2), why: 'Derived from the service health the alerts reported.' }
+      ]
+    };
+    return { accent, suspects, sel };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# payments-db runtime config. A change here is a config change (cfg-*) for PagerSage.
+# Server-side connection pool in front of Postgres. Every payments-svc pod shares it.
+max_pool_size: 200
+statement_timeout_ms: 5000
+idle_in_transaction_timeout_s: 60
+work_mem_mb: 16

@@ -1,0 +1,68 @@
+{
+  "alerting_service_id": "svc:checkout-api",
+  "since": 1792492800,
+  "suspects": [
+    {
+      "change_id": "cfg-0061",
+      "change_type": "config",
+      "service_id": "svc:payments-db",
+      "ts": 1792499640,
+      "dist": 115,
+      "fragility": 0.0,
+      "commits": [],
+      "score": 3.1302943977841706,
+      "score_parts": {
+        "recency": 0.9885140203528962,
+        "distance": 0.3333333333333333,
+        "fragility": 1.0,
+        "anomaly": 9.5
+      }
+    },
+    {
+      "change_id": "dep-0417",
+      "change_type": "deploy",
+      "service_id": "svc:checkout-api",
+      "ts": 1792499940,
+      "dist": 0,
+      "fragility": 16.6666666666667,
+      "commits": [
+        {
+          "sha": "c51ec5b07ef596707374070349bb52a1775b8cc1",
+          "message": "checkout: add the Apple Pay express button and refactor cart totals",
+          "author": "ben"
+        }
+      ],
+      "score": 1.4358292697052915,
+      "score_parts": {
+        "recency": 0.9980764435756287,
+        "distance": 1.0,
+        "fragility": 1.438596491228071,
+        "anomaly": 1.0
+      }
+    },
+    {
+      "change_id": "dep-0416",
+      "change_type": "deploy",
+      "service_id": "svc:payments-svc",
+      "ts": 1792499640,
+      "dist": 100,
+      "fragility": 9.0,
+      "commits": [
+        {
+          "sha": "1af1d33eb99d7ddcaa9b0616bba134b5e82d399d",
+          "message": "payments-db: lower max_pool_size to 60 to cut idle connections",
+          "author": "tomas"
+        }
+      ],
+      "score": 0.6113178810077121,
+      "score_parts": {
+        "recency": 0.9885140203528962,
+        "distance": 0.5,
+        "fragility": 1.236842105263158,
+        "anomaly": 1.0
+      }
+    }
+  ],
+  "cause": "cfg-0061",
+  "rejected": ["dep-0417"]
+}

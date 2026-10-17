@@ -1,0 +1,4 @@
+# notifications-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+email_provider: postmark
+sms_provider: twilio
+send_rate_per_s: 50

@@ -1,0 +1,126 @@
+{
+  "path": ["svc:checkout-api", "svc:payments-svc", "svc:payments-db"],
+  "similar": {
+    "graph_ranked": [
+      {
+        "id": "INC-042",
+        "title": "Third payments-db pool exhaustion: max_pool_size cut to 90",
+        "score": 0.652885794575541,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": ["payments-db pool exhaustion, third time"]
+      },
+      {
+        "id": "INC-031",
+        "title": "payments-db pool exhausted again after max_pool_size cut to 100",
+        "score": 0.734529777403197,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": ["payments-db pool exhaustion, second time"]
+      },
+      {
+        "id": "INC-019",
+        "title": "Checkout failing: payments-db connection pool exhausted",
+        "score": 0.811685526679446,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": [
+          "payments-db pool cut to 120 exhausted connections at peak"
+        ]
+      }
+    ],
+    "vector_only": [
+      {
+        "id": "INC-019",
+        "title": "Checkout failing: payments-db connection pool exhausted",
+        "score": 0.811685526679446,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": [
+          "payments-db pool cut to 120 exhausted connections at peak"
+        ]
+      },
+      {
+        "id": "INC-031",
+        "title": "payments-db pool exhausted again after max_pool_size cut to 100",
+        "score": 0.734529777403197,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": ["payments-db pool exhaustion, second time"]
+      },
+      {
+        "id": "INC-042",
+        "title": "Third payments-db pool exhaustion: max_pool_size cut to 90",
+        "score": 0.652885794575541,
+        "shared_services": 3,
+        "runbooks": [
+          {
+            "id": "rb:raise-payments-db-pool",
+            "title": "Raise pool + restart payments-svc",
+            "success_count": 3
+          }
+        ],
+        "postmortem_titles": ["payments-db pool exhaustion, third time"]
+      }
+    ]
+  },
+  "runbook_service_id": "svc:payments-db",
+  "runbooks": [
+    {
+      "id": "rb:raise-payments-db-pool",
+      "title": "Raise pool + restart payments-svc",
+      "steps": [
+        "Confirm pool exhaustion - active connections on payments-db sit at max_pool_size and payments-svc logs \"timeout acquiring connection\".",
+        "Set max_pool_size in services/payments-db/config.yaml back to the last known good value (200) and apply it.",
+        "Restart payments-svc one pod at a time so every pod reconnects with the new pool size.",
+        "Watch checkout-api error rate return under 1% for 10 minutes."
+      ],
+      "success_count": 3,
+      "fail_count": 0,
+      "success_rate": 0.8
+    },
+    {
+      "id": "rb:failover-payments-db",
+      "title": "Fail over payments-db to the standby",
+      "steps": [
+        "Check replication lag on the payments-db standby is under 1 second.",
+        "Promote the standby with the failover script and repoint the payments-db DNS record.",
+        "Restart payments-svc so it drops connections to the old primary.",
+        "Rebuild the old primary as the new standby."
+      ],
+      "success_count": 0,
+      "fail_count": 1,
+      "success_rate": 0.333333333333333
+    }
+  ]
+}

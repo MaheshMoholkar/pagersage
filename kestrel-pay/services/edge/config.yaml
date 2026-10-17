@@ -1,0 +1,5 @@
+# edge runtime config. A change here is a config change (cfg-*) for PagerSage.
+waf_mode: block
+rate_limit_rps: 5000
+tls_min_version: "1.2"
+idle_timeout_s: 60

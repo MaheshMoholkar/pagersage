@@ -1,0 +1,3 @@
+# schema-registry runtime config. A change here is a config change (cfg-*) for PagerSage.
+compatibility: BACKWARD
+cache_ttl_s: 300

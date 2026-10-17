@@ -1,0 +1,4 @@
+# inventory-db runtime config. A change here is a config change (cfg-*) for PagerSage.
+max_connections: 200
+statement_timeout_ms: 3000
+work_mem_mb: 8

@@ -1,0 +1,69 @@
+# Scenario eval (task K8): make inject SCENARIO=inventory-slow
+name: inventory-slow
+summary: >
+  Leila ships an inventory-db migration that swaps the reservations index for a partial one
+  the expiry query cannot use. inventory-db scans, inventory-svc slows and checkout-api p99
+  climbs. A checkout-api deploy lands two minutes earlier. Precedents: INC-018 (dropped index)
+  and INC-038. Databases are never rolled back automatically (policy no-database-rollback).
+
+expect:
+  alerting_service: checkout-api
+  root_service: inventory-db
+  cause: inventory-migration
+  path: [checkout-api, inventory-svc, inventory-db]
+  decoy: checkout-deploy
+  page_team: checkout
+  runbook: fix-inventory-db-slow-queries
+  similar: [INC-018, INC-038]
+
+steps:
+  - commit: migration-commit
+    file: services/inventory-db/migrations/0087_partial_reservations_index.sql
+    append: |
+      -- Smaller index: only reservations that are still held.
+      DROP INDEX CONCURRENTLY IF EXISTS idx_reservations_sku_expires;
+      CREATE INDEX CONCURRENTLY idx_reservations_held
+        ON stock_reservations (sku) WHERE released_at IS NULL;
+    author: leila
+    message: "inventory-db: replace reservations index with a partial index on held rows"
+    at: -1500
+
+  - deploy: inventory-migration
+    service: inventory-db
+    deployed_by: leila
+    commits: [migration-commit]
+    at: -720
+
+  - commit: checkout-commit
+    file: services/checkout-api/CHANGELOG.md
+    append: |
+      ## Gift messages
+      - Let shoppers add a gift message to the order.
+    author: mateo
+    message: "checkout: let shoppers add a gift message to the order"
+    at: -600
+
+  - deploy: checkout-deploy
+    service: checkout-api
+    deployed_by: mateo
+    commits: [checkout-commit]
+    at: -120
+
+  - alert: checkout-latency
+    service: checkout-api
+    signal: latency_p99
+    value: 2600
+    threshold: 800
+    severity: sev2
+    health: 0.5
+    at: 0
+
+  - alert: inventory-latency
+    service: inventory-svc
+    signal: latency_p99
+    value: 1400
+    threshold: 200
+    severity: sev2
+    health: 0.25
+    at: 10
+    pause: 3

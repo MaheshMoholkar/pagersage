@@ -1,0 +1,564 @@
+{
+  "nodes": [
+    {
+      "id": "svc:acquirer-gateway",
+      "name": "acquirer-gateway",
+      "kind": "Service",
+      "team": "Payments",
+      "tier": 1,
+      "criticality": 0.0267960969358683,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:api-gateway",
+      "name": "api-gateway",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 1,
+      "criticality": 0.0393443070352077,
+      "fragility": 21.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:auth-svc",
+      "name": "auth-svc",
+      "kind": "Service",
+      "team": "Risk & Identity",
+      "tier": 1,
+      "criticality": 0.0279554463922977,
+      "fragility": 3.66666666666666,
+      "health": 1.0
+    },
+    {
+      "id": "svc:checkout-api",
+      "name": "checkout-api",
+      "kind": "Service",
+      "team": "Checkout",
+      "tier": 1,
+      "criticality": 0.0279554463922977,
+      "fragility": 16.6666666666667,
+      "health": 1.0
+    },
+    {
+      "id": "svc:edge",
+      "name": "edge",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 1,
+      "criticality": 0.0212667118757963,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:fraud-svc",
+      "name": "fraud-svc",
+      "kind": "Service",
+      "team": "Risk & Identity",
+      "tier": 1,
+      "criticality": 0.0267960969358683,
+      "fragility": 1.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:inventory-db",
+      "name": "inventory-db",
+      "kind": "Service",
+      "team": "Checkout",
+      "tier": 2,
+      "criticality": 0.0286392252892256,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:inventory-svc",
+      "name": "inventory-svc",
+      "kind": "Service",
+      "team": "Checkout",
+      "tier": 2,
+      "criticality": 0.0260190945118666,
+      "fragility": 3.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:kafka",
+      "name": "kafka",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 1,
+      "criticality": 0.123756416141987,
+      "fragility": 38.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:kafka-controller",
+      "name": "kafka-controller",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 1,
+      "criticality": 0.0563315749168396,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:ledger-db",
+      "name": "ledger-db",
+      "kind": "Service",
+      "team": "Ledger",
+      "tier": 1,
+      "criticality": 0.0398748405277729,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:ledger-svc",
+      "name": "ledger-svc",
+      "kind": "Service",
+      "team": "Ledger",
+      "tier": 1,
+      "criticality": 0.0331476703286171,
+      "fragility": 3.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:notifications-svc",
+      "name": "notifications-svc",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 3,
+      "criticality": 0.0212667118757963,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:object-store",
+      "name": "object-store",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 3,
+      "criticality": 0.0608509704470634,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:payments-db",
+      "name": "payments-db",
+      "kind": "Service",
+      "team": "Payments",
+      "tier": 1,
+      "criticality": 0.0313154943287373,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:payments-svc",
+      "name": "payments-svc",
+      "kind": "Service",
+      "team": "Payments",
+      "tier": 1,
+      "criticality": 0.0260190945118666,
+      "fragility": 9.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:payouts-svc",
+      "name": "payouts-svc",
+      "kind": "Service",
+      "team": "Ledger",
+      "tier": 2,
+      "criticality": 0.0279554463922977,
+      "fragility": 6.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:pricing-svc",
+      "name": "pricing-svc",
+      "kind": "Service",
+      "team": "Checkout",
+      "tier": 2,
+      "criticality": 0.0260190945118666,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:reconciliation-job",
+      "name": "reconciliation-job",
+      "kind": "Service",
+      "team": "Ledger",
+      "tier": 2,
+      "criticality": 0.0212667118757963,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:redis-cache",
+      "name": "redis-cache",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 1,
+      "criticality": 0.0917778983712196,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:schema-registry",
+      "name": "schema-registry",
+      "kind": "Service",
+      "team": "Platform",
+      "tier": 2,
+      "criticality": 0.0563315749168396,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:search-api",
+      "name": "search-api",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 3,
+      "criticality": 0.0279554463922977,
+      "fragility": 2.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:search-index",
+      "name": "search-index",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 3,
+      "criticality": 0.0450286269187927,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:user-api",
+      "name": "user-api",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 2,
+      "criticality": 0.0279554463922977,
+      "fragility": 3.66666666666666,
+      "health": 1.0
+    },
+    {
+      "id": "svc:user-db",
+      "name": "user-db",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 2,
+      "criticality": 0.037107989192009,
+      "fragility": 0.0,
+      "health": 1.0
+    },
+    {
+      "id": "svc:webhooks-svc",
+      "name": "webhooks-svc",
+      "kind": "Service",
+      "team": "Merchant Experience",
+      "tier": 2,
+      "criticality": 0.0212667118757963,
+      "fragility": 0.0,
+      "health": 1.0
+    }
+  ],
+  "links": [
+    {
+      "source": "svc:api-gateway",
+      "target": "svc:auth-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 3000
+    },
+    {
+      "source": "svc:api-gateway",
+      "target": "svc:checkout-api",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1200
+    },
+    {
+      "source": "svc:api-gateway",
+      "target": "svc:payouts-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 50
+    },
+    {
+      "source": "svc:api-gateway",
+      "target": "svc:search-api",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 300
+    },
+    {
+      "source": "svc:api-gateway",
+      "target": "svc:user-api",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 600
+    },
+    {
+      "source": "svc:auth-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 250
+    },
+    {
+      "source": "svc:auth-svc",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 3000
+    },
+    {
+      "source": "svc:auth-svc",
+      "target": "svc:user-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1900
+    },
+    {
+      "source": "svc:checkout-api",
+      "target": "svc:inventory-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:checkout-api",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:checkout-api",
+      "target": "svc:payments-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:checkout-api",
+      "target": "svc:pricing-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:checkout-api",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 2400
+    },
+    {
+      "source": "svc:edge",
+      "target": "svc:api-gateway",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 3200
+    },
+    {
+      "source": "svc:fraud-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:fraud-svc",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1800
+    },
+    {
+      "source": "svc:inventory-svc",
+      "target": "svc:inventory-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1400
+    },
+    {
+      "source": "svc:inventory-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 300
+    },
+    {
+      "source": "svc:inventory-svc",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:kafka",
+      "target": "svc:kafka-controller",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 300
+    },
+    {
+      "source": "svc:kafka",
+      "target": "svc:object-store",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 60
+    },
+    {
+      "source": "svc:kafka",
+      "target": "svc:schema-registry",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:ledger-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1500
+    },
+    {
+      "source": "svc:ledger-svc",
+      "target": "svc:ledger-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1500
+    },
+    {
+      "source": "svc:notifications-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 700
+    },
+    {
+      "source": "svc:payments-svc",
+      "target": "svc:acquirer-gateway",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:payments-svc",
+      "target": "svc:fraud-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:payments-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1800
+    },
+    {
+      "source": "svc:payments-svc",
+      "target": "svc:payments-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 2400
+    },
+    {
+      "source": "svc:payouts-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 60
+    },
+    {
+      "source": "svc:payouts-svc",
+      "target": "svc:ledger-svc",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 60
+    },
+    {
+      "source": "svc:pricing-svc",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1800
+    },
+    {
+      "source": "svc:reconciliation-job",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 30
+    },
+    {
+      "source": "svc:reconciliation-job",
+      "target": "svc:ledger-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 200
+    },
+    {
+      "source": "svc:reconciliation-job",
+      "target": "svc:object-store",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 20
+    },
+    {
+      "source": "svc:reconciliation-job",
+      "target": "svc:payments-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 200
+    },
+    {
+      "source": "svc:search-api",
+      "target": "svc:search-index",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 300
+    },
+    {
+      "source": "svc:user-api",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 120
+    },
+    {
+      "source": "svc:user-api",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 900
+    },
+    {
+      "source": "svc:user-api",
+      "target": "svc:user-db",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 800
+    },
+    {
+      "source": "svc:webhooks-svc",
+      "target": "svc:kafka",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1500
+    },
+    {
+      "source": "svc:webhooks-svc",
+      "target": "svc:redis-cache",
+      "type": "DEPENDS_ON",
+      "weight": 100,
+      "calls_per_min": 1500
+    }
+  ],
+  "highlight": {
+    "nodes": [],
+    "edges": []
+  }
+}

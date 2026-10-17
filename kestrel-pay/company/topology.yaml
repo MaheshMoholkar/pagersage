@@ -1,0 +1,199 @@
+# Kestrel Pay service topology. Format: examples/topology.yaml.
+# Service ids become svc:<name>. depends_on means "this service calls `to`": consumers of a
+# Kafka topic depend on kafka just like producers do, because kafka going down hurts both.
+#
+# Planted pattern 3 (fragility): kafka has the highest betweenness on DEPENDS_ON. Betweenness
+# is directed, so kafka needs its own dependencies (KRaft controller, schema registry, tiered
+# storage); a pure sink would score 0.
+services:
+  # ── edge ────────────────────────────────────────────────────────────────
+  - name: edge
+    tier: 1
+    language: envoy
+    description: Public TLS edge with WAF and rate limits in front of every shopper and merchant request.
+    depends_on:
+      - {to: api-gateway, calls_per_min: 3200, p99_ms: 25}
+
+  - name: api-gateway
+    tier: 1
+    language: go
+    description: Authenticates and routes every public API call to the service behind it.
+    depends_on:
+      - {to: auth-svc, calls_per_min: 3000, p99_ms: 12}
+      - {to: checkout-api, calls_per_min: 1200, p99_ms: 140}
+      - {to: user-api, calls_per_min: 600, p99_ms: 60}
+      - {to: search-api, calls_per_min: 300, p99_ms: 80}
+      - {to: payouts-svc, calls_per_min: 50, p99_ms: 120}
+
+  # ── money path ──────────────────────────────────────────────────────────
+  - name: checkout-api
+    tier: 1
+    language: python
+    description: Builds the cart, prices it, reserves stock and starts the payment.
+    depends_on:
+      - {to: payments-svc, calls_per_min: 900, p99_ms: 220}
+      - {to: inventory-svc, calls_per_min: 900, p99_ms: 45}
+      - {to: pricing-svc, calls_per_min: 900, p99_ms: 30}
+      - {to: redis-cache, calls_per_min: 2400, p99_ms: 4}
+      - {to: kafka, calls_per_min: 900, p99_ms: 12}
+
+  - name: payments-svc
+    tier: 1
+    language: go
+    description: Charges cards and records payment intents; the only writer to payments-db.
+    depends_on:
+      - {to: payments-db, calls_per_min: 2400, p99_ms: 35}
+      - {to: fraud-svc, calls_per_min: 900, p99_ms: 60}
+      - {to: acquirer-gateway, calls_per_min: 900, p99_ms: 180}
+      - {to: kafka, calls_per_min: 1800, p99_ms: 12}
+
+  - name: payments-db
+    tier: 1
+    language: postgres
+    description: Primary Postgres for payment intents and charges, behind a server-side connection pool.
+
+  - name: fraud-svc
+    tier: 1
+    language: python
+    description: Scores every charge for fraud risk before it reaches the card network.
+    depends_on:
+      - {to: redis-cache, calls_per_min: 1800, p99_ms: 3}
+      - {to: kafka, calls_per_min: 900, p99_ms: 10}
+
+  - name: acquirer-gateway
+    tier: 1
+    language: java
+    description: ISO 8583 bridge to the acquiring banks and card networks.
+
+  - name: ledger-svc
+    tier: 1
+    language: kotlin
+    description: Double-entry ledger of every money movement, fed by payment events from kafka.
+    depends_on:
+      - {to: ledger-db, calls_per_min: 1500, p99_ms: 20}
+      - {to: kafka, calls_per_min: 1500, p99_ms: 10}
+
+  - name: ledger-db
+    tier: 1
+    language: postgres
+    description: Postgres for ledger entries and merchant balances.
+
+  - name: auth-svc
+    tier: 1
+    language: go
+    description: API keys, OAuth tokens and merchant dashboard sessions.
+    depends_on:
+      - {to: user-db, calls_per_min: 1900, p99_ms: 8}
+      - {to: redis-cache, calls_per_min: 3000, p99_ms: 3}
+      - {to: kafka, calls_per_min: 250, p99_ms: 10}
+
+  # ── shop and merchant services ──────────────────────────────────────────
+  - name: inventory-svc
+    tier: 2
+    language: java
+    description: Reserves stock for carts and releases it when a checkout expires.
+    depends_on:
+      - {to: inventory-db, calls_per_min: 1400, p99_ms: 18}
+      - {to: redis-cache, calls_per_min: 900, p99_ms: 3}
+      - {to: kafka, calls_per_min: 300, p99_ms: 10}
+
+  - name: inventory-db
+    tier: 2
+    language: postgres
+    description: Postgres for stock levels and reservations.
+
+  - name: pricing-svc
+    tier: 2
+    language: go
+    description: Taxes, currency conversion and discount codes for a cart.
+    depends_on:
+      - {to: redis-cache, calls_per_min: 1800, p99_ms: 3}
+
+  - name: user-api
+    tier: 2
+    language: python
+    description: Merchant, shop and customer profiles.
+    depends_on:
+      - {to: user-db, calls_per_min: 800, p99_ms: 10}
+      - {to: redis-cache, calls_per_min: 900, p99_ms: 3}
+      - {to: kafka, calls_per_min: 120, p99_ms: 10}
+
+  - name: user-db
+    tier: 2
+    language: postgres
+    description: Postgres for users, merchants and API keys.
+
+  - name: payouts-svc
+    tier: 2
+    language: go
+    description: Schedules and sends merchant payouts from ledger balances.
+    depends_on:
+      - {to: ledger-svc, calls_per_min: 60, p99_ms: 80}
+      - {to: kafka, calls_per_min: 60, p99_ms: 10}
+
+  - name: reconciliation-job
+    tier: 2
+    language: python
+    description: Nightly match of acquirer settlement files against the ledger and payments.
+    depends_on:
+      - {to: ledger-db, calls_per_min: 200, p99_ms: 40}
+      - {to: payments-db, calls_per_min: 200, p99_ms: 35}
+      - {to: object-store, calls_per_min: 20, p99_ms: 150}
+      - {to: kafka, calls_per_min: 30, p99_ms: 10}
+
+  - name: webhooks-svc
+    tier: 2
+    language: go
+    description: Delivers payment events to merchant webhook endpoints, with retries.
+    depends_on:
+      - {to: kafka, calls_per_min: 1500, p99_ms: 12}
+      - {to: redis-cache, calls_per_min: 1500, p99_ms: 3}
+
+  - name: notifications-svc
+    tier: 3
+    language: python
+    description: Email and SMS receipts, driven by payment events.
+    depends_on:
+      - {to: kafka, calls_per_min: 700, p99_ms: 15}
+
+  - name: search-api
+    tier: 3
+    language: python
+    description: Order and transaction search for the merchant dashboard.
+    depends_on:
+      - {to: search-index, calls_per_min: 300, p99_ms: 90}
+
+  - name: search-index
+    tier: 3
+    language: elasticsearch
+    description: Elasticsearch cluster holding 13 months of searchable transactions.
+
+  # ── shared infrastructure ───────────────────────────────────────────────
+  - name: redis-cache
+    tier: 1
+    language: redis
+    description: Shared Redis for sessions, idempotency keys, rate limits and hot caches.
+
+  - name: kafka
+    tier: 1
+    language: kafka
+    description: Event bus for payment, ledger, webhook and notification events.
+    depends_on:
+      - {to: kafka-controller, calls_per_min: 300, p99_ms: 5}
+      - {to: schema-registry, calls_per_min: 900, p99_ms: 6}
+      - {to: object-store, calls_per_min: 60, p99_ms: 120}
+
+  - name: kafka-controller
+    tier: 1
+    language: kafka
+    description: KRaft quorum that holds Kafka cluster metadata and elects partition leaders.
+
+  - name: schema-registry
+    tier: 2
+    language: java
+    description: Avro schemas for every Kafka topic; brokers validate each produced record against it.
+
+  - name: object-store
+    tier: 3
+    language: minio
+    description: S3-compatible storage for settlement files, Kafka tiered segments and report exports.

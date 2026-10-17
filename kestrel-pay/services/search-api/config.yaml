@@ -1,0 +1,3 @@
+# search-api runtime config. A change here is a config change (cfg-*) for PagerSage.
+max_results: 200
+query_timeout_ms: 2000

@@ -1,0 +1,5 @@
+# redis-cache runtime config. A change here is a config change (cfg-*) for PagerSage.
+maxmemory: 8gb
+maxmemory_policy: volatile-lru
+timeout_s: 300
+maxclients: 10000

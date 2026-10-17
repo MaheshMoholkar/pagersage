@@ -1,0 +1,38 @@
+[
+  {
+    "team": "Checkout",
+    "handle": "ben",
+    "name": "Ben Carter",
+    "until": 1792368000
+  },
+  {
+    "team": "Ledger",
+    "handle": "raj",
+    "name": "Raj Iyer",
+    "until": 1792368000
+  },
+  {
+    "team": "Merchant Experience",
+    "handle": "omar",
+    "name": "Omar Farouk",
+    "until": 1792368000
+  },
+  {
+    "team": "Payments",
+    "handle": "priya",
+    "name": "Priya Raman",
+    "until": 1792368000
+  },
+  {
+    "team": "Platform",
+    "handle": "jin",
+    "name": "Jin Park",
+    "until": 1792368000
+  },
+  {
+    "team": "Risk & Identity",
+    "handle": "diego",
+    "name": "Diego Ram\u00edrez",
+    "until": 1792368000
+  }
+]

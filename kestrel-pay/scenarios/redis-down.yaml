@@ -1,0 +1,81 @@
+# Scenario eval (task K8): make inject SCENARIO=redis-down
+name: redis-down
+summary: >
+  Lukas switches redis-cache to maxmemory_policy noeviction so idempotency keys survive. Memory
+  fills, every write fails with OOM, and auth-svc and checkout-api start erroring. A pricing-svc
+  deploy lands just before the alerts. Precedents: INC-015 (maxmemory cut) and INC-034.
+
+expect:
+  alerting_service: auth-svc
+  root_service: redis-cache
+  cause: redis-policy
+  path: [auth-svc, redis-cache]
+  decoy: pricing-deploy
+  page_team: platform
+  runbook: restore-redis-maxmemory
+  similar: [INC-015, INC-034]
+
+steps:
+  - commit: redis-commit
+    file: services/redis-cache/config.yaml
+    set: {maxmemory_policy: noeviction}
+    author: lukas
+    message: "redis-cache: stop evicting keys so idempotency records survive"
+    at: -1200
+
+  - deploy: redis-deploy
+    service: redis-cache
+    deployed_by: lukas
+    commits: [redis-commit]
+    at: -540
+
+  - config_change: redis-policy
+    service: redis-cache
+    key: maxmemory_policy
+    to: noeviction
+    made_by: lukas
+    at: -540
+
+  - commit: pricing-commit
+    file: services/pricing-svc/CHANGELOG.md
+    append: |
+      ## Discount stacking
+      - Allow one percentage and one fixed discount code per cart.
+    author: mateo
+    message: "pricing: allow stacking one percentage and one fixed discount"
+    at: -400
+
+  - deploy: pricing-deploy
+    service: pricing-svc
+    deployed_by: mateo
+    commits: [pricing-commit]
+    at: -90
+
+  - alert: redis-saturation
+    service: redis-cache
+    signal: saturation
+    value: 1.0
+    threshold: 0.9
+    severity: sev2
+    health: 0.05
+    at: 0
+
+  - alert: auth-errors
+    service: auth-svc
+    signal: error_rate
+    value: 18.0
+    threshold: 1.0
+    severity: sev1
+    health: 0.3
+    at: 15
+    pause: 3
+
+  - alert: checkout-errors
+    service: checkout-api
+    signal: error_rate
+    value: 4.2
+    threshold: 1.0
+    severity: sev2
+    health: 0.55
+    at: 25
+    pause: 3

@@ -1,0 +1,5 @@
+# acquirer-gateway runtime config. A change here is a config change (cfg-*) for PagerSage.
+primary_acquirer: northbank
+backup_acquirer: meridian
+connect_timeout_ms: 800
+read_timeout_ms: 2500

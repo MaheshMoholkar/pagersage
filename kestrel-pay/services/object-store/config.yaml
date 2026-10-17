@@ -1,0 +1,3 @@
+# object-store runtime config. A change here is a config change (cfg-*) for PagerSage.
+versioning: enabled
+lifecycle_days: 395

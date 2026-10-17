@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PagerSage war room</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#121628}
+a{color:#79B4FF}a:hover{color:#A9CFFF}
+:focus-visible{outline:2px solid #79B4FF;outline-offset:2px}
+@keyframes ps-pulse{from{transform:scale(1);opacity:.6}to{transform:scale(2.4);opacity:0}}
+@keyframes ps-blink{0%,100%{opacity:1}50%{opacity:.3}}
+.ps-pulse{transform-box:fill-box;transform-origin:center;animation:ps-pulse 2.4s ease-out infinite}
+.ps-live{animation:ps-blink 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.ps-pulse,.ps-live{animation:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #121628; color: #E9EBF4; font-family: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 22px">
+<div style="max-width: 1440px; margin: 0 auto; padding: 0 24px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 18px 0; border-bottom: 1px solid #262D4A">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #E9EBF4">
+<svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true" style="display: block"><path d="M5 21 L12 8 L21 15" style="fill: none; stroke: {{accent}}; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round"></path><circle cx="5" cy="21" r="3" style="fill: #121628; stroke: {{accent}}; stroke-width: 2"></circle><circle cx="12" cy="8" r="3" style="fill: #121628; stroke: {{accent}}; stroke-width: 2"></circle><circle cx="21" cy="15" r="3.5" style="fill: {{accent}}"></circle></svg>
+<span style="font-size: 19px; font-weight: 700; letter-spacing: -0.01em">PagerSage</span>
+</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Main.dc.html" aria-current="page" style="padding: 10px 14px; border-radius: 8px; background: #232A45; color: #E9EBF4; text-decoration: none; font-weight: 500">War room</a>
+<a href="CompanyBrain.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">Company brain</a>
+<a href="Investigation.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">Investigation</a>
+<a href="Resolve.dc.html" style="padding: 10px 14px; border-radius: 8px; color: #98A1BF; text-decoration: none; font-weight: 500">Actions</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 16px">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #98A1BF"><span class="ps-live" style="width: 8px; height: 8px; border-radius: 50%; background: #6FD3B0"></span>Graph live</span>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #98A1BF"><span style="width: 32px; height: 32px; border-radius: 50%; background: #2F375A; color: #E9EBF4; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600">MM</span>On call: Mahesh</span>
+</div>
+</header>
+
+<section aria-label="Selected incident" style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; padding: 20px 24px; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px">
+<span style="padding: 6px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; {{current.sevStyle}}">{{current.sev}}</span>
+<div style="flex: 999 1 420px; min-width: 0">
+<div style="font-size: 13px; color: #98A1BF"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">{{current.id}}</span> opened {{current.opened}}, {{current.age}} ago</div>
+<h1 style="margin: 4px 0 0; font-size: 26px; line-height: 32px; font-weight: 600; letter-spacing: -0.015em">{{current.title}}</h1>
+</div>
+<div style="display: flex; align-items: center; gap: 10px; font-size: 14px; color: #C9CEE0">
+<span class="ps-live" style="width: 10px; height: 10px; border-radius: 50%; background: #79B4FF"></span>
+<span>{{current.agent}}</span>
+</div>
+<a href="Resolve.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 10px; background: {{accent}}; color: #1A1406; font-weight: 600; text-decoration: none">Review actions</a>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+
+<aside aria-label="Incidents" style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: baseline; justify-content: space-between; padding: 4px 4px 8px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Incidents</h2>
+<span style="font-size: 13px; color: #98A1BF">3 open</span>
+</div>
+<sc-for list="{{incidents}}" as="inc" hint-placeholder-count="4">
+<button type="button" onClick="{{inc.pick}}" aria-pressed="{{inc.pressed}}" style="text-align: left; width: 100%; padding: 14px; border-radius: 12px; font: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; gap: 6px; {{inc.cardStyle}}">
+<span style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px">
+<span style="padding: 2px 8px; border-radius: 999px; font-weight: 600; {{inc.sevStyle}}">{{inc.sev}}</span>
+<span style="color: #98A1BF">{{inc.age}}</span>
+</span>
+<span style="font-size: 14px; line-height: 20px; font-weight: 500">{{inc.title}}</span>
+<span style="font-size: 12px; line-height: 18px; color: #98A1BF">{{inc.agent}}</span>
+</button>
+</sc-for>
+<p style="margin: 8px 4px 0; font-size: 12px; line-height: 18px; color: #98A1BF">Alerts on related services within 10 minutes join the open incident instead of paging again.</p>
+</aside>
+
+<section aria-label="Incident graph" style="flex: 999 1 560px; min-width: 0; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Root-cause path</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" onClick="{{toggleBlast}}" aria-pressed="{{blastPressed}}" style="min-height: 44px; padding: 0 14px; border-radius: 10px; font: inherit; font-size: 14px; cursor: pointer; {{blastBtnStyle}}">Blast radius</button>
+<a href="CompanyBrain.dc.html" style="display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #2F375A; color: #C9CEE0; text-decoration: none; font-size: 14px">Whole company graph</a>
+</div>
+</div>
+
+<div style="background: #151A2E; border-radius: 12px; border: 1px solid #262D4A">
+<svg viewBox="0 0 760 500" role="img" aria-label="Graph: alert on checkout-api leads through payments-svc to payments-db, caused by config change cfg-2291 made by ananya.k. A checkout-api deploy was rejected as a suspect." style="display: block; width: 100%; height: auto">
+<line x1="120" y1="220" x2="260" y2="88" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="250" y1="300" x2="400" y2="170" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="250" y1="300" x2="300" y2="430" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="420" y1="400" x2="520" y2="270" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="420" y1="400" x2="300" y2="430" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="260" y1="88" x2="560" y2="90" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="400" y1="170" x2="660" y2="170" style="stroke: #3A4366; stroke-width: 1.5"></line>
+<line x1="175" y1="360" x2="260" y2="88" style="stroke: #5A6488; stroke-width: 1.5; stroke-dasharray: 5 5; opacity: 0.6"></line>
+<line x1="190" y1="88" x2="260" y2="88" style="stroke: {{accent}}; stroke-width: 3.5; stroke-linecap: round"></line>
+<line x1="260" y1="88" x2="400" y2="170" style="stroke: {{accent}}; stroke-width: 3.5; stroke-linecap: round"></line>
+<line x1="400" y1="170" x2="520" y2="270" style="stroke: {{accent}}; stroke-width: 3.5; stroke-linecap: round"></line>
+<line x1="520" y1="270" x2="655" y2="356" style="stroke: {{accent}}; stroke-width: 3.5; stroke-linecap: round"></line>
+<line x1="655" y1="402" x2="655" y2="437" style="stroke: {{accent}}; stroke-width: 3.5; stroke-linecap: round"></line>
+
+<g style="opacity: {{blastOpacity}}">
+<circle class="ps-pulse" cx="520" cy="270" r="30" style="fill: none; stroke: #79B4FF; stroke-width: 2"></circle>
+<circle cx="260" cy="88" r="35" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-dasharray: 4 5"></circle>
+<circle cx="400" cy="170" r="33" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-dasharray: 4 5"></circle>
+<circle cx="250" cy="300" r="29" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-dasharray: 4 5"></circle>
+<circle cx="420" cy="400" r="25" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-dasharray: 4 5"></circle>
+<circle cx="120" cy="220" r="27" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-dasharray: 4 5"></circle>
+</g>
+
+<rect x="30" y="70" width="160" height="36" rx="8" style="fill: #2C2718; stroke: {{accent}}; stroke-width: 2"></rect>
+<text x="30" y="60" style="fill: #98A1BF; font-size: 11px; font-family: 'Schibsted Grotesk', sans-serif">Alert</text>
+<text x="110" y="93" style="fill: #F4E6CC; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-anchor: middle">CheckoutHighErrors</text>
+
+<circle cx="120" cy="220" r="18" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="120" y="254" style="fill: #C9CEE0; font-size: 12px; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">mobile-bff</text>
+
+<circle cx="260" cy="88" r="26" style="fill: #2A2F4A; stroke: {{accent}}; stroke-width: 2.5"></circle>
+<text x="260" y="50" style="fill: #E9EBF4; font-size: 13px; font-weight: 600; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">checkout-api</text>
+
+<circle cx="400" cy="170" r="24" style="fill: #2A2F4A; stroke: {{accent}}; stroke-width: 2.5"></circle>
+<text x="366" y="175" style="fill: #E9EBF4; font-size: 13px; font-weight: 600; text-anchor: end; font-family: 'Schibsted Grotesk', sans-serif">payments-svc</text>
+
+<circle cx="520" cy="270" r="28" style="fill: #3A2430; stroke: {{accent}}; stroke-width: 2.5"></circle>
+<text x="520" y="275" style="fill: #FFB4B4; font-size: 11px; font-weight: 600; text-anchor: middle; font-family: 'JetBrains Mono', monospace">40/40</text>
+<text x="556" y="268" style="fill: #E9EBF4; font-size: 13px; font-weight: 600; font-family: 'Schibsted Grotesk', sans-serif">payments-db</text>
+<text x="556" y="284" style="fill: #98A1BF; font-size: 11px; font-family: 'Schibsted Grotesk', sans-serif">pool exhausted</text>
+
+<circle cx="250" cy="300" r="20" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="278" y="305" style="fill: #C9CEE0; font-size: 12px; font-family: 'Schibsted Grotesk', sans-serif">orders-svc</text>
+
+<circle cx="420" cy="400" r="16" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="420" y="434" style="fill: #C9CEE0; font-size: 12px; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">ledger-svc</text>
+
+<circle cx="300" cy="430" r="29" style="fill: none; stroke: #FF7A7A; stroke-width: 3"></circle>
+<circle cx="300" cy="430" r="22" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="300" y="477" style="fill: #C9CEE0; font-size: 12px; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">kafka</text>
+
+<circle cx="560" cy="90" r="16" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="560" y="124" style="fill: #C9CEE0; font-size: 12px; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">inventory-svc</text>
+
+<circle cx="660" cy="170" r="18" style="fill: #232A45; stroke: #4A5480; stroke-width: 1.5"></circle>
+<text x="660" y="206" style="fill: #C9CEE0; font-size: 12px; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">auth-svc</text>
+
+<rect x="80" y="360" width="190" height="46" rx="8" style="fill: #1A1F35; stroke: #5A6488; stroke-width: 1.5; stroke-dasharray: 5 4; opacity: 0.75"></rect>
+<text x="96" y="378" style="fill: #98A1BF; font-size: 11px; font-family: 'Schibsted Grotesk', sans-serif">Deploy, rejected</text>
+<text x="96" y="396" style="fill: #98A1BF; font-size: 12px; font-family: 'JetBrains Mono', monospace; text-decoration: line-through">checkout-api v3.8.1</text>
+
+<rect x="560" y="356" width="190" height="46" rx="8" style="fill: #2C2718; stroke: {{accent}}; stroke-width: 2"></rect>
+<text x="576" y="374" style="fill: #D9C9A8; font-size: 11px; font-family: 'Schibsted Grotesk', sans-serif">Config change cfg-2291</text>
+<text x="576" y="392" style="fill: #F4E6CC; font-size: 12px; font-family: 'JetBrains Mono', monospace">max_conn 100 → 40</text>
+
+<circle cx="655" cy="455" r="18" style="fill: #2C2718; stroke: {{accent}}; stroke-width: 2"></circle>
+<text x="655" y="459" style="fill: #F4E6CC; font-size: 11px; font-weight: 600; text-anchor: middle; font-family: 'Schibsted Grotesk', sans-serif">AK</text>
+<text x="682" y="459" style="fill: #E9EBF4; font-size: 12px; font-family: 'Schibsted Grotesk', sans-serif">ananya.k</text>
+</svg>
+</div>
+
+<ol aria-label="Path from alert to cause" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px">
+<li style="padding: 4px 10px; border-radius: 6px; background: #2C2718; color: #F4E6CC">Alert</li>
+<li aria-hidden="true" style="color: #5A6488">›</li>
+<li style="padding: 4px 10px; border-radius: 6px; background: #232A45">checkout-api</li>
+<li aria-hidden="true" style="color: #5A6488">›</li>
+<li style="padding: 4px 10px; border-radius: 6px; background: #232A45">payments-svc</li>
+<li aria-hidden="true" style="color: #5A6488">›</li>
+<li style="padding: 4px 10px; border-radius: 6px; background: #232A45">payments-db</li>
+<li aria-hidden="true" style="color: #5A6488">›</li>
+<li style="padding: 4px 10px; border-radius: 6px; background: #2C2718; color: #F4E6CC; font-family: 'JetBrains Mono', ui-monospace, monospace">cfg-2291</li>
+<li aria-hidden="true" style="color: #5A6488">›</li>
+<li style="padding: 4px 10px; border-radius: 6px; background: #232A45">ananya.k</li>
+</ol>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 12px; color: #98A1BF">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 20px; height: 3px; border-radius: 2px; background: {{accent}}"></span>Root-cause path</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 12px; height: 12px; border-radius: 50%; border: 1.5px dashed #79B4FF"></span>Blast radius: 5 services, 2 tier-1</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 12px; height: 12px; border-radius: 50%; border: 2.5px solid #FF7A7A"></span>Fragile service</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 18px; height: 10px; border-radius: 3px; border: 1.5px dashed #5A6488"></span>Rejected suspect</span>
+</div>
+</section>
+
+<section aria-label="Agent run" style="flex: 1 1 360px; min-width: 0; background: #1A1F35; border: 1px solid #2F375A; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h2 style="margin: 0; font-size: 16px; font-weight: 600">Agent run</h2>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #98A1BF"><span class="ps-live" style="width: 8px; height: 8px; border-radius: 50%; background: #79B4FF"></span>Streaming</span>
+</div>
+
+<ol aria-label="Agent pipeline" style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; font-size: 12px; text-align: center">
+<li style="display: flex; flex-direction: column; gap: 6px"><span style="height: 4px; border-radius: 2px; background: #6FD3B0"></span><span style="color: #C9CEE0">Triage</span></li>
+<li style="display: flex; flex-direction: column; gap: 6px"><span class="ps-live" style="height: 4px; border-radius: 2px; background: #79B4FF"></span><span style="color: #E9EBF4; font-weight: 600">Investigator</span></li>
+<li style="display: flex; flex-direction: column; gap: 6px"><span style="height: 4px; border-radius: 2px; background: #2F375A"></span><span style="color: #98A1BF">Historian</span></li>
+<li style="display: flex; flex-direction: column; gap: 6px"><span style="height: 4px; border-radius: 2px; background: #2F375A"></span><span style="color: #98A1BF">Responder</span></li>
+<li style="display: flex; flex-direction: column; gap: 6px"><span style="height: 4px; border-radius: 2px; background: #2F375A"></span><span style="color: #98A1BF">Scribe</span></li>
+</ol>
+
+<div style="display: flex; flex-direction: column; gap: 14px">
+
+<div style="display: flex; gap: 12px">
+<span style="flex: none; width: 28px; height: 28px; border-radius: 8px; background: #2C2718; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 1.5 L13 12 H1 Z M7 5.5 V8.5 M7 10.3 V10.4" style="fill: none; stroke: {{accent}}; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"></path></svg></span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-weight: 600; font-size: 14px">Alert received</span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #98A1BF">02:14:07</span></div>
+<div style="font-size: 13px; line-height: 19px; color: #98A1BF">Alertmanager: checkout-api 5xx rate at 18%</div>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #98A1BF"><span style="flex: 1; height: 1px; background: #2F375A"></span>Handed to Triage<span style="flex: 1; height: 1px; background: #2F375A"></span></div>
+
+<div style="display: flex; gap: 12px">
+<span style="flex: none; width: 28px; height: 28px; border-radius: 8px; background: #232A45; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 4 L5 7 L2 10 M7 11 H12" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"></path></svg></span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #E9EBF4">blast_radius<span style="color: #98A1BF">("payments-db")</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #98A1BF">02:14:31</span></div>
+<div style="font-size: 13px; line-height: 19px; color: #98A1BF">5 services upstream, 2 of them tier-1</div>
+</div>
+</div>
+
+<div style="padding: 14px; border-radius: 12px; background: #232A45; display: flex; flex-direction: column; gap: 6px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #98A1BF"><span>Triage decided</span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">02:14:58</span></div>
+<div style="font-size: 14px; line-height: 20px">Sev 1. Tier-1 checkout path with 18% of requests failing.</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #98A1BF"><span style="flex: 1; height: 1px; background: #2F375A"></span>Handed to Investigator<span style="flex: 1; height: 1px; background: #2F375A"></span></div>
+
+<div style="display: flex; gap: 12px">
+<span style="flex: none; width: 28px; height: 28px; border-radius: 8px; background: #232A45; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 4 L5 7 L2 10 M7 11 H12" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"></path></svg></span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #E9EBF4">suspect_changes<span style="color: #98A1BF">(since="2h")</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #98A1BF">02:15:10</span></div>
+<div style="font-size: 13px; line-height: 19px; color: #98A1BF">4 changes ranked. <a href="Investigation.dc.html">See the scores</a></div>
+</div>
+</div>
+
+<div style="display: flex; gap: 12px">
+<span style="flex: none; width: 28px; height: 28px; border-radius: 8px; background: #232A45; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 4 L5 7 L2 10 M7 11 H12" style="fill: none; stroke: #79B4FF; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round"></path></svg></span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 13px; color: #E9EBF4">root_cause_path<span style="color: #98A1BF">("checkout-api")</span></span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 12px; color: #98A1BF">02:15:24</span></div>
+<div style="font-size: 13px; line-height: 19px; color: #98A1BF">3 hops to payments-db, routed through the unhealthy edge</div>
+</div>
+</div>
+
+<div style="padding: 14px; border-radius: 12px; background: #232A45; border: 1px solid {{accent}}; display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #98A1BF"><span style="display: flex; align-items: center; gap: 6px"><span class="ps-live" style="width: 6px; height: 6px; border-radius: 50%; background: #79B4FF"></span>Investigator is deciding</span><span style="font-family: 'JetBrains Mono', ui-monospace, monospace">02:15:41</span></div>
+<div style="font-size: 14px; line-height: 20px">Caused by <span style="font-family: 'JetBrains Mono', ui-monospace, monospace">cfg-2291</span>: payments-db max connections lowered from 100 to 40 at 01:58, confidence 0.86.</div>
+<div style="font-size: 13px; line-height: 19px; color: #98A1BF">Rejected deploy checkout-api v3.8.1: no dependency path from it to the exhausted pool.</div>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #6B7497"><span style="flex: 1; height: 1px; border-top: 1px dashed #2F375A"></span>Historian is next<span style="flex: 1; height: 1px; border-top: 1px dashed #2F375A"></span></div>
+
+</div>
+</section>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FFB547","options":["#FFB547","#FF9F43","#F5D06F"]},"$preview":{"width":1440,"height":1320}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { selected: 'INC-057', blast: true };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#FFB547';
+    const sevStyles = {
+      'Sev 1': 'background: #3A1F28; color: #FF9C9C',
+      'Sev 2': 'background: #3A2F1C; color: #FFCB7A',
+      'Sev 3': 'background: #262D4A; color: #C9CEE0',
+      'Resolved': 'background: #1C3330; color: #8FE0C4'
+    };
+    const raw = [
+      { id: 'INC-057', sev: 'Sev 1', title: 'Checkout failing: payments-db connection pool exhausted', agent: 'Investigator is working', age: '6 min', opened: '02:14' },
+      { id: 'INC-056', sev: 'Sev 2', title: 'Kafka consumer lag on the orders topic', agent: 'Responder is waiting on owner ack', age: '41 min', opened: '01:39' },
+      { id: 'INC-055', sev: 'Sev 3', title: 'Search p95 latency above 800 ms', agent: 'Historian is comparing past incidents', age: '1 h', opened: '01:12' },
+      { id: 'INC-054', sev: 'Resolved', title: 'Auth token refresh errors after key rotation', agent: 'Postmortem written by Scribe', age: '1 day', opened: 'yesterday 18:40' }
+    ];
+    const incidents = raw.map((r) => {
+      const on = r.id === this.state.selected;
+      return Object.assign({}, r, {
+        sevStyle: sevStyles[r.sev],
+        pressed: on ? 'true' : 'false',
+        cardStyle: on ? 'background: #232A45; border: 1px solid #4A5480' : 'background: transparent; border: 1px solid #262D4A',
+        pick: () => this.setState({ selected: r.id })
+      });
+    });
+    const current = incidents.find((i) => i.id === this.state.selected) || incidents[0];
+    const blast = this.state.blast;
+    return {
+      accent,
+      incidents,
+      current,
+      blastOpacity: blast ? 1 : 0,
+      blastPressed: blast ? 'true' : 'false',
+      blastBtnStyle: blast ? 'background: #1E2C47; border: 1px solid #79B4FF; color: #E9EBF4' : 'background: transparent; border: 1px solid #2F375A; color: #C9CEE0',
+      toggleBlast: () => this.setState({ blast: !this.state.blast })
+    };
+  }
+}
+</script>
+</body>
+</html>

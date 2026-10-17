@@ -1,0 +1,5 @@
+# fraud-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+scoring_mode: model
+block_threshold: 0.85
+review_threshold: 0.6
+model_timeout_ms: 80

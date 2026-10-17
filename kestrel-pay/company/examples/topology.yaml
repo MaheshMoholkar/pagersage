@@ -1,0 +1,34 @@
+# Format example for company/topology.yaml (the real file is task K1).
+# Service ids become svc:<name>. depends_on means "this service calls `to`".
+services:
+  - name: api-gateway
+    tier: 1
+    language: go
+    description: Public edge for every Kestrel Pay API call.
+    depends_on:
+      - {to: checkout-api, calls_per_min: 1200, p99_ms: 80}
+
+  - name: checkout-api
+    tier: 1
+    language: python
+    description: Builds the cart, prices it and starts the payment.
+    depends_on:
+      - {to: payments-svc, calls_per_min: 900, p99_ms: 120}
+      - {to: kafka, calls_per_min: 900, p99_ms: 15}
+
+  - name: payments-svc
+    tier: 1
+    language: go
+    description: Charges cards and records payment intents.
+    depends_on:
+      - {to: payments-db, calls_per_min: 2400, p99_ms: 35}
+
+  - name: payments-db
+    tier: 1
+    language: postgres
+    description: Primary Postgres for payment intents and charges.
+
+  - name: kafka
+    tier: 2
+    language: kafka
+    description: Event bus for checkout, ledger and notification events.

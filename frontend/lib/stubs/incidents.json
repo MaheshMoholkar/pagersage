@@ -1,0 +1,35 @@
+[
+  {
+    "id": "INC-051",
+    "title": "checkout-api errors: payments-db connection pool exhausted",
+    "severity": "sev1",
+    "status": "investigating",
+    "opened_at": 1792500000,
+    "resolved_at": null,
+    "assigned_to": "historian",
+    "alerts": 2,
+    "services": ["svc:checkout-api", "svc:payments-svc", "svc:payments-db"]
+  },
+  {
+    "id": "INC-042",
+    "title": "payments-db pool exhausted after a pool-size cut",
+    "severity": "sev1",
+    "status": "resolved",
+    "opened_at": 1789900000,
+    "resolved_at": 1789903600,
+    "assigned_to": null,
+    "alerts": 3,
+    "services": ["svc:payments-db", "svc:payments-svc", "svc:checkout-api"]
+  },
+  {
+    "id": "INC-041",
+    "title": "search-api latency after an index rebuild",
+    "severity": "sev3",
+    "status": "resolved",
+    "opened_at": 1789600000,
+    "resolved_at": 1789604000,
+    "assigned_to": null,
+    "alerts": 1,
+    "services": ["svc:search-api"]
+  }
+]

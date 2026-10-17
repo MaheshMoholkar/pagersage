@@ -1,0 +1,82 @@
+# Kestrel Pay teams, people, ownership and on-call. Format: examples/org.yaml.
+# Every service in topology.yaml is owned by exactly one team. On-call handles must be members
+# of that team; engineering managers are not in the rotation.
+#
+# Planted pattern 2 (bus factor): ines is the only person who commits to ledger-svc. The rest
+# of the ledger team works on payouts-svc, reconciliation-job and ledger-db.
+teams:
+  - slug: platform
+    name: Platform
+    slack_channel: "#platform"
+    owns: [edge, api-gateway, redis-cache, kafka, kafka-controller, schema-registry, object-store]
+  - slug: checkout
+    name: Checkout
+    slack_channel: "#checkout"
+    owns: [checkout-api, inventory-svc, inventory-db, pricing-svc]
+  - slug: payments
+    name: Payments
+    slack_channel: "#payments"
+    owns: [payments-svc, payments-db, acquirer-gateway]
+  - slug: ledger
+    name: Ledger
+    slack_channel: "#ledger"
+    owns: [ledger-svc, ledger-db, payouts-svc, reconciliation-job]
+  - slug: risk
+    name: Risk & Identity
+    slack_channel: "#risk"
+    owns: [fraud-svc, auth-svc]
+  - slug: merchant
+    name: Merchant Experience
+    slack_channel: "#merchant-exp"
+    owns: [user-api, user-db, search-api, search-index, webhooks-svc, notifications-svc]
+
+people:
+  # platform
+  - {handle: maya, name: Maya Chen, team: platform, role: engineering manager, timezone: America/Los_Angeles}
+  - {handle: jin, name: Jin Park, team: platform, role: SRE, timezone: Asia/Seoul}
+  - {handle: noor, name: Noor Haddad, team: platform, role: staff engineer, timezone: Asia/Dubai}
+  - {handle: lukas, name: Lukas Becker, team: platform, role: SRE, timezone: Europe/Berlin}
+  - {handle: dev, name: Dev Malhotra, team: platform, role: engineer, timezone: Asia/Kolkata}
+  - {handle: sofia, name: Sofia Rossi, team: platform, role: SRE, timezone: Europe/Rome}
+  # checkout
+  - {handle: amara, name: Amara Okafor, team: checkout, role: tech lead, timezone: Africa/Lagos}
+  - {handle: ben, name: Ben Carter, team: checkout, role: senior engineer, timezone: America/New_York}
+  - {handle: yuki, name: Yuki Tanaka, team: checkout, role: engineer, timezone: Asia/Tokyo}
+  - {handle: leila, name: Leila Ahmadi, team: checkout, role: engineer, timezone: Europe/London}
+  - {handle: mateo, name: Mateo Silva, team: checkout, role: engineer, timezone: America/Sao_Paulo}
+  # payments
+  - {handle: zara, name: Zara Ali, team: payments, role: engineering manager, timezone: Europe/London}
+  - {handle: priya, name: Priya Raman, team: payments, role: senior engineer, timezone: Asia/Kolkata}
+  - {handle: tomas, name: Tomás Ortega, team: payments, role: engineer, timezone: Europe/Madrid}
+  - {handle: hana, name: Hana Kim, team: payments, role: tech lead, timezone: Asia/Seoul}
+  - {handle: oliver, name: Oliver Hughes, team: payments, role: engineer, timezone: Europe/London}
+  - {handle: kwame, name: Kwame Mensah, team: payments, role: senior engineer, timezone: Africa/Accra}
+  # ledger
+  - {handle: sam, name: Sam Wright, team: ledger, role: engineering manager, timezone: America/Chicago}
+  - {handle: ines, name: Inês Costa, team: ledger, role: staff engineer, timezone: Europe/Lisbon}
+  - {handle: raj, name: Raj Iyer, team: ledger, role: engineer, timezone: Asia/Kolkata}
+  - {handle: elena, name: Elena Petrova, team: ledger, role: engineer, timezone: Europe/Sofia}
+  # risk & identity
+  - {handle: chloe, name: Chloé Martin, team: risk, role: tech lead, timezone: Europe/Paris}
+  - {handle: arjun, name: Arjun Mehta, team: risk, role: ML engineer, timezone: Asia/Kolkata}
+  - {handle: diego, name: Diego Ramírez, team: risk, role: engineer, timezone: America/Mexico_City}
+  - {handle: fatima, name: Fatima Bello, team: risk, role: security engineer, timezone: Africa/Lagos}
+  # merchant experience
+  - {handle: grace, name: Grace Liu, team: merchant, role: tech lead, timezone: America/Toronto}
+  - {handle: omar, name: Omar Farouk, team: merchant, role: engineer, timezone: Africa/Cairo}
+  - {handle: nina, name: Nina Johansson, team: merchant, role: engineer, timezone: Europe/Stockholm}
+  - {handle: kai, name: Kai Nakamura, team: merchant, role: engineer, timezone: Pacific/Auckland}
+  - {handle: lucy, name: Lucy Evans, team: merchant, role: frontend engineer, timezone: Europe/Dublin}
+
+# Weekly rotations from Monday 2026-10-12. Week 1 (Oct 12-18, the demo week) and week 2
+# (Oct 19-25) have a different person on call for every team.
+on_call:
+  start: 2026-10-12
+  rotation_days: 7
+  teams:
+    platform: [jin, lukas, sofia, noor, dev]
+    checkout: [ben, yuki, leila, mateo, amara]
+    payments: [priya, tomas, kwame, oliver, hana]
+    ledger: [raj, ines, elena]
+    risk: [diego, chloe, fatima, arjun]
+    merchant: [omar, nina, kai, lucy, grace]

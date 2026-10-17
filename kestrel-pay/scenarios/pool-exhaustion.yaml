@@ -1,0 +1,75 @@
+# The live demo incident (PLAN.md section 5): make inject SCENARIO=pool-exhaustion
+# Steps run in order. `at` is seconds relative to the first alert; `pause` waits for real
+# before a step, so the second alert lands on screen a few seconds after the first.
+name: pool-exhaustion
+summary: >
+  Tomás lowers payments-db max_pool_size to 60 and payments-svc ships it. Five minutes later
+  a noisy checkout-api deploy lands, then payments-db saturates and checkout-api errors: the
+  symptom is two hops upstream of the cause. Same failure as INC-019, INC-031 and INC-042.
+
+# Ground truth for PagerSage's scenario evals (task A12). Step names refer to `steps`.
+expect:
+  alerting_service: checkout-api
+  root_service: payments-db
+  cause: pool-cut                 # the config change; payments-deploy ships its commit
+  path: [checkout-api, payments-svc, payments-db]
+  decoy: checkout-deploy          # the latest deploy, and not the cause
+  page_team: payments
+  runbook: raise-payments-db-pool
+  similar: [INC-042, INC-031, INC-019]
+
+steps:
+  - commit: pool-commit
+    file: services/payments-db/config.yaml
+    set: {max_pool_size: 60}
+    author: tomas
+    message: "payments-db: lower max_pool_size to 60 to cut idle connections"
+    at: -900
+
+  - deploy: payments-deploy
+    service: payments-svc
+    deployed_by: tomas
+    commits: [pool-commit]
+    at: -360
+
+  - config_change: pool-cut
+    service: payments-db
+    key: max_pool_size
+    to: 60
+    made_by: tomas
+    at: -360
+
+  - commit: checkout-commit
+    file: services/checkout-api/CHANGELOG.md
+    append: |
+      ## Apple Pay express button
+      - Show the Apple Pay button on the cart page for supported browsers.
+      - Refactor cart totals into a single pricing call.
+    author: ben
+    message: "checkout: add the Apple Pay express button and refactor cart totals"
+    at: -300
+
+  - deploy: checkout-deploy
+    service: checkout-api
+    deployed_by: ben
+    commits: [checkout-commit]
+    at: -60
+
+  - alert: db-saturation
+    service: payments-db
+    signal: saturation
+    value: 0.99
+    threshold: 0.9
+    severity: sev2
+    health: 0.15
+    at: 0
+
+  - alert: checkout-errors
+    service: checkout-api
+    signal: error_rate
+    value: 8.4
+    threshold: 1.0
+    severity: sev1
+    health: 0.4
+    at: 20
+    pause: 4

@@ -1,0 +1,38 @@
+name: pagersage
+
+services:
+  falkordb:
+    # Pinned: procedure names and data path verified against this tag (docs/contracts.md).
+    image: falkordb/falkordb:6.0.2
+    ports:
+      - "6379:6379"   # graph (Redis protocol)
+      - "3000:3000"   # FalkorDB Browser
+    volumes:
+      - falkordb_data:/var/lib/falkordb/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      FALKORDB_HOST: falkordb
+      FALKORDB_PORT: "6379"
+    depends_on:
+      falkordb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  falkordb_data:

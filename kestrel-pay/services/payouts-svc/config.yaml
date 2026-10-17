@@ -1,0 +1,4 @@
+# payouts-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+payout_cutoff_utc: "16:00"
+batch_size: 200
+min_payout_cents: 100

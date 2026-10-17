@@ -1,0 +1,2138 @@
+{
+  "_about": "Prose for Kestrel Pay's generated history (task K6), written once by an LLM (Claude) and committed. history/generate.py only reads this file and makes no API calls. Incident text uses {placeholders} that generate.py fills (ids, versions, people, alert values). incidents[kind][n] is the text for the n-th incident of that kind.",
+  "commit_messages": {
+    "_generic": [
+      "Bump actions/checkout to v4.2.2 in CI workflow",
+      "Bump actions/cache from v4.1.2 to v4.2.3",
+      "Pin docker/build-push-action to v6.15.0",
+      "Bump base image to debian:bookworm-20250428-slim",
+      "Bump alpine base image from 3.20 to 3.21",
+      "Run container as non-root user 10001",
+      "Add hadolint step to CI and fix DL3008 warnings",
+      "Bump aquasecurity/trivy-action to 0.30.0 and fail on high severity",
+      "Fix flaky test that depended on wall clock time",
+      "Fix flaky test by waiting on readiness instead of sleeping",
+      "Add request_id field to all structured log lines",
+      "Log health check requests at debug level",
+      "Drop high-cardinality user_agent label from request metrics",
+      "Add service_version label to build_info metric",
+      "Update README with local setup and make targets",
+      "Document required environment variables in README",
+      "Fix typos in README and CONTRIBUTING",
+      "Enable dependency caching in the CI build job",
+      "Split CI lint and test into parallel jobs",
+      "Bump pre-commit-hooks to v5.0.0",
+      "Configure Renovate to group minor dependency updates",
+      "Add readiness probe separate from liveness probe",
+      "Set CPU and memory requests in Helm chart values",
+      "Raise graceful shutdown timeout to 30s for in-flight requests",
+      "Log build sha and config hash on startup",
+      "Attach OpenTelemetry trace ids to error logs",
+      "Bump otel-collector sidecar image to 0.121.0",
+      "Remove unused feature flag and dead code paths",
+      "Fix lint warnings surfaced by the stricter linter config",
+      "Use multi-stage Docker build to shrink the runtime image",
+      "Add .dockerignore to keep test fixtures out of the image",
+      "Redact Authorization headers from debug logs",
+      "Bump codecov/codecov-action to v5.4.0",
+      "Rename latency histogram to follow Prometheus unit suffixes",
+      "ci: run integration tests on pull requests only",
+      "ci: upload test reports as workflow artifacts",
+      "docker: add HEALTHCHECK instruction to Dockerfile",
+      "logging: switch timestamps to RFC 3339 in UTC",
+      "metrics: add status_class label to request counter",
+      "tests: move shared fixtures into a testutil package"
+    ],
+    "edge": [
+      "Bump Envoy to v1.33.2",
+      "Upgrade OWASP CRS to 4.12 and keep waf_mode at block",
+      "Exclude JSON metadata fields from WAF SQLi rules",
+      "Add per-key rate limit descriptors for /v1 routes",
+      "Return 429 with Retry-After header when rate limited",
+      "Remove TLS 1.0 and 1.1 and enforce tls_min_version 1.2",
+      "Prefer TLS 1.3 cipher suites in the downstream TLS context",
+      "Set idle_timeout_s to 60 on public HTTP listeners",
+      "Generate x-request-id at the edge listener",
+      "Export WAF block counts by rule id to Prometheus",
+      "Add upstream response flags to access log format",
+      "Split envoy.yaml listeners into per-domain filter chains",
+      "Add integration test for HSTS and HTTPS redirect",
+      "Enable HTTP/2 to the api-gateway upstream cluster",
+      "waf: allowlist load balancer health check CIDRs",
+      "tls: rotate certificates via SDS without listener drain"
+    ],
+    "api-gateway": [
+      "Add per-route upstream_timeout_ms overrides",
+      "Retry only idempotent requests when retry_attempts is set",
+      "Reject bodies over max_body_kb with 413 Payload Too Large",
+      "Use x/time/rate limiter keyed by API key",
+      "Propagate W3C traceparent header to upstream services",
+      "Cache auth-svc token introspection results for 30s",
+      "Route /v1/payouts to payouts-svc behind merchant scope check",
+      "Bump github.com/go-chi/chi/v5 to v5.2.1",
+      "Bump google.golang.org/grpc to v1.71.1",
+      "Add upstream latency histogram labelled by route",
+      "Return structured JSON errors for upstream timeouts",
+      "Fix X-Forwarded-For parsing when edge appends multiple hops",
+      "Add table-driven tests for path-based routing rules",
+      "Move middleware chain into internal/middleware package",
+      "ratelimit: return remaining quota in X-RateLimit headers",
+      "proxy: drain upstream connections on SIGTERM"
+    ],
+    "checkout-api": [
+      "Add Apple Pay token handling behind enable_apple_pay flag",
+      "Show saved cards at checkout when enable_saved_cards is on",
+      "Expire carts after cart_ttl_s using Redis key TTL",
+      "Pass payments_timeout_ms through to the payments client",
+      "Call pricing-svc once per cart instead of per line item",
+      "Release inventory reservation when payment start fails",
+      "Send idempotency key header on payments-svc requests",
+      "Bump fastapi to 0.115.12 and starlette to 0.46.2",
+      "Bump httpx to 0.28.1 and reuse a shared AsyncClient",
+      "Read gunicorn workers from config instead of CPU count",
+      "Emit checkout.started event to kafka after cart lock",
+      "Add pytest fixtures for carts with mixed currencies",
+      "Move cart totals logic into cart/pricing.py",
+      "Add histogram for pricing-svc call latency",
+      "cart: merge guest cart into account cart on login",
+      "flags: evaluate feature flags per request, not at import"
+    ],
+    "payments-svc": [
+      "Return the original response on idempotency key replay",
+      "Expire idempotency records after idempotency_ttl_h",
+      "Bound acquirer-gateway calls with acquirer_timeout_ms context",
+      "Retry soft declines once when retry_on_soft_decline is on",
+      "Classify acquirer response codes into hard and soft declines",
+      "Publish payment_intent.succeeded events to kafka as Avro",
+      "Skip fraud scoring for zero-amount card verifications",
+      "Use pgx batch inserts for charge attempts",
+      "Bump github.com/jackc/pgx/v5 to v5.7.4",
+      "Bump github.com/twmb/franz-go to v1.18.1",
+      "Add charge_attempts_total metric by decline category",
+      "Export pgxpool acquire duration histogram",
+      "Move intent state machine into internal/intent package",
+      "Add tests for concurrent captures on the same intent",
+      "intent: reject amount changes after authorization",
+      "acquirer: propagate trace context on outbound calls"
+    ],
+    "payments-db": [
+      "Add concurrent index on payment_intents (merchant_id, created_at)",
+      "Partition charges table by month",
+      "Set idle_in_transaction_session_timeout to 60s",
+      "Set statement_timeout to 5000ms for the app role",
+      "Tune autovacuum thresholds on the charges table",
+      "Export pgbouncer pool utilization to Prometheus",
+      "Scrape cl_waiting and sv_active from pgbouncer SHOW POOLS",
+      "Bump postgres_exporter to v0.17.1",
+      "Upgrade Postgres to 16.8",
+      "Add migration to backfill payment_intents.currency",
+      "Drop unused index on charges.acquirer_ref",
+      "Enable pg_stat_statements and expose top queries",
+      "Add CHECK constraint that charge amounts are positive",
+      "Add pool saturation panel to payments-db dashboard",
+      "migrations: add down scripts for 0138 through 0141",
+      "vacuum: schedule weekly VACUUM ANALYZE on refunds table"
+    ],
+    "fraud-svc": [
+      "Fall back to rules scoring when model exceeds model_timeout_ms",
+      "Queue charges between review and block thresholds for review",
+      "Add rules scoring_mode for running without the model",
+      "Load model artifact once at startup instead of per request",
+      "Bump lightgbm to 4.6.0",
+      "Bump onnxruntime to 1.21.0 and numpy to 2.2.4",
+      "Add card fingerprint velocity feature backed by Redis",
+      "Cache BIN country lookups in Redis",
+      "Emit fraud.scored events to kafka with reason codes",
+      "Add score distribution histogram by merchant tier",
+      "Add pytest cases for block_threshold boundaries",
+      "Move feature extraction into features/charge.py",
+      "Return reason codes alongside the risk score",
+      "Shadow-score candidate model alongside the live one",
+      "model: pin feature schema version in the model manifest",
+      "rules: flag billing and IP country mismatch"
+    ],
+    "acquirer-gateway": [
+      "Fail over to backup_acquirer on connect timeout",
+      "Map ISO 8583 field 55 EMV data for Meridian",
+      "Map Northbank response codes to internal decline reasons",
+      "Read connect_timeout_ms and read_timeout_ms per acquirer",
+      "Bump jPOS to 3.0.0",
+      "Bump Netty to 4.1.119.Final",
+      "Send network management echo messages every 30s",
+      "Generate STAN per terminal with wraparound at 999999",
+      "Send reversal when authorization response hits read timeout",
+      "Mask PAN in ISO 8583 message logs",
+      "Add acquirer latency histogram by message type",
+      "Add JUnit tests for MTI 0100 and 0110 packing",
+      "Extract channel handling into AcquirerConnectionManager",
+      "Bump base image to eclipse-temurin:21.0.6_7-jre",
+      "iso8583: fix BCD padding for odd-length amounts",
+      "tls: pin Northbank intermediate certificate"
+    ],
+    "ledger-svc": [
+      "Consume payment events in batches of consumer_batch_size",
+      "Commit kafka offsets every commit_interval_ms after DB flush",
+      "Reject journals where debits and credits do not balance",
+      "Deduplicate payment events by event id on consume",
+      "Bump Kotlin to 2.1.20",
+      "Bump Ktor to 3.1.2 and Exposed to 0.60.0",
+      "Bump org.apache.kafka:kafka-clients to 3.9.0",
+      "Flush batches with kotlinx.coroutines channels",
+      "Add consumer lag gauge per partition",
+      "Add Testcontainers tests for journal posting",
+      "Extract posting rules into PostingRuleEngine",
+      "Post refunds as reversing entries",
+      "Add merchant balance projection endpoint",
+      "Use cooperative sticky assignor across replicas",
+      "consumer: pause partition on Avro deserialization error",
+      "journal: support multi-currency journal lines"
+    ],
+    "ledger-db": [
+      "Set autovacuum_vacuum_scale_factor to 0.05 on journal_lines",
+      "Add index on journal_lines (account_id, posted_at)",
+      "Partition journal_lines by posting month",
+      "Add migration creating merchant_balances materialized view",
+      "Set statement_timeout to 10s for the posting role",
+      "Set max_connections to 300 and size shared_buffers to match",
+      "Add unique constraint on journal entries by source event id",
+      "Upgrade Postgres to 16.8",
+      "Bump postgres_exporter to v0.17.1",
+      "Export dead tuple counts per table",
+      "Drop legacy balances_v1 table",
+      "Revoke UPDATE on journal_lines from the app role",
+      "Add read-only role for nightly reconciliation",
+      "Configure pg_partman for monthly partitions",
+      "migrations: convert amount columns to bigint cents",
+      "vacuum: monitor transaction ID freeze age on journal_lines"
+    ],
+    "auth-svc": [
+      "Rotate JWT signing keys every signing_key_rotation_days",
+      "Publish JWKS with current and previous signing keys",
+      "Rehash passwords on login when bcrypt_cost increases",
+      "Set access token lifetime from token_ttl_s",
+      "Extend dashboard sessions on activity up to session_ttl_h",
+      "Hash API keys with SHA-256 before lookup in user-db",
+      "Cache API key lookups in Redis for 60s",
+      "Bump github.com/golang-jwt/jwt/v5 to v5.2.2",
+      "Bump golang.org/x/crypto to v0.36.0",
+      "Add OAuth client credentials grant for merchant integrations",
+      "Revoke all sessions on password change",
+      "Emit auth.key_revoked event to kafka",
+      "Add token validation latency histogram",
+      "Add tests for expired and not-yet-valid tokens",
+      "oauth: require exact match on registered redirect_uri",
+      "apikey: use constant-time compare for key secrets"
+    ],
+    "inventory-svc": [
+      "Release reservations after reservation_ttl_s in scheduled sweep",
+      "Use SELECT FOR UPDATE SKIP LOCKED in the reservation sweep",
+      "Set HikariCP maximumPoolSize from db_pool_size",
+      "Cache stock levels in Redis with write-through on reserve",
+      "Publish stock.reserved and stock.released events to kafka",
+      "Bump Spring Boot to 3.4.4",
+      "Bump Flyway to 11.4.0",
+      "Register Hikari pool metrics with Micrometer",
+      "Prevent negative stock with a conditional UPDATE",
+      "Add Testcontainers test for concurrent reservations",
+      "Split ReservationService into domain and repository layers",
+      "Extend reservation TTL while checkout is still active",
+      "Add reservations_expired_total counter",
+      "Make reserve endpoint idempotent on cart id",
+      "sweep: use ShedLock so one replica runs the sweeper",
+      "stock: return per-SKU shortfall on failed reserve"
+    ],
+    "inventory-db": [
+      "Add index on reservations (expires_at) for the sweeper",
+      "Add partial index on active reservations",
+      "Set statement_timeout to 3000ms for the inventory role",
+      "Keep work_mem at 8MB and raise it for the reporting role",
+      "Set max_connections to 200 to match pooled clients",
+      "Add CHECK constraint that stock_on_hand is non-negative",
+      "Add migration creating stock_level_history table",
+      "Upgrade Postgres to 16.8",
+      "Bump postgres_exporter to v0.17.1",
+      "Tune autovacuum on reservations table for high churn",
+      "Drop unused skus.legacy_code column",
+      "Add pg_stat_statements to shared_preload_libraries",
+      "Set fillfactor 80 on stock_levels for HOT updates",
+      "Add connections by state panel to inventory-db dashboard",
+      "migrations: add foreign key from reservations to skus",
+      "vacuum: add table bloat query to exporter config"
+    ],
+    "pricing-svc": [
+      "Refresh FX rates every fx_refresh_s from the rates provider",
+      "Cache computed tax rates in Redis for cache_ttl_s",
+      "Use ISO 4217 minor units when converting currencies",
+      "Add stacking rules for discount codes",
+      "Reject expired discount codes with a clear error",
+      "Add VAT calculation for EU destination countries",
+      "Use shopspring/decimal for all money math",
+      "Bump github.com/shopspring/decimal to v1.4.0",
+      "Bump github.com/redis/go-redis/v9 to v9.7.3",
+      "Serve last known FX rates when the provider is unreachable",
+      "Add fx_rate_age_seconds gauge",
+      "Add golden tests for tax rounding by country",
+      "Move discount evaluation into internal/discounts",
+      "Add cache hit ratio metric for tax lookups",
+      "fx: log rate source and timestamp on refresh",
+      "tax: add HST rates for Canadian provinces"
+    ],
+    "user-api": [
+      "Cap list endpoints at max_page_size with cursor pagination",
+      "Cache merchant profiles in Redis for cache_ttl_s",
+      "Invalidate profile cache on update",
+      "Validate shop addresses with country-specific rules",
+      "Emit user.updated events to kafka",
+      "Bump SQLAlchemy to 2.0.40",
+      "Bump pydantic to 2.11.1",
+      "Move to SQLAlchemy async engine with asyncpg",
+      "Add Alembic migration for merchants.business_type",
+      "Mask customer email in list responses for support role",
+      "Add data export endpoint for customer profiles",
+      "Add pytest coverage for pagination cursors",
+      "Move response models into schemas/merchant.py",
+      "Fix N+1 query when listing shops with locations",
+      "Add request latency histogram by endpoint",
+      "cache: serialize cached profiles with orjson"
+    ],
+    "user-db": [
+      "Add unique index on lower(email) for users",
+      "Add index on api_keys (key_hash)",
+      "Set statement_timeout to 5000ms for the app role",
+      "Set max_connections to 200",
+      "Add merchants.business_type column",
+      "Upgrade Postgres to 16.8",
+      "Bump postgres_exporter to v0.17.1",
+      "Enable citext extension for email columns",
+      "Drop unused sessions_legacy table",
+      "Add row level security policy for the support role",
+      "Add revoked_at column to api_keys",
+      "Tune autovacuum on api_keys for frequent last_used updates",
+      "Add read replica for user-api list queries",
+      "Log statements slower than 500ms",
+      "migrations: backfill users.locale with default value",
+      "roles: grant api_keys read access to the auth role only"
+    ],
+    "payouts-svc": [
+      "Schedule daily payout run at payout_cutoff_utc",
+      "Skip balances below min_payout_cents and roll them over",
+      "Send payouts in batches of batch_size",
+      "Add idempotency key per payout to bank file submission",
+      "Generate NACHA files for US merchant payouts",
+      "Add SEPA credit transfer XML output for EU merchants",
+      "Publish payout.sent and payout.failed events to kafka",
+      "Skip bank holidays when computing payout dates",
+      "Bump github.com/moov-io/ach to v1.45.0",
+      "Bump google.golang.org/protobuf to v1.36.6",
+      "Add payouts_sent_total and payout_amount_cents metrics",
+      "Add tests for the 16:00 UTC cutoff boundary",
+      "Move batching into internal/batch package",
+      "Hold payouts for merchants under review",
+      "cutoff: load merchant time zones with time.LoadLocation",
+      "Add dry-run mode for payout runs"
+    ],
+    "reconciliation-job": [
+      "Run nightly at schedule_utc with a lock to prevent overlap",
+      "Require exact match when tolerance_cents is zero",
+      "Parse Northbank settlement CSV v3 format",
+      "Add Meridian settlement file parser",
+      "Split matching across parallelism worker processes",
+      "Fetch settlement files from object-store via boto3",
+      "Write unmatched items report to object-store as CSV",
+      "Emit recon.completed event to kafka with match counts",
+      "Bump polars to 1.26.0",
+      "Bump boto3 to 1.37.23",
+      "Add reconciliation_unmatched_total gauge per acquirer",
+      "Add pytest fixtures with sample settlement files",
+      "Move matcher into recon/matching.py",
+      "Read payments-db through the read replica",
+      "Handle partial refunds in settlement matching",
+      "fx: match cross-currency settlements on settled amount"
+    ],
+    "webhooks-svc": [
+      "Retry failed deliveries up to max_retries with backoff",
+      "Add jitter to retry_backoff_s between attempts",
+      "Bound delivery requests by delivery_timeout_ms",
+      "Sign payloads with HMAC-SHA256 and a timestamp header",
+      "Run one kafka consumer goroutine per configured consumer",
+      "Disable endpoints after repeated failures and email merchant",
+      "Store recent delivery attempts in Redis for the dashboard",
+      "Deduplicate events by id with Redis SET NX",
+      "Bump github.com/twmb/franz-go to v1.18.1",
+      "Bump golang.org/x/net to v0.38.0",
+      "Add delivery latency histogram by status class",
+      "Add tests for retry scheduling and backoff math",
+      "Move dispatcher into internal/delivery package",
+      "Block deliveries to private and link-local IP ranges",
+      "retry: honour Retry-After from merchant endpoints",
+      "Add manual redeliver endpoint for the dashboard"
+    ],
+    "notifications-svc": [
+      "Throttle sends to send_rate_per_s with a token bucket",
+      "Send email receipts through Postmark templates",
+      "Send SMS receipts through Twilio Messaging Services",
+      "Retry Postmark 5xx responses with exponential backoff",
+      "Localize receipt templates for fr and de",
+      "Consume payment events from kafka with aiokafka",
+      "Bump twilio to 9.5.1",
+      "Bump jinja2 to 3.1.6",
+      "Bump aiokafka to 0.12.0",
+      "Honour SMS STOP opt-out replies",
+      "Add sends_total metric by channel and provider",
+      "Add pytest snapshots for receipt templates",
+      "Put email and SMS providers behind a Notifier protocol",
+      "Suppress addresses from Postmark bounce webhooks",
+      "templates: show last four card digits on receipts",
+      "Deduplicate receipts by payment id"
+    ],
+    "search-api": [
+      "Cap query results at max_results",
+      "Pass query_timeout_ms as the Elasticsearch request timeout",
+      "Use search_after instead of from/size for deep pages",
+      "Bump elasticsearch-py to 8.17.2",
+      "Add filters for payment status and date range",
+      "Search by last four card digits and amount",
+      "Escape user input in query_string queries",
+      "Scope every query to the merchant id from the token",
+      "Add CSV export of search results",
+      "Add search latency histogram by query type",
+      "Add pytest cases for the query builder",
+      "Move query builder into search/query.py",
+      "Return 504 when the Elasticsearch query times out",
+      "Bump fastapi to 0.115.12",
+      "Add fuzzy matching for customer email search",
+      "query: use keyword fields for exact order id match"
+    ],
+    "search-index": [
+      "Set refresh_interval to 5s on transactions indices",
+      "Add ILM policy to delete indices after 13 months",
+      "Set number_of_replicas to 1 in transactions template",
+      "Set JVM heap to 16g in jvm.options",
+      "Upgrade Elasticsearch to 8.17.4",
+      "Add keyword subfield to order_id mapping",
+      "Roll over transactions indices by primary shard size",
+      "Add strict mapping to the transactions-* index template",
+      "Register snapshot repository on object-store",
+      "Add heap usage and shard count panels to dashboard",
+      "Bump elasticsearch_exporter to v1.9.0",
+      "Force merge read-only monthly indices",
+      "Reindex transactions with new card_last4 field",
+      "Enable search slow log at 1s threshold",
+      "ilm: move indices older than 30 days to warm tier",
+      "mapping: disable dynamic mapping for metadata object"
+    ],
+    "redis-cache": [
+      "Set maxmemory to 8gb with volatile-lru eviction",
+      "Close idle client connections after 300s",
+      "Set maxclients to 10000",
+      "Upgrade Redis to 7.4.2",
+      "Add Redis Sentinel for automatic failover",
+      "Bump redis_exporter to v1.69.0",
+      "Add evicted_keys and fragmentation panels to dashboard",
+      "Enable lazyfree-lazy-eviction",
+      "Disable FLUSHALL and KEYS for app users via ACL",
+      "Add per-service ACL users with key prefix rules",
+      "Enable TLS for client connections",
+      "Disable RDB snapshots and use AOF with everysec fsync",
+      "Set hz to 20 for faster expiry of TTL keys",
+      "Document key prefixes per service in README",
+      "acl: add idempotency key prefix for checkout-api",
+      "config: enable latency-tracking for command percentiles"
+    ],
+    "kafka": [
+      "Upgrade brokers to Kafka 3.9.0",
+      "Enable tiered storage with local retention of 24 hours",
+      "Set default topic retention to 168 hours",
+      "Set min.insync.replicas to 2 with replication factor 3",
+      "Create payments.events topic with 24 partitions",
+      "Increase webhooks.deliveries partitions to 48",
+      "Enable rack-aware replica placement across zones",
+      "Bump kafka_exporter to v1.9.0",
+      "Add under-replicated partitions panel to dashboard",
+      "Set compression.type to zstd for event topics",
+      "Add notifications.events topic with 72h retention",
+      "Disable auto.create.topics.enable on brokers",
+      "Add ACLs for producer and consumer service principals",
+      "Set unclean.leader.election.enable to false",
+      "topics: add compacted topic for merchant settings",
+      "broker: raise num.network.threads to 8"
+    ],
+    "kafka-controller": [
+      "Run KRaft controllers as a three-node quorum",
+      "Set controller.quorum.election.timeout.ms to 1000",
+      "Upgrade controllers to Kafka 3.9.0",
+      "Spread controller pods across availability zones",
+      "Add metadata log end offset lag metric",
+      "Tune metadata snapshot interval by bytes",
+      "Add PodDisruptionBudget allowing one controller down",
+      "Bump jmx_prometheus_javaagent to 1.2.0",
+      "Add active controller count panel to dashboard",
+      "Use dedicated volumes for the metadata log",
+      "Set controller.quorum.fetch.timeout.ms to 2000",
+      "Move controller listener to SASL_SSL",
+      "Add script to verify quorum after rolling restart",
+      "Raise controller heap to 2g",
+      "kraft: enable dynamic quorum with kraft.version 1",
+      "docs: link controller runbook from dashboard"
+    ],
+    "schema-registry": [
+      "Set default compatibility to BACKWARD",
+      "Add PaymentIntentSucceeded v3 schema with optional fields",
+      "Register webhook delivery event schema",
+      "Cache schema lookups for cache_ttl_s",
+      "Upgrade Confluent Schema Registry to 7.9.0",
+      "Bump Apache Avro to 1.12.0",
+      "Add CI check that new schemas pass compatibility",
+      "Use TopicRecordNameStrategy for subject names",
+      "Add schema registration latency metrics",
+      "Require basic auth for schema writes",
+      "Give producer principals read-only access to subjects",
+      "Add JUnit tests for schema evolution rules",
+      "Move schema files into schemas/<topic>/ directories",
+      "Document how to add a field without breaking consumers",
+      "avro: use long cents for amount fields",
+      "Run registry with one leader and one follower"
+    ],
+    "object-store": [
+      "Enable versioning on the settlement-files bucket",
+      "Add lifecycle rule expiring objects after 395 days",
+      "Upgrade MinIO to RELEASE.2025-04-08T15-41-24Z",
+      "Create kafka-tiered bucket for tiered storage segments",
+      "Restrict report-exports bucket policy to read only",
+      "Enable SSE-KMS encryption for settlement files",
+      "Add object lock in governance mode on settlement files",
+      "Bump mc client image to RELEASE.2025-04-03T17-07-56Z",
+      "Add Prometheus scrape config for MinIO cluster metrics",
+      "Add bucket usage panel to storage dashboard",
+      "Expire noncurrent object versions after 30 days",
+      "Add scoped service accounts per consuming service",
+      "Set standard storage class parity to EC:4",
+      "Replicate settlement-files bucket to the DR site",
+      "Document bucket layout and retention in README",
+      "lifecycle: abort incomplete multipart uploads after 7 days"
+    ]
+  },
+  "incidents": {
+    "checkout_bad_deploy": [
+      {
+        "title": "checkout-api 5xx after {version} deploy",
+        "summary": "checkout-api failed {a0} of requests after {deploy} ({version}) switched cart serialization to orjson, which cannot encode Decimal prices on discounted carts. Rolled back to {prev_version}.",
+        "commit": "Serialize cart line items with orjson for faster totals",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: checkout-api error rate {a0} (threshold 1%). Incident opened."
+          ],
+          [
+            3,
+            "finding",
+            "{resolver_first} sees 'TypeError: Decimal is not JSON serializable' in checkout-api logs, starting right after {deploy}."
+          ],
+          [
+            6,
+            "decision",
+            "Roll back {deploy} rather than hotfix: every cart with a discount code hits the error."
+          ],
+          [
+            11,
+            "action",
+            "Rolled checkout-api back to {prev_version}."
+          ],
+          [
+            19,
+            "status",
+            "Error rate under 0.2% for 8 minutes. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "checkout-api errors from orjson cart serialization",
+          "body": "## Summary\nFor {duration} minutes checkout-api failed {a0} of requests after {deploy} ({version}) switched cart serialization to orjson.\n\n## Impact\nShoppers using a discount code could not check out. Nobody was charged twice.\n\n## Root cause\nCommit {sha} by {cause_author} serialized line item prices with orjson, which does not encode Decimal. Carts without discounts carry float prices and worked, so the unit tests passed.\n\n## Resolution\n{resolver} rolled checkout-api back to {prev_version}.\n\n## Follow-ups\n- Add a discounted cart to the checkout-api contract tests.\n- Represent money as integer cents everywhere in checkout-api.\n"
+        }
+      },
+      {
+        "title": "checkout-api failing every checkout after {version}",
+        "summary": "{deploy} ({version}) pointed checkout-api's pricing client at a pricing-svc v2 endpoint that did not exist yet; every price lookup returned 404 and checkout-api failed {a0} of requests. Rolled back.",
+        "commit": "Move pricing-svc client to the v2 quote endpoint",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: checkout-api error rate {a0}. Sev1 opened: checkout is effectively down."
+          ],
+          [
+            2,
+            "finding",
+            "checkout-api logs 404 from pricing-svc on /v2/quotes; pricing-svc itself is healthy."
+          ],
+          [
+            4,
+            "finding",
+            "{deploy} went out {lag} minutes before the alert and changed the pricing client."
+          ],
+          [
+            5,
+            "decision",
+            "Roll back {deploy}: pricing-svc has not shipped v2 yet."
+          ],
+          [
+            9,
+            "action",
+            "Rolled checkout-api back to {prev_version}."
+          ],
+          [
+            14,
+            "status",
+            "Checkout success rate back to normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "checkout-api called a pricing-svc endpoint that did not exist yet",
+          "body": "## Summary\nCheckout failed for {duration} minutes ({a0} errors) because {deploy} called pricing-svc's v2 quote endpoint before pricing-svc shipped it.\n\n## Impact\nMost checkouts failed during the window; shoppers saw \"unable to price cart\".\n\n## Root cause\nCommit {sha} by {cause_author} assumed the pricing-svc v2 rollout had finished. The two changes were coordinated in chat, not in the deploy pipeline.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Contract test between checkout-api and pricing-svc in CI.\n- Put client switches to new upstream endpoints behind a flag.\n"
+        }
+      },
+      {
+        "title": "checkout-api p99 latency over 3 s after {version}",
+        "summary": "{deploy} ({version}) added a synchronous stock re-check per cart line; large carts made one inventory-svc call per line in sequence and checkout-api p99 reached {a0}. Rolled back.",
+        "commit": "Re-check stock for each line item before starting payment",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: checkout-api p99 latency {a0} (threshold 800 ms)."
+          ],
+          [
+            4,
+            "finding",
+            "Traces show one inventory-svc call per cart line, in sequence; inventory-svc answers each in 15 ms."
+          ],
+          [
+            7,
+            "finding",
+            "The per-line re-check came in {deploy}, deployed {lag} minutes before the alert."
+          ],
+          [
+            9,
+            "action",
+            "Rolled checkout-api back to {prev_version}."
+          ],
+          [
+            17,
+            "status",
+            "p99 back to 240 ms. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Per-line stock re-check made large carts slow",
+          "body": "## Summary\ncheckout-api p99 latency reached {a0} for {duration} minutes after {deploy} ({version}) re-checked stock once per cart line.\n\n## Impact\nCarts with more than 20 lines took over 3 seconds to start payment; some shoppers abandoned.\n\n## Root cause\nCommit {sha} by {cause_author} called inventory-svc in a loop. inventory-svc already has a batch endpoint.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Use the inventory-svc batch reservation check.\n- Add a 50-line cart to the checkout-api load test.\n"
+        }
+      },
+      {
+        "title": "checkout-api errors on guest carts after {version}",
+        "summary": "{deploy} ({version}) offered saved cards on every cart; guest carts have no customer id and checkout-api raised KeyError on {a0} of requests. Rolled back.",
+        "commit": "Offer saved cards on the payment step for all carts",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: checkout-api error rate {a0}."
+          ],
+          [
+            5,
+            "finding",
+            "\"KeyError: 'customer_id'\" in the payment step; only guest carts are affected."
+          ],
+          [
+            6,
+            "finding",
+            "{deploy} by {cause_first} changed the saved-cards query {lag} minutes before the alert."
+          ],
+          [
+            8,
+            "decision",
+            "Roll back instead of turning off enable_saved_cards: the flag also gates signed-in shoppers."
+          ],
+          [
+            12,
+            "action",
+            "Rolled checkout-api back to {prev_version}."
+          ],
+          [
+            20,
+            "status",
+            "Errors gone. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Saved cards broke guest checkout",
+          "body": "## Summary\nGuest checkouts failed for {duration} minutes ({a0} of requests) after {deploy} ({version}) offered saved cards on every cart.\n\n## Impact\nGuest shoppers, about a third of checkout traffic, could not pay.\n\n## Root cause\nCommit {sha} by {cause_author} read customer_id from every cart; guest carts do not have one. Tests only used signed-in fixtures.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Guest cart fixture in the checkout-api test suite.\n- Split enable_saved_cards into per-audience flags.\n"
+        }
+      },
+      {
+        "title": "checkout-api 'cart not found' errors after {version}",
+        "summary": "{deploy} ({version}) read cart_ttl_s through a settings loader that treats durations as milliseconds; carts expired in redis-cache after 1.8 seconds and {a0} of checkouts failed. Rolled back.",
+        "commit": "Read cart TTL through the shared settings loader",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: checkout-api error rate {a0}."
+          ],
+          [
+            3,
+            "finding",
+            "Errors are 'cart not found'. redis-cache is healthy, but cart keys are written with a 1.8 s TTL."
+          ],
+          [
+            6,
+            "finding",
+            "{deploy} moved cart_ttl_s to the shared settings loader, which reads durations as milliseconds."
+          ],
+          [
+            8,
+            "action",
+            "Rolled checkout-api back to {prev_version}."
+          ],
+          [
+            16,
+            "status",
+            "Carts persist again; error rate normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Cart TTL read in the wrong unit",
+          "body": "## Summary\nFor {duration} minutes {a0} of checkouts failed with \"cart not found\" because {deploy} ({version}) set cart TTLs 1000 times too short.\n\n## Impact\nShoppers who took more than two seconds between cart and payment lost their cart.\n\n## Root cause\nCommit {sha} by {cause_author} read cart_ttl_s through the shared settings loader, which assumes milliseconds unless the key ends in _ms. The key name says seconds.\n\n## Resolution\nRolled back to {prev_version}. redis-cache was never the problem, though it showed up first in traces.\n\n## Follow-ups\n- Make the settings loader honor _s and _ms suffixes.\n- Alert on cart key TTL below 60 seconds.\n"
+        }
+      }
+    ],
+    "acquirer_outage": [
+      {
+        "title": "Card payments timing out at the primary acquirer",
+        "summary": "Northbank, the primary acquirer, slowed to {a0} p99 and timed out charges; checkout-api errors reached {a1}. Switched card traffic to Meridian with the runbook until Northbank recovered.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: acquirer-gateway p99 latency {a0} (threshold 2500 ms)."
+          ],
+          [
+            2,
+            "status",
+            "Alert: checkout-api error rate {a1}. Sev1 opened."
+          ],
+          [
+            6,
+            "finding",
+            "acquirer-gateway itself is healthy; timeouts are on the Northbank connection only. No Kestrel Pay change in the last 6 hours."
+          ],
+          [
+            9,
+            "finding",
+            "Northbank's status page confirms degraded authorization latency."
+          ],
+          [
+            14,
+            "action",
+            "Ran 'Route card traffic to the backup acquirer': primary_acquirer set to meridian."
+          ],
+          [
+            21,
+            "status",
+            "Authorizations succeeding through Meridian; checkout-api error rate 0.4%."
+          ],
+          [
+            95,
+            "action",
+            "Northbank reports recovery; primary_acquirer switched back to northbank."
+          ],
+          [
+            102,
+            "status",
+            "Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Northbank authorization latency",
+          "body": "## Summary\nNorthbank, our primary acquirer, degraded for about 90 minutes. Charges timed out until we routed traffic to Meridian 14 minutes in.\n\n## Impact\n{a1} of checkouts failed for 20 minutes. Meridian costs 0.04% more per transaction while it carries traffic.\n\n## Root cause\nExternal: Northbank authorization latency. No Kestrel Pay change was involved.\n\n## Resolution\n{resolver} ran \"Route card traffic to the backup acquirer\" and switched back once Northbank recovered.\n\n## Follow-ups\n- Alert on acquirer latency before checkout errors, so the switch happens sooner.\n- Ask Northbank for status page webhooks.\n"
+        }
+      },
+      {
+        "title": "Northbank declining charges with system errors",
+        "summary": "Northbank returned system errors (response code 96) on {a0} of authorizations and checkout-api errors hit {a1}. Same pattern as {last_same}: switched to Meridian with the runbook within 9 minutes.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: acquirer-gateway error rate {a0}."
+          ],
+          [
+            1,
+            "status",
+            "Alert: checkout-api error rate {a1}. Sev1 opened."
+          ],
+          [
+            5,
+            "finding",
+            "Response code 96 (system malfunction) from Northbank only; Meridian test charges pass. Same pattern as {last_same}."
+          ],
+          [
+            9,
+            "action",
+            "Ran 'Route card traffic to the backup acquirer'."
+          ],
+          [
+            13,
+            "status",
+            "Checkout error rate back to 0.3% on Meridian."
+          ],
+          [
+            64,
+            "action",
+            "Northbank confirmed a fix; primary_acquirer switched back to northbank."
+          ],
+          [
+            70,
+            "status",
+            "Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Northbank system errors, second outage",
+          "body": "## Summary\nNorthbank failed {a0} of authorizations with response code 96 for about an hour. Second Northbank outage after {last_same}.\n\n## Impact\n{a1} of checkouts failed for 12 minutes, until traffic moved to Meridian.\n\n## Root cause\nExternal: a Northbank processor fault.\n\n## Resolution\n{resolver} ran \"Route card traffic to the backup acquirer\" 9 minutes in, faster than {last_same} because the runbook was known.\n\n## Follow-ups\n- Automate the acquirer switch when one acquirer's error rate passes 20%.\n"
+        }
+      }
+    ],
+    "webhooks_retry_storm": [
+      {
+        "title": "Webhook retry storm after max_retries raised to {new}",
+        "summary": "{cause_author} raised webhooks-svc max_retries from {old} to {new} ({cfg}). Deliveries to failing merchant endpoints were retried far more often, delivery p99 hit {a0} and kafka disk reached {a1}. Restored {old} and drained the backlog.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: webhooks-svc delivery p99 {a0} (threshold 5000 ms)."
+          ],
+          [
+            6,
+            "status",
+            "Alert: kafka saturation {a1}; the webhook retry topic is growing fast."
+          ],
+          [
+            10,
+            "finding",
+            "Retries per delivery up 4x since {cfg} raised max_retries to {new}, {lag} minutes before the first alert."
+          ],
+          [
+            15,
+            "action",
+            "Set webhooks-svc max_retries back to {old}."
+          ],
+          [
+            22,
+            "action",
+            "Ran 'Scale webhooks-svc and drain the delivery backlog'."
+          ],
+          [
+            58,
+            "status",
+            "Consumer lag under a minute; kafka disk back to 61%. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Raising webhook retries flooded kafka",
+          "body": "## Summary\n{cfg} raised webhooks-svc max_retries from {old} to {new}. Within {lag} minutes retries to dead merchant endpoints dominated delivery and filled the retry topic.\n\n## Impact\nWebhook delivery to every merchant slowed to {a0} p99 for about an hour. Kafka disk reached {a1}, close to affecting payment events.\n\n## Root cause\n{cause_author} raised retries to help one merchant with a flaky endpoint. Retries are per delivery, so every failing endpoint got the same treatment.\n\n## Resolution\n{resolver} restored max_retries to {old} and drained the backlog with the runbook.\n\n## Follow-ups\n- Per-merchant retry budgets instead of one global setting.\n- Separate disk quota for the webhook retry topic.\n"
+        }
+      }
+    ],
+    "search_index_red": [
+      {
+        "title": "Merchant search failing after Elasticsearch upgrade",
+        "summary": "{deploy} upgraded search-index to {version}; the new nodes could not read the old shard allocation and the cluster went red. search-api failed {a0} of queries. Rolled back.",
+        "commit": "Upgrade Elasticsearch to 8.15 and switch to the desired-balance allocator",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: search-api error rate {a0} (threshold 2%)."
+          ],
+          [
+            8,
+            "finding",
+            "search-index cluster health red; 14 primary shards unassigned since {deploy}."
+          ],
+          [
+            12,
+            "decision",
+            "Roll back the upgrade: tier 3, but merchants cannot find orders in the dashboard."
+          ],
+          [
+            35,
+            "action",
+            "Rolled search-index back to {prev_version}; shards reallocating."
+          ],
+          [
+            62,
+            "status",
+            "Cluster green, search working. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Elasticsearch upgrade left shards unassigned",
+          "body": "## Summary\nMerchant order search was down for {duration} minutes after {deploy} upgraded search-index to {version}.\n\n## Impact\nDashboard search failed for all merchants ({a0} of queries). Payments were not affected.\n\n## Root cause\nCommit {sha} by {cause_author} switched to the desired-balance allocator in the same change as the version upgrade. Mixed-version nodes could not agree on allocation.\n\n## Resolution\nRolled back to {prev_version}; shards reallocated in about 25 minutes.\n\n## Follow-ups\n- Upgrade versions and change allocator settings in separate deploys.\n- Rehearse search-index upgrades on the staging snapshot.\n"
+        }
+      },
+      {
+        "title": "search-index disk flood-stage watermark reached",
+        "summary": "search-index data nodes passed the flood-stage disk watermark ({a0}) and indices went read-only; search-api failed {a1} of queries. Deleted expired indices and cleared the read-only block.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: search-index disk {a0}."
+          ],
+          [
+            2,
+            "status",
+            "Alert: search-api error rate {a1}."
+          ],
+          [
+            9,
+            "finding",
+            "Indices are read-only (flood-stage watermark). The 13-month retention job has not run for 3 weeks."
+          ],
+          [
+            21,
+            "action",
+            "Deleted indices older than 13 months and removed the read-only block."
+          ],
+          [
+            40,
+            "status",
+            "Disk at 71%, search working. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "search-index retention job silently stopped",
+          "body": "## Summary\nsearch-index disks filled to {a0} and Elasticsearch made indices read-only, so new transactions could not be indexed and search-api failed {a1} of queries.\n\n## Impact\nMerchant search was degraded for {duration} minutes. Tier 3; no payment impact.\n\n## Root cause\nThe nightly retention job had been failing for three weeks after its credentials rotated. Nobody was alerted.\n\n## Resolution\n{resolver} deleted expired indices by hand and cleared the read-only block.\n\n## Follow-ups\n- Alert when the retention job has not succeeded for 2 days.\n- Disk alert at 80%, well before the flood-stage watermark.\n"
+        }
+      }
+    ],
+    "redis_maxmemory": [
+      {
+        "title": "Sessions dropped after redis-cache maxmemory cut to {new}",
+        "summary": "{cause_author} lowered redis-cache maxmemory from {old} to {new} ({cfg}) to make room on the host. Redis evicted session and idempotency keys; auth-svc errors reached {a1} and shoppers were logged out mid-checkout. Restored {old} with the runbook.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: redis-cache memory {a0} of maxmemory."
+          ],
+          [
+            3,
+            "status",
+            "Alert: auth-svc error rate {a1}. Sev1 opened."
+          ],
+          [
+            4,
+            "status",
+            "Alert: checkout-api error rate {a2}."
+          ],
+          [
+            9,
+            "finding",
+            "evicted_keys climbing by 40k/s. {cfg} cut maxmemory to {new} {lag} minutes before the first alert."
+          ],
+          [
+            18,
+            "action",
+            "Ran 'Restore redis-cache maxmemory and eviction policy': maxmemory back to {old}."
+          ],
+          [
+            24,
+            "finding",
+            "Evictions stopped; auth-svc owners confirm sessions are stable."
+          ],
+          [
+            33,
+            "status",
+            "auth-svc and checkout-api error rates normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "redis-cache maxmemory cut evicted sessions",
+          "body": "## Summary\n{cfg} lowered redis-cache maxmemory from {old} to {new}. Redis started evicting keys at once, including sessions and idempotency keys.\n\n## Impact\nFor {duration} minutes auth-svc failed {a1} of requests and checkout-api {a2}. Merchants were logged out of the dashboard; some shoppers had to restart checkout.\n\n## Root cause\n{cause_author} reduced memory to fit a second Redis on the same host. Everything that uses redis-cache shares one keyspace, so the eviction policy cannot protect sessions.\n\n## Resolution\n{resolver} restored maxmemory to {old} with the runbook.\n\n## Follow-ups\n- Move sessions to their own Redis with noeviction.\n- Alert on evicted_keys, not just memory.\n"
+        }
+      }
+    ],
+    "payments_bad_deploy": [
+      {
+        "title": "payments-svc rejecting retries as duplicates after {version}",
+        "summary": "{deploy} ({version}) derived idempotency keys from the cart id alone, so legitimate retries after a soft decline were rejected as duplicates. payments-svc errors reached {a0}. Rolled back.",
+        "commit": "Derive idempotency keys from cart id to simplify retries",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-svc error rate {a0}. Sev1 opened."
+          ],
+          [
+            1,
+            "status",
+            "Alert: checkout-api error rate {a1}."
+          ],
+          [
+            7,
+            "finding",
+            "Errors are 409 duplicate_request on second attempts; the idempotency key format changed in {deploy}."
+          ],
+          [
+            10,
+            "action",
+            "Rolled payments-svc back to {prev_version}."
+          ],
+          [
+            18,
+            "status",
+            "Retries succeeding. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Idempotency keys collided on retries",
+          "body": "## Summary\nFor {duration} minutes payments-svc rejected {a0} of charges as duplicates after {deploy} ({version}) changed how idempotency keys are built.\n\n## Impact\nShoppers whose first attempt was soft-declined could not retry with another card. checkout-api errors reached {a1}.\n\n## Root cause\nCommit {sha} by {cause_author} keyed idempotency on the cart id only. A retry with a new card is a new payment attempt and needs its own key.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Idempotency key = cart id + attempt number.\n- Test: soft decline then retry with a different card.\n"
+        }
+      },
+      {
+        "title": "payments-svc latency up after {version} added a second fraud call",
+        "summary": "{deploy} ({version}) called fraud-svc twice per charge, before and after authorization; payments-svc p99 rose to {a0}. Rolled back.",
+        "commit": "Score charges again after authorization for chargeback signals",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-svc p99 latency {a0} (threshold 600 ms)."
+          ],
+          [
+            6,
+            "finding",
+            "Traces show two fraud-svc calls per charge since {deploy}; fraud-svc itself is within its SLO."
+          ],
+          [
+            9,
+            "action",
+            "Rolled payments-svc back to {prev_version}."
+          ],
+          [
+            17,
+            "status",
+            "p99 back to 310 ms. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Second fraud call doubled charge latency",
+          "body": "## Summary\npayments-svc p99 latency reached {a0} for {duration} minutes after {deploy} ({version}) added a post-authorization fraud score.\n\n## Impact\nCheckouts were slow; no errors.\n\n## Root cause\nCommit {sha} by {cause_author} made the second fraud call synchronous. It only feeds chargeback analytics and can run after the response.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Send the post-authorization score through kafka instead of inline.\n"
+        }
+      }
+    ],
+    "notifications_provider": [
+      {
+        "title": "Receipt emails failing at the email provider",
+        "summary": "Postmark returned 503 on {a0} of sends for {duration} minutes. No Kestrel Pay change; queued receipts were sent once the provider recovered.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: notifications-svc error rate {a0}."
+          ],
+          [
+            5,
+            "finding",
+            "503s from Postmark only; SMS through Twilio unaffected. Postmark's status page shows an outage."
+          ],
+          [
+            8,
+            "decision",
+            "Wait it out: receipts stay queued in kafka and are retried, nothing is lost."
+          ],
+          [
+            47,
+            "status",
+            "Postmark recovered; backlog sent. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Postmark outage delayed receipts",
+          "body": "## Summary\nReceipt emails were delayed for {duration} minutes while Postmark was down.\n\n## Impact\nShoppers got receipts late. No emails were lost.\n\n## Root cause\nExternal: Postmark outage.\n\n## Resolution\n{resolver} confirmed receipts were buffered in kafka and waited for recovery.\n\n## Follow-ups\n- Evaluate a second email provider.\n"
+        }
+      },
+      {
+        "title": "Receipt emails failing again at Postmark",
+        "summary": "Second Postmark outage after {last_same}: {a0} of sends failed for {duration} minutes. Receipts were retried from kafka once it recovered.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: notifications-svc error rate {a0}."
+          ],
+          [
+            4,
+            "finding",
+            "Postmark 503s again, same as {last_same}."
+          ],
+          [
+            7,
+            "decision",
+            "No fallback provider is wired up yet; wait for Postmark and let kafka buffer receipts."
+          ],
+          [
+            38,
+            "status",
+            "Postmark recovered, backlog drained. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Postmark outage, second time",
+          "body": "## Summary\nPostmark failed {a0} of sends for {duration} minutes, the second outage after {last_same}.\n\n## Impact\nReceipts were late; none were lost.\n\n## Root cause\nExternal: Postmark outage. The follow-up from {last_same} (a second provider) was not done.\n\n## Resolution\nWaited for recovery; kafka buffered receipts.\n\n## Follow-ups\n- Wire SendGrid as a fallback email_provider this quarter.\n"
+        }
+      }
+    ],
+    "inventory_index_dropped": [
+      {
+        "title": "inventory-svc slow after a migration dropped the reservations index",
+        "summary": "{deploy} ({version}) ran a migration that dropped idx_reservations_sku_expires as unused. Reservation lookups became sequential scans; inventory-svc p99 hit {a0} and checkout-api {a1}. Recreated the index concurrently.",
+        "commit": "Drop unused indexes on stock_reservations",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: inventory-svc p99 latency {a0} (threshold 200 ms)."
+          ],
+          [
+            3,
+            "status",
+            "Alert: checkout-api p99 latency {a1}."
+          ],
+          [
+            10,
+            "finding",
+            "inventory-db CPU at 96%; pg_stat_activity shows sequential scans on stock_reservations."
+          ],
+          [
+            16,
+            "finding",
+            "The migration in {deploy} dropped idx_reservations_sku_expires {lag} minutes before the first alert."
+          ],
+          [
+            19,
+            "decision",
+            "Do not roll back a database deploy (policy no-database-rollback); recreate the index instead."
+          ],
+          [
+            27,
+            "action",
+            "Ran 'Kill runaway queries and restore the inventory-db index'."
+          ],
+          [
+            52,
+            "status",
+            "Index rebuilt; inventory-svc p99 back to 22 ms. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Dropping an 'unused' index made inventory-db scan",
+          "body": "## Summary\n{deploy} ({version}) dropped idx_reservations_sku_expires. inventory-db fell back to sequential scans and inventory-svc p99 reached {a0}.\n\n## Impact\nCheckouts were slow for {duration} minutes (checkout-api p99 {a1}). No failed payments.\n\n## Root cause\nCommit {sha} by {cause_author} dropped indexes reported unused by pg_stat_user_indexes on a replica, where the reservation expiry query never runs.\n\n## Resolution\n{resolver} cancelled the runaway queries and recreated the index concurrently with the runbook.\n\n## Follow-ups\n- Check index usage on the primary before dropping.\n- Review inventory-db migrations with the checkout team.\n"
+        }
+      }
+    ],
+    "pool_exhaustion": [
+      {
+        "title": "Checkout failing: payments-db connection pool exhausted",
+        "summary": "{cause_author} lowered payments-db max_pool_size from {old} to {new} ({cfg}) to cut idle connections. At peak payments-svc could not get a connection, charges timed out and checkout-api errors reached {a1}. Failing over did not help; raising max_pool_size back to {old} and restarting payments-svc did.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-db pool saturation {a0}."
+          ],
+          [
+            2,
+            "status",
+            "Alert: checkout-api error rate {a1}. Sev1 opened."
+          ],
+          [
+            7,
+            "finding",
+            "payments-svc logs 'timeout acquiring connection'; payments-db CPU is only 35%."
+          ],
+          [
+            12,
+            "finding",
+            "Suspect a sick primary: connections pinned at the pool limit although queries are fast."
+          ],
+          [
+            21,
+            "action",
+            "Ran 'Fail over payments-db to the standby'."
+          ],
+          [
+            29,
+            "finding",
+            "Failover did not help: the standby has the same max_pool_size and filled up within a minute."
+          ],
+          [
+            36,
+            "finding",
+            "{cfg} lowered max_pool_size from {old} to {new} {lag} minutes before the first alert."
+          ],
+          [
+            44,
+            "action",
+            "Raised max_pool_size back to {old} and restarted payments-svc pod by pod."
+          ],
+          [
+            53,
+            "status",
+            "Charges succeeding; checkout-api errors under 1% for 10 minutes. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "payments-db pool cut to {new} exhausted connections at peak",
+          "body": "## Summary\nFor {duration} minutes checkout failed for most shoppers. payments-db's server-side pool was lowered from {old} to {new} ({cfg}); at peak payments-svc needs about 160 connections.\n\n## Impact\n{a1} of checkouts failed. Charges that timed out were never captured, so nobody was charged twice.\n\n## Root cause\n{cause_author} lowered the pool off-peak to cut idle connections. Config changes to payments-db skip the deploy pipeline and had no review. Every payments-svc pod shares the one pool, so the limit is hit everywhere at once.\n\n## What did not work\nFailing over to the standby (minute 21) cost 8 minutes: the standby has the same pool config.\n\n## Resolution\n{resolver} raised max_pool_size back to {old} and restarted payments-svc so every pod reconnected.\n\n## Follow-ups\n- Alert on pool saturation above 80%, before checkout fails.\n- Require a payments review for changes to services/payments-db/config.yaml.\n- Write the runbook \"Raise pool + restart payments-svc\".\n"
+        }
+      },
+      {
+        "title": "payments-db pool exhausted again after max_pool_size cut to {new}",
+        "summary": "Same failure as {last_same}. {cause_author} lowered payments-db max_pool_size from {old} to {new} ({cfg}) to match a pgbouncer default; checkout-api errors reached {a1}. A checkout-api deploy ({decoy_deploy}) {decoy_lag} minutes before the alert looked suspicious but was unrelated. Raised the pool and restarted payments-svc.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-db pool saturation {a0}."
+          ],
+          [
+            1,
+            "status",
+            "Alert: checkout-api error rate {a1}. Sev1 opened."
+          ],
+          [
+            2,
+            "status",
+            "Alert: payments-svc p99 latency {a2}."
+          ],
+          [
+            5,
+            "finding",
+            "checkout-api deployed {decoy_version} ({decoy_deploy}) just before the alert, but its errors are timeouts from payments-svc, not checkout code."
+          ],
+          [
+            8,
+            "finding",
+            "payments-svc waits on connections at the pool limit, same signature as {last_same}. {cfg} lowered max_pool_size to {new}."
+          ],
+          [
+            10,
+            "decision",
+            "Skip the failover (it did not help in {last_same}); go straight to the pool runbook."
+          ],
+          [
+            17,
+            "action",
+            "Ran 'Raise pool + restart payments-svc': max_pool_size back to {old}."
+          ],
+          [
+            27,
+            "status",
+            "Checkout errors under 1% for 10 minutes. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "payments-db pool exhaustion, second time",
+          "body": "## Summary\n{cfg} lowered payments-db max_pool_size from {old} to {new}, and checkout failed exactly as in {last_same}. Resolved in {duration} minutes with the runbook written after {last_same}.\n\n## Impact\n{a1} of checkouts failed for about 15 minutes.\n\n## Root cause\n{cause_author} aligned max_pool_size with a pgbouncer default. The review required after {last_same} was not enforced in tooling.\n\n## Red herring\ncheckout-api {decoy_version} ({decoy_deploy}) shipped {decoy_lag} minutes before the alert. It was the most recent deploy, but checkout's errors were payments-svc timeouts two hops downstream.\n\n## Resolution\n{resolver} ran \"Raise pool + restart payments-svc\" without trying the failover first.\n\n## Follow-ups\n- CODEOWNERS review on services/payments-db/config.yaml, enforced in CI.\n- Pool saturation alert at 80% (from {last_same}, still open).\n"
+        }
+      },
+      {
+        "title": "Third payments-db pool exhaustion: max_pool_size cut to {new}",
+        "summary": "{cause_author} lowered payments-db max_pool_size from {old} to {new} ({cfg}) to free connections for reconciliation-job. checkout-api errors reached {a1}, the third time after {prev_same}. Ignored a checkout-api deploy that landed {decoy_lag} minutes earlier, raised the pool back to {old} and restarted payments-svc.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-db pool saturation {a0}."
+          ],
+          [
+            2,
+            "status",
+            "Alert: checkout-api error rate {a1}. Sev1 opened."
+          ],
+          [
+            4,
+            "finding",
+            "Latest deploy is checkout-api {decoy_version} by {decoy_author}, but checkout's errors are payments-svc timeouts."
+          ],
+          [
+            6,
+            "finding",
+            "{cfg} lowered max_pool_size to {new}. Same cause as {prev_same}."
+          ],
+          [
+            12,
+            "action",
+            "Ran 'Raise pool + restart payments-svc': max_pool_size back to {old}."
+          ],
+          [
+            21,
+            "status",
+            "Checkout healthy for 10 minutes. Resolved in {duration} minutes, fastest of the three."
+          ]
+        ],
+        "postmortem": {
+          "title": "payments-db pool exhaustion, third time",
+          "body": "## Summary\nThird pool exhaustion on payments-db ({prev_same}, now {id}). {cfg} lowered max_pool_size from {old} to {new}; checkout-api errors reached {a1}.\n\n## Impact\nCheckout failed for most shoppers for about 15 minutes.\n\n## Root cause\n{cause_author} lowered the pool to leave connections for reconciliation-job, which also connects to payments-db. Each of the three changes had a reasonable local motive; none knew the history.\n\n## Red herring\ncheckout-api {decoy_version} ({decoy_deploy}) by {decoy_author} shipped {decoy_lag} minutes before the alert. The latest deploy is not the cause; the cause was two hops downstream on payments-db.\n\n## Resolution\n{resolver} ran \"Raise pool + restart payments-svc\" (3 out of 3 so far).\n\n## Follow-ups\n- Reject max_pool_size below 180 in config validation.\n- Give reconciliation-job its own read replica instead of payments-db connections.\n"
+        }
+      }
+    ],
+    "fraud_model_latency": [
+      {
+        "title": "fraud-svc latency from a heavier model in {version}",
+        "summary": "{deploy} ({version}) shipped a fraud model with three times the features; scoring p99 rose to {a0} and payments-svc p99 to {a1}. Switched to rules-only scoring, rolled back, then restored model scoring.",
+        "commit": "Ship gbm-2026-08 model with device and velocity features",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: fraud-svc p99 latency {a0} (threshold 150 ms)."
+          ],
+          [
+            2,
+            "status",
+            "Alert: payments-svc p99 latency {a1}."
+          ],
+          [
+            5,
+            "finding",
+            "Model inference time tripled after {deploy} loaded the new model."
+          ],
+          [
+            9,
+            "action",
+            "Ran 'Switch fraud scoring to the rules-only fallback'."
+          ],
+          [
+            14,
+            "status",
+            "payments-svc latency normal on rules-only scoring."
+          ],
+          [
+            22,
+            "action",
+            "Rolled fraud-svc back to {prev_version}."
+          ],
+          [
+            31,
+            "action",
+            "Set scoring_mode back to model, on the old model."
+          ],
+          [
+            38,
+            "status",
+            "Model scoring healthy. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "New fraud model too slow for the charge path",
+          "body": "## Summary\n{deploy} ({version}) loaded a larger fraud model. Scoring p99 reached {a0}, which pushed payments-svc p99 to {a1}.\n\n## Impact\nSlow checkouts for 14 minutes, then 17 minutes of rules-only scoring with more manual reviews.\n\n## Root cause\nCommit {sha} by {cause_author} shipped a model benchmarked on a GPU box; production scores on CPU.\n\n## Resolution\n{resolver} switched to rules-only scoring with the runbook, rolled back, then restored model scoring.\n\n## Follow-ups\n- Latency budget check for models in CI, on production hardware.\n"
+        }
+      }
+    ],
+    "gateway_timeout": [
+      {
+        "title": "api-gateway 504s after upstream timeout cut to {new} ms",
+        "summary": "{cause_author} lowered api-gateway upstream_timeout_ms from {old} to {new} ({cfg}). checkout-api calls that wait on card authorization take up to 2 s, so the gateway cut them off with 504s ({a0} of requests). Restored {old} ms.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: api-gateway error rate {a0}."
+          ],
+          [
+            5,
+            "finding",
+            "All errors are 504 on the checkout-api upstream; checkout-api logs show those requests completing after the client left."
+          ],
+          [
+            9,
+            "finding",
+            "{cfg} set upstream_timeout_ms to {new} {lag} minutes before the alert."
+          ],
+          [
+            16,
+            "action",
+            "Ran 'Restore api-gateway upstream timeouts'."
+          ],
+          [
+            21,
+            "status",
+            "504s stopped. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Gateway timeout shorter than card authorization",
+          "body": "## Summary\n{cfg} lowered api-gateway upstream_timeout_ms from {old} to {new}. Checkouts that wait on the acquirer take up to 2 seconds and were cut off.\n\n## Impact\n{a0} of API calls returned 504 for {duration} minutes. Some charges completed after the shopper saw an error.\n\n## Root cause\n{cause_author} tuned the timeout for user-api and search-api; the setting is global.\n\n## Resolution\n{resolver} restored {old} ms with the runbook.\n\n## Follow-ups\n- Per-route upstream timeouts.\n- Reconcile charges that completed after a 504.\n"
+        }
+      }
+    ],
+    "ledger_consumer_stuck": [
+      {
+        "title": "ledger-svc stopped consuming payment events after {version}",
+        "summary": "{deploy} ({version}) added a strict schema check that rejected events from an older producer; the consumer stopped at the first one and ledger lag reached {a0}. Rolled back and replayed from the stuck offset.",
+        "commit": "Validate payment event schema version before posting entries",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: ledger-svc event processing lag {a0}."
+          ],
+          [
+            9,
+            "finding",
+            "Consumer stuck on one offset; that event has schema version 3 and the new check only accepts 4."
+          ],
+          [
+            12,
+            "finding",
+            "The check came in {deploy}, deployed {lag} minutes before the alert."
+          ],
+          [
+            16,
+            "action",
+            "Rolled ledger-svc back to {prev_version}."
+          ],
+          [
+            35,
+            "action",
+            "Ran 'Replay missed payment events into ledger-svc' from the stuck offset."
+          ],
+          [
+            71,
+            "finding",
+            "Balance check job: merchant balances match payments-db totals."
+          ],
+          [
+            74,
+            "status",
+            "Lag back to zero. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "ledger-svc consumer blocked on an old event schema",
+          "body": "## Summary\n{deploy} ({version}) made ledger-svc reject payment events with schema version 3. The consumer stopped and ledger lag reached {a0}.\n\n## Impact\nMerchant balances were stale for {duration} minutes; payouts-svc held the 08:00 payout run.\n\n## Root cause\nCommit {sha} by {cause_author} assumed every producer was on schema version 4. payouts-svc still emits version 3 for adjustments.\n\n## Resolution\n{resolver} rolled back and replayed from the stuck offset.\n\n## Follow-ups\n- Dead-letter unknown schema versions instead of stopping the consumer.\n- A second ledger-svc reviewer: only {resolver} knows the consumer code.\n"
+        }
+      }
+    ],
+    "auth_key_expiry": [
+      {
+        "title": "auth-svc rejecting tokens: signing key expired",
+        "summary": "The auth-svc token signing key reached its 90-day expiry; new tokens failed validation at api-gateway and {a1} of API calls returned 401. Rotated to the next key with the runbook.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: auth-svc error rate {a0}. Sev1 opened."
+          ],
+          [
+            1,
+            "status",
+            "Alert: api-gateway error rate {a1}."
+          ],
+          [
+            8,
+            "finding",
+            "Tokens signed after 23:00 UTC fail validation; the active signing key expired at 23:00."
+          ],
+          [
+            19,
+            "action",
+            "Ran 'Rotate the auth-svc token signing key'."
+          ],
+          [
+            26,
+            "status",
+            "New tokens validate; 401s back to baseline. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Expired signing key, rotation not automated",
+          "body": "## Summary\nThe auth-svc signing key expired at 23:00 UTC. For {duration} minutes newly issued tokens failed validation.\n\n## Impact\n{a1} of API calls failed with 401; merchants could not log in to the dashboard.\n\n## Root cause\nKey rotation every 90 days is manual and the calendar reminder went to someone who left.\n\n## Resolution\n{resolver} activated the next key with the runbook.\n\n## Follow-ups\n- Rotate keys automatically 7 days before expiry.\n- Alert 14 days before any signing key expires.\n"
+        }
+      }
+    ],
+    "kafka_disk_full": [
+      {
+        "title": "Kafka brokers near full disk after retention raised to {new} h",
+        "summary": "{cause_author} raised kafka retention_hours from {old} to {new} ({cfg}) for an analytics backfill. Local disk on two brokers reached {a0}, producers slowed and ledger-svc lag hit {a1}. Restored {old} h and moved partitions off the full brokers.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: kafka disk {a0}."
+          ],
+          [
+            5,
+            "status",
+            "Alert: ledger-svc event processing lag {a1}."
+          ],
+          [
+            11,
+            "finding",
+            "Brokers 2 and 4 above 90% disk; segment deletion stopped after {cfg} raised retention to {new} h."
+          ],
+          [
+            24,
+            "action",
+            "Set retention_hours back to {old}; old segments are deleting."
+          ],
+          [
+            31,
+            "action",
+            "Ran 'Move partitions off a full Kafka broker' for brokers 2 and 4."
+          ],
+          [
+            66,
+            "status",
+            "Brokers under 70% disk, ledger-svc lag zero. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Kafka retention raised without disk headroom",
+          "body": "## Summary\n{cfg} raised retention_hours from {old} to {new}. Brokers stopped deleting segments and two filled to {a0}.\n\n## Impact\nProduce latency rose for every service; ledger-svc lag reached {a1}. No events were lost.\n\n## Root cause\n{cause_author} raised retention for a one-off analytics backfill that should have read from tiered storage in object-store.\n\n## Resolution\n{resolver} restored {old} h and reassigned partitions with the runbook.\n\n## Follow-ups\n- Backfills read from tiered storage, never from longer broker retention.\n- Disk alert per broker at 75%.\n"
+        }
+      }
+    ],
+    "edge_waf_block": [
+      {
+        "title": "Edge WAF blocking legitimate checkouts after rule update",
+        "summary": "{deploy} ({version}) shipped a WAF rule set that matched the mobile SDK's base64 payment payload as SQL injection; {a0} of requests got 403. Rolled back.",
+        "commit": "Enable OWASP CRS 4 paranoia level 2 on /v1/*",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: edge error rate {a0}. Sev1 opened."
+          ],
+          [
+            3,
+            "finding",
+            "403s from the WAF on /v1/checkout, mobile SDK traffic only."
+          ],
+          [
+            5,
+            "finding",
+            "Rule update in {deploy}, {lag} minutes before the alert."
+          ],
+          [
+            7,
+            "action",
+            "Rolled edge back to {prev_version}."
+          ],
+          [
+            12,
+            "status",
+            "403s gone. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "WAF paranoia level 2 blocked mobile checkouts",
+          "body": "## Summary\n{deploy} ({version}) raised the WAF paranoia level. Mobile SDK checkout payloads matched SQL injection rules and got 403.\n\n## Impact\n{a0} of requests, all mobile checkouts, failed for {duration} minutes.\n\n## Root cause\nCommit {sha} by {cause_author} was tested against web traffic only.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Run new WAF rules in detect mode for a week before block.\n"
+        }
+      }
+    ],
+    "acquirer_timeout_config": [
+      {
+        "title": "Charges timing out after acquirer read timeout cut to {new} ms",
+        "summary": "{cause_author} lowered acquirer-gateway read_timeout_ms from {old} to {new} ({cfg}). Slow but valid authorizations were abandoned and payments-svc errors reached {a0}. Switching acquirers did not help; restoring {old} ms did.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-svc error rate {a0}."
+          ],
+          [
+            6,
+            "finding",
+            "acquirer-gateway reports read timeouts on Northbank. Looks like the Northbank outage in {last[acquirer_outage]}."
+          ],
+          [
+            12,
+            "action",
+            "Ran 'Route card traffic to the backup acquirer'."
+          ],
+          [
+            17,
+            "finding",
+            "Same timeouts on Meridian, so the problem is on our side."
+          ],
+          [
+            21,
+            "finding",
+            "{cfg} lowered read_timeout_ms to {new} {lag} minutes before the alert; p95 authorization time is 1.4 s."
+          ],
+          [
+            24,
+            "action",
+            "Set read_timeout_ms back to {old}."
+          ],
+          [
+            27,
+            "action",
+            "Switched primary_acquirer back to northbank."
+          ],
+          [
+            34,
+            "status",
+            "payments-svc errors normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Acquirer read timeout below real authorization time",
+          "body": "## Summary\n{cfg} lowered acquirer-gateway read_timeout_ms from {old} to {new}. About 1 in 30 authorizations takes longer than that and was abandoned.\n\n## Impact\n{a0} of charges failed for {duration} minutes.\n\n## Root cause\n{cause_author} lowered the timeout to fail fast during acquirer outages like {last[acquirer_outage]}, without checking the authorization time distribution.\n\n## What did not work\nThe acquirer switch runbook (minute 12): it fixes acquirer outages, not our own timeouts.\n\n## Resolution\n{resolver} restored {old} ms and switched back to Northbank.\n\n## Follow-ups\n- Timeout changes on acquirer-gateway need the p99 authorization time in the review.\n"
+        }
+      }
+    ],
+    "payouts_batch_failed": [
+      {
+        "title": "Merchant payouts batch failed after {version}",
+        "summary": "{deploy} ({version}) sent payout amounts as decimal strings to the bank file builder, which expects integer cents; every payout in the 16:00 batch failed. Rolled back and re-ran the batch before the bank cutoff.",
+        "commit": "Format payout amounts with the shared money helper",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payouts-svc error rate {a0}: the 16:00 UTC payout batch failed."
+          ],
+          [
+            6,
+            "finding",
+            "Bank file validation error: amount '1250.00' is not an integer."
+          ],
+          [
+            9,
+            "finding",
+            "Amount formatting changed in {deploy}."
+          ],
+          [
+            12,
+            "action",
+            "Rolled payouts-svc back to {prev_version}."
+          ],
+          [
+            20,
+            "action",
+            "Re-ran the 16:00 batch; 1,184 payouts accepted."
+          ],
+          [
+            24,
+            "status",
+            "Payouts sent before the bank's 17:00 cutoff. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Payout amounts formatted as decimals",
+          "body": "## Summary\n{deploy} ({version}) formatted payout amounts as decimal strings. The bank file builder rejected the whole 16:00 batch.\n\n## Impact\nPayouts were 24 minutes late but made the bank cutoff. No merchant was paid twice.\n\n## Root cause\nCommit {sha} by {cause_author} reused a money helper meant for display.\n\n## Resolution\n{resolver} rolled back and re-ran the batch.\n\n## Follow-ups\n- Validate the bank file in CI against the bank's schema.\n"
+        }
+      }
+    ],
+    "webhooks_bad_deploy": [
+      {
+        "title": "Webhook signatures invalid after {version}",
+        "summary": "{deploy} ({version}) re-serialized webhook bodies after signing them, so merchant signature checks failed on {a0} of deliveries. Rolled back; failed deliveries were retried.",
+        "commit": "Pretty-print webhook payloads for easier debugging",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: webhooks-svc delivery error rate {a0}."
+          ],
+          [
+            7,
+            "finding",
+            "Merchants return 401 invalid signature; since {deploy} the signed bytes differ from the sent bytes."
+          ],
+          [
+            10,
+            "action",
+            "Rolled webhooks-svc back to {prev_version}."
+          ],
+          [
+            31,
+            "status",
+            "Retries delivered; error rate normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Pretty-printing broke webhook signatures",
+          "body": "## Summary\n{deploy} ({version}) pretty-printed webhook bodies after computing the signature. Merchants verifying signatures rejected {a0} of deliveries.\n\n## Impact\nWebhooks to merchants that verify signatures failed for {duration} minutes; all were redelivered.\n\n## Root cause\nCommit {sha} by {cause_author} changed serialization in the sender, not the signer.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Sign the exact bytes sent; test with a real verifier.\n"
+        }
+      }
+    ],
+    "fraud_false_declines": [
+      {
+        "title": "False fraud declines after block threshold lowered to {new}",
+        "summary": "{cause_author} lowered fraud-svc block_threshold from {old} to {new} ({cfg}), meaning to change the review queue. About one charge in fifteen was blocked as fraud and payments-svc declines reached {a0}. Restored {old}.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-svc error rate {a0} (fraud declines)."
+          ],
+          [
+            6,
+            "finding",
+            "Declines are fraud_blocked with scores between 0.6 and 0.85; the model's score distribution is unchanged."
+          ],
+          [
+            9,
+            "finding",
+            "{cfg} set block_threshold to {new} {lag} minutes before the alert; review_threshold is also 0.6."
+          ],
+          [
+            14,
+            "action",
+            "Set block_threshold back to {old}."
+          ],
+          [
+            20,
+            "status",
+            "Decline rate normal. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Block threshold set to the review threshold",
+          "body": "## Summary\n{cfg} lowered fraud-svc block_threshold from {old} to {new}. Charges that should have gone to manual review were declined.\n\n## Impact\n{a0} of charges were declined as fraud for {duration} minutes.\n\n## Root cause\n{cause_author} edited block_threshold instead of review_threshold; the two keys sit next to each other.\n\n## Resolution\n{resolver} restored {old}.\n\n## Follow-ups\n- Validate block_threshold > review_threshold + 0.1.\n"
+        }
+      }
+    ],
+    "redis_primary_down": [
+      {
+        "title": "redis-cache primary unreachable",
+        "summary": "The redis-cache primary host lost its network interface; every Redis call failed, auth-svc errors hit {a1} and checkout-api, webhooks-svc and pricing-svc degraded. Promoted the replica with the runbook.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: redis-cache error rate {a0}. Sev1 opened."
+          ],
+          [
+            1,
+            "status",
+            "Alert: auth-svc error rate {a1}."
+          ],
+          [
+            5,
+            "finding",
+            "Primary does not answer PING from two hosts; the replica is healthy. No recent change on redis-cache."
+          ],
+          [
+            11,
+            "action",
+            "Ran 'Promote the redis-cache replica'."
+          ],
+          [
+            17,
+            "action",
+            "Restarted auth-svc, checkout-api and webhooks-svc to drop the old primary address."
+          ],
+          [
+            24,
+            "status",
+            "All services healthy. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "redis-cache primary host network failure",
+          "body": "## Summary\nThe redis-cache primary became unreachable after a host NIC failure. Everything that uses Redis degraded until the replica was promoted.\n\n## Impact\nauth-svc failed {a1} of requests for {duration} minutes; checkout-api, webhooks-svc and pricing-svc were degraded.\n\n## Root cause\nHardware: NIC failure on the primary host. Sentinel did not fail over because two sentinels ran on that host.\n\n## Resolution\n{resolver} promoted the replica by hand and restarted clients that pin the primary address.\n\n## Follow-ups\n- Spread sentinels across three hosts.\n- Clients resolve the primary through sentinel, not a fixed address.\n"
+        }
+      }
+    ],
+    "schema_registry_reject": [
+      {
+        "title": "Kafka rejecting payment events after schema-registry {version}",
+        "summary": "{deploy} ({version}) changed schema-registry's subject naming, so brokers could not find the schema for payment-events and rejected every produced record. payments-svc errors reached {a0}. Rolled back.",
+        "commit": "Switch subject naming to RecordNameStrategy",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: payments-svc error rate {a0}. Sev1 opened."
+          ],
+          [
+            2,
+            "status",
+            "Alert: checkout-api error rate {a1}."
+          ],
+          [
+            8,
+            "finding",
+            "payments-svc produce calls fail with INVALID_RECORD: no schema for subject payment-events-value."
+          ],
+          [
+            13,
+            "finding",
+            "schema-registry {version} ({deploy}) changed the subject naming strategy {lag} minutes before the alert."
+          ],
+          [
+            16,
+            "action",
+            "Rolled schema-registry back to {prev_version}."
+          ],
+          [
+            22,
+            "status",
+            "Produces succeeding. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Subject naming change broke broker-side schema validation",
+          "body": "## Summary\n{deploy} ({version}) switched schema-registry to RecordNameStrategy. Brokers validate every record against the registry and could no longer find the payment-events schema.\n\n## Impact\npayments-svc failed {a0} of charges and checkout-api {a1} for {duration} minutes: charges are rolled back when the payment event cannot be produced.\n\n## Root cause\nCommit {sha} by {cause_author} was tested with clients only. Kafka depends on schema-registry for every produced record, not only for new schemas.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Staging test that produces through brokers with validation on.\n"
+        }
+      }
+    ],
+    "reconciliation_mismatch": [
+      {
+        "title": "Reconciliation reporting false mismatches after {version}",
+        "summary": "{deploy} ({version}) compared settlement amounts in the acquirer's currency against ledger amounts in the merchant's currency; {a0} of lines were flagged as mismatched. Rolled back and re-ran the job.",
+        "commit": "Compare settlement lines using the presentment amount",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: reconciliation-job mismatch rate {a0} (threshold 0.5%)."
+          ],
+          [
+            14,
+            "finding",
+            "Every flagged line is a cross-currency charge."
+          ],
+          [
+            22,
+            "finding",
+            "Amount comparison changed in {deploy}."
+          ],
+          [
+            25,
+            "action",
+            "Rolled reconciliation-job back to {prev_version} and re-ran last night's batch."
+          ],
+          [
+            88,
+            "status",
+            "Mismatch rate 0.02%. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Reconciliation compared amounts in different currencies",
+          "body": "## Summary\n{deploy} ({version}) compared settlement and ledger amounts in different currencies, flagging {a0} of lines.\n\n## Impact\nThe finance team got a false mismatch report; no money moved.\n\n## Root cause\nCommit {sha} by {cause_author} used the presentment amount; settlement files carry the settlement currency.\n\n## Resolution\n{resolver} rolled back and re-ran the batch.\n\n## Follow-ups\n- Cross-currency fixtures in the reconciliation tests.\n"
+        }
+      }
+    ],
+    "inventory_n_plus_one": [
+      {
+        "title": "inventory-svc N+1 queries after {version}",
+        "summary": "{deploy} ({version}) loaded reservations one SKU at a time instead of in one query; inventory-svc p99 reached {a0} and inventory-db saturation {a1}. Rolled back.",
+        "commit": "Load reservations through the new repository layer",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: inventory-svc p99 latency {a0}."
+          ],
+          [
+            2,
+            "status",
+            "Alert: inventory-db saturation {a1}."
+          ],
+          [
+            7,
+            "finding",
+            "Queries per request up from 2 to about 40 since {deploy}."
+          ],
+          [
+            9,
+            "finding",
+            "Not the missing index from {last[inventory_index_dropped]}: indexes are intact, there are just many more queries."
+          ],
+          [
+            11,
+            "action",
+            "Rolled inventory-svc back to {prev_version}."
+          ],
+          [
+            18,
+            "status",
+            "p99 back to 20 ms. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Repository layer issued one query per SKU",
+          "body": "## Summary\n{deploy} ({version}) moved reservation loading to a repository layer that queries per SKU. inventory-svc p99 reached {a0}.\n\n## Impact\nSlow checkouts for {duration} minutes; no failures.\n\n## Root cause\nCommit {sha} by {cause_author}: the new repository layer lacks a batch load method.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Query count assertion in the inventory-svc integration tests.\n"
+        }
+      }
+    ],
+    "user_api_bad_deploy": [
+      {
+        "title": "user-api errors on merchant profiles after {version}",
+        "summary": "{deploy} ({version}) made merchant legal_name required, but merchants created before 2024 have none; {a0} of profile reads failed. Rolled back.",
+        "commit": "Make merchant legal_name required in the profile serializer",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: user-api error rate {a0}."
+          ],
+          [
+            9,
+            "finding",
+            "ValidationError: legal_name is required; only older merchants are affected."
+          ],
+          [
+            12,
+            "action",
+            "Rolled user-api back to {prev_version}."
+          ],
+          [
+            18,
+            "status",
+            "Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Required field missing on old merchant records",
+          "body": "## Summary\n{deploy} ({version}) required legal_name on every merchant profile; older merchants do not have one.\n\n## Impact\n{a0} of profile reads failed for {duration} minutes. The dashboard showed an error for those merchants.\n\n## Root cause\nCommit {sha} by {cause_author} was tested on recent fixtures only.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Backfill legal_name before making it required.\n"
+        }
+      }
+    ],
+    "kafka_controller_flap": [
+      {
+        "title": "Kafka leader elections flapping after controller upgrade",
+        "summary": "{deploy} upgraded kafka-controller to {version} one node at a time, but one node came back with a stale voters list; partition leaders kept moving and kafka produce errors reached {a0}. Restored the quorum with the runbook.",
+        "commit": "Upgrade KRaft controllers and set controller.quorum.bootstrap.servers",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: kafka produce error rate {a0}."
+          ],
+          [
+            4,
+            "status",
+            "Alert: payments-svc p99 latency {a1}."
+          ],
+          [
+            10,
+            "finding",
+            "NOT_LEADER_OR_FOLLOWER errors; partition leaders change every few seconds."
+          ],
+          [
+            17,
+            "finding",
+            "Controller 3, restarted by {deploy}, came back with the old voters list; two controllers both claim leadership."
+          ],
+          [
+            26,
+            "action",
+            "Ran 'Restore the KRaft controller quorum'."
+          ],
+          [
+            39,
+            "status",
+            "One active controller, no under-replicated partitions. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Stale voters list split the KRaft quorum",
+          "body": "## Summary\n{deploy} upgraded the KRaft controllers to {version}. One node restarted with an outdated voters list and the quorum split.\n\n## Impact\nKafka produce errors reached {a0} for {duration} minutes; payments-svc p99 rose to {a1}. Every service on kafka was affected.\n\n## Root cause\nCommit {sha} by {cause_author} set the new bootstrap setting but left the old static voters list on controller 3.\n\n## Resolution\n{resolver} restored the quorum with the runbook. A database-style rollback was not possible mid-upgrade.\n\n## Follow-ups\n- Render controller config from one template.\n- Quorum health check between each node restart in the upgrade script.\n"
+        }
+      }
+    ],
+    "webhooks_endpoint_storm": [
+      {
+        "title": "Webhook backlog from one merchant's failing endpoint",
+        "summary": "A large merchant's webhook endpoint started timing out; retries to it filled the delivery workers and delivery p99 for everyone reached {a0}. Paused that endpoint and drained the backlog with the runbook.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: webhooks-svc delivery p99 {a0}."
+          ],
+          [
+            8,
+            "finding",
+            "62% of in-flight deliveries go to one merchant endpoint that times out after 5 s. No change on webhooks-svc."
+          ],
+          [
+            20,
+            "action",
+            "Ran 'Scale webhooks-svc and drain the delivery backlog'; paused the failing endpoint."
+          ],
+          [
+            44,
+            "status",
+            "Backlog drained. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "One slow merchant endpoint delayed everyone's webhooks",
+          "body": "## Summary\nOne merchant's endpoint timed out on every delivery. Its retries took most delivery workers, and p99 for all merchants reached {a0}.\n\n## Impact\nWebhooks were late for {duration} minutes; none were lost.\n\n## Root cause\nDelivery workers are shared across merchants with no per-merchant concurrency limit.\n\n## Resolution\n{resolver} paused the endpoint and drained the backlog with the runbook.\n\n## Follow-ups\n- Per-merchant concurrency limits in webhooks-svc.\n"
+        }
+      }
+    ],
+    "ledger_db_bloat": [
+      {
+        "title": "ledger-db slow from table bloat; ledger-svc fell behind",
+        "summary": "Autovacuum fell behind on ledger_entries after a month-end spike; ledger-db p99 reached {a0} and ledger-svc lag {a1}. Ran a manual vacuum, then replayed events the consumer had skipped on timeouts.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: ledger-db p99 latency {a0}."
+          ],
+          [
+            6,
+            "status",
+            "Alert: ledger-svc event processing lag {a1}."
+          ],
+          [
+            15,
+            "finding",
+            "ledger_entries has 41% dead tuples; autovacuum has not completed on it for 9 days. No recent change."
+          ],
+          [
+            27,
+            "action",
+            "Ran VACUUM on ledger_entries with autovacuum cost limits raised."
+          ],
+          [
+            41,
+            "finding",
+            "ledger-svc skipped 312 events on statement timeouts during the slow period."
+          ],
+          [
+            48,
+            "action",
+            "Ran 'Replay missed payment events into ledger-svc' for the skipped range."
+          ],
+          [
+            83,
+            "status",
+            "Balances verified, lag zero. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Autovacuum could not keep up with month-end volume",
+          "body": "## Summary\nledger_entries bloated after the month-end spike; ledger-db p99 reached {a0} and ledger-svc fell {a1} behind, skipping 312 events on timeouts.\n\n## Impact\nMerchant balances were stale for {duration} minutes and 312 entries were missing until the replay.\n\n## Root cause\nAutovacuum cost limits were sized for normal days. ledger-svc skips an event on a statement timeout instead of retrying.\n\n## Resolution\n{resolver} vacuumed by hand and replayed the skipped events with the runbook.\n\n## Follow-ups\n- Raise autovacuum limits for ledger_entries before month end.\n- ledger-svc retries on statement timeout instead of skipping.\n"
+        }
+      }
+    ],
+    "pricing_fx_stale": [
+      {
+        "title": "pricing-svc serving stale FX rates after {version}",
+        "summary": "{deploy} ({version}) broke the FX refresh loop; rates went stale and pricing-svc rejected {a0} of cross-currency quotes as expired. Rolled back.",
+        "commit": "Refresh FX rates with a context-aware ticker",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: pricing-svc error rate {a0}."
+          ],
+          [
+            7,
+            "finding",
+            "FX rates have not refreshed since {deploy}; the refresh goroutine exits after its first tick."
+          ],
+          [
+            10,
+            "action",
+            "Rolled pricing-svc back to {prev_version}."
+          ],
+          [
+            15,
+            "status",
+            "Rates fresh, quotes succeeding. Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "FX refresh goroutine exited after one tick",
+          "body": "## Summary\n{deploy} ({version}) rewrote the FX refresh loop; it returned after the first tick and rates went stale.\n\n## Impact\n{a0} of cross-currency quotes failed for {duration} minutes.\n\n## Root cause\nCommit {sha} by {cause_author}: the loop returned on a nil context error.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Alert when FX rates are older than 2 refresh intervals.\n"
+        }
+      }
+    ],
+    "gateway_bad_deploy": [
+      {
+        "title": "api-gateway routing user calls to search-api after {version}",
+        "summary": "{deploy} ({version}) changed route matching order so /v1/users/* matched the search-api prefix; {a0} of API calls returned 404. Rolled back.",
+        "commit": "Build the router from a route map instead of the ordered list",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: api-gateway error rate {a0}."
+          ],
+          [
+            5,
+            "finding",
+            "404s from search-api for /v1/users/* paths since {deploy}."
+          ],
+          [
+            8,
+            "action",
+            "Rolled api-gateway back to {prev_version}."
+          ],
+          [
+            13,
+            "status",
+            "Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Unordered route map broke prefix matching",
+          "body": "## Summary\n{deploy} ({version}) built the router from a map, losing route order. /v1/users/* matched the search-api route.\n\n## Impact\n{a0} of API calls failed for {duration} minutes.\n\n## Root cause\nCommit {sha} by {cause_author}: Go map iteration order is random, so tests passed sometimes.\n\n## Resolution\nRolled back to {prev_version}.\n\n## Follow-ups\n- Router golden test covering every route prefix.\n"
+        }
+      }
+    ],
+    "object_store_full": [
+      {
+        "title": "object-store quota reached; reconciliation could not write",
+        "summary": "The settlements bucket hit its quota ({a0}); reconciliation-job could not write last night's results. Deleted expired report exports, raised the quota and re-ran the job.",
+        "timeline": [
+          [
+            0,
+            "status",
+            "Alert: object-store usage {a0} of quota."
+          ],
+          [
+            12,
+            "finding",
+            "The report-exports prefix holds 3 months of exports the lifecycle rule should have expired."
+          ],
+          [
+            26,
+            "action",
+            "Deleted expired exports and raised the bucket quota by 20%."
+          ],
+          [
+            41,
+            "action",
+            "Re-ran reconciliation-job for last night."
+          ],
+          [
+            65,
+            "status",
+            "Resolved."
+          ]
+        ],
+        "postmortem": {
+          "title": "Lifecycle rule missed the report-exports prefix",
+          "body": "## Summary\nThe settlements bucket filled to {a0}; reconciliation-job could not write results.\n\n## Impact\nLast night's reconciliation report was {duration} minutes late. No money moved.\n\n## Root cause\nThe lifecycle rule (lifecycle_days) was set per prefix and report-exports was never added.\n\n## Resolution\n{resolver} deleted expired exports, raised the quota and re-ran the job.\n\n## Follow-ups\n- Bucket-wide lifecycle rule with per-prefix exceptions.\n"
+        }
+      }
+    ]
+  }
+}

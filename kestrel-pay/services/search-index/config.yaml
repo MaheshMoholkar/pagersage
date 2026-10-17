@@ -1,0 +1,4 @@
+# search-index runtime config. A change here is a config change (cfg-*) for PagerSage.
+replicas: 1
+refresh_interval_s: 5
+heap_gb: 16

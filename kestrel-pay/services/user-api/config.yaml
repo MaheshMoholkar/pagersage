@@ -1,0 +1,4 @@
+# user-api runtime config. A change here is a config change (cfg-*) for PagerSage.
+cache_ttl_s: 300
+max_page_size: 100
+replicas: 6

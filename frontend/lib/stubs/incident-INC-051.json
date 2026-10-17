@@ -1,0 +1,627 @@
+{
+  "incident": {
+    "id": "INC-051",
+    "title": "checkout-api errors: payments-db connection pool exhausted",
+    "severity": "sev1",
+    "status": "investigating",
+    "opened_at": 1792500000,
+    "resolved_at": null,
+    "assigned_to": "historian",
+    "alerts": 2,
+    "services": ["svc:checkout-api", "svc:payments-svc", "svc:payments-db"]
+  },
+  "summary": "payments-svc cannot get connections from payments-db; checkout is failing for card payments.",
+  "state": {
+    "alerting": ["svc:payments-db", "svc:checkout-api"],
+    "first_alert_ts": 1792500000,
+    "severity": "sev1",
+    "cause": "cfg-0061",
+    "cause_service": "svc:payments-db",
+    "path": ["svc:checkout-api", "svc:payments-svc", "svc:payments-db"],
+    "rejected": ["dep-0417"]
+  },
+  "alerts": [
+    {
+      "id": "alt-00061",
+      "service_id": "svc:payments-db",
+      "signal": "saturation",
+      "value": 0.99,
+      "threshold": 0.9,
+      "severity": "sev2",
+      "ts": 1792500000
+    },
+    {
+      "id": "alt-00062",
+      "service_id": "svc:checkout-api",
+      "signal": "error_rate",
+      "value": 8.4,
+      "threshold": 1.0,
+      "severity": "sev1",
+      "ts": 1792500020
+    }
+  ],
+  "timeline": [
+    {
+      "incident_id": "INC-051",
+      "seq": 1,
+      "ts": 1792500000,
+      "agent": null,
+      "kind": "status",
+      "summary": "Alert alt-00061: payments-db saturation 0.99 (threshold 0.9). Incident opened.",
+      "data": {
+        "alert_id": "alt-00061",
+        "service_id": "svc:payments-db",
+        "merged": false
+      },
+      "highlight": {
+        "nodes": ["svc:payments-db", "alt-00061"],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 2,
+      "ts": 1792500020,
+      "agent": null,
+      "kind": "status",
+      "summary": "Alert alt-00062: checkout-api error_rate 8.4 (threshold 1). Joined the open incident.",
+      "data": {
+        "alert_id": "alt-00062",
+        "service_id": "svc:checkout-api",
+        "merged": true
+      },
+      "highlight": {
+        "nodes": ["svc:checkout-api", "alt-00062"],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 3,
+      "ts": 1792500025,
+      "agent": "triage",
+      "kind": "status",
+      "summary": "triage started",
+      "data": {},
+      "highlight": {
+        "nodes": [],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 4,
+      "ts": 1792500028,
+      "agent": "triage",
+      "kind": "tool_call",
+      "summary": "blast_radius(service_id=svc:payments-db): 4 found. svc:payments-svc, svc:checkout-api, svc:api-gateway",
+      "data": {
+        "tool": "blast_radius",
+        "input": {
+          "service_id": "svc:payments-db"
+        },
+        "ok": true,
+        "rows": 4
+      },
+      "highlight": {
+        "nodes": [
+          "svc:payments-svc",
+          "svc:checkout-api",
+          "svc:api-gateway",
+          "svc:edge"
+        ],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 5,
+      "ts": 1792500034,
+      "agent": "triage",
+      "kind": "finding",
+      "summary": "set_triage: checkout-api errors: payments-db connection pool exhausted",
+      "data": {
+        "tool": "set_triage",
+        "input": {
+          "severity": "sev1"
+        }
+      },
+      "highlight": {
+        "nodes": ["svc:checkout-api", "svc:payments-svc", "svc:payments-db"],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 6,
+      "ts": 1792500035,
+      "agent": "triage",
+      "kind": "handoff",
+      "summary": "payments-db saturated at 0.99 and checkout-api erroring at 8.4% since 12:40:00 UTC.",
+      "data": {
+        "from": "triage",
+        "to": "investigator",
+        "note": "payments-db saturated at 0.99 and checkout-api erroring at 8.4% since 12:40:00 UTC."
+      },
+      "highlight": {
+        "nodes": [],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 7,
+      "ts": 1792500036,
+      "agent": "investigator",
+      "kind": "status",
+      "summary": "investigator started",
+      "data": {},
+      "highlight": {
+        "nodes": [],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 8,
+      "ts": 1792500041,
+      "agent": "investigator",
+      "kind": "tool_call",
+      "summary": "suspect_changes(service_id=svc:checkout-api, since=1792492800): 3 found. cfg-0061 (3.13), dep-0417 (1.44), dep-0416 (0.61)",
+      "data": {
+        "tool": "suspect_changes",
+        "input": {
+          "service_id": "svc:checkout-api",
+          "since": 1792492800
+        },
+        "ok": true,
+        "rows": 3
+      },
+      "highlight": {
+        "nodes": [
+          "cfg-0061",
+          "svc:payments-db",
+          "dep-0417",
+          "svc:checkout-api",
+          "dep-0416",
+          "svc:payments-svc"
+        ],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 9,
+      "ts": 1792500047,
+      "agent": "investigator",
+      "kind": "tool_call",
+      "summary": "Root-cause path checkout-api → payments-svc → payments-db → cfg-0061 (weight 115)",
+      "data": {
+        "tool": "root_cause_path",
+        "input": {
+          "alerting_service_id": "svc:checkout-api",
+          "suspect_service_id": "svc:payments-db",
+          "change_id": "cfg-0061"
+        },
+        "ok": true,
+        "rows": 1
+      },
+      "highlight": {
+        "nodes": [
+          "svc:checkout-api",
+          "svc:payments-svc",
+          "svc:payments-db",
+          "cfg-0061",
+          "person:tomas"
+        ],
+        "edges": [
+          ["svc:checkout-api", "DEPENDS_ON", "svc:payments-svc"],
+          ["svc:payments-svc", "DEPENDS_ON", "svc:payments-db"],
+          ["cfg-0061", "CHANGED", "svc:payments-db"],
+          ["person:tomas", "MADE", "cfg-0061"]
+        ]
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 10,
+      "ts": 1792500052,
+      "agent": "investigator",
+      "kind": "finding",
+      "summary": "record_cause: cfg-0061",
+      "data": {
+        "tool": "record_cause",
+        "input": {
+          "change_id": "cfg-0061",
+          "confidence": 0.9
+        }
+      },
+      "highlight": {
+        "nodes": ["cfg-0061"],
+        "edges": [["INC-051", "CAUSED_BY", "cfg-0061"]]
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 11,
+      "ts": 1792500058,
+      "agent": "investigator",
+      "kind": "decision",
+      "summary": "Decided: cfg-0061 (max_pool_size 200 → 60 on payments-db) caused the incident",
+      "data": {
+        "decision_id": "dec:INC-051:1",
+        "confidence": 0.9,
+        "what": "cfg-0061 (max_pool_size 200 → 60 on payments-db) caused the incident"
+      },
+      "highlight": {
+        "nodes": [
+          "svc:checkout-api",
+          "svc:payments-svc",
+          "svc:payments-db",
+          "cfg-0061"
+        ],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 12,
+      "ts": 1792500060,
+      "agent": "investigator",
+      "kind": "handoff",
+      "summary": "Cause cfg-0061 (pool cut on payments-db). Rejected the checkout-api deploy dep-0417.",
+      "data": {
+        "from": "investigator",
+        "to": "historian",
+        "note": "Cause cfg-0061 (pool cut on payments-db). Rejected the checkout-api deploy dep-0417."
+      },
+      "highlight": {
+        "nodes": [],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 13,
+      "ts": 1792500061,
+      "agent": "historian",
+      "kind": "status",
+      "summary": "historian started",
+      "data": {},
+      "highlight": {
+        "nodes": [],
+        "edges": []
+      }
+    },
+    {
+      "incident_id": "INC-051",
+      "seq": 14,
+      "ts": 1792500066,
+      "agent": "historian",
+      "kind": "tool_call",
+      "summary": "Similar incidents INC-042, INC-031, INC-019 (vector only: INC-019, INC-031, INC-042)",
+      "data": {
+        "tool": "similar_incidents",
+        "input": {
+          "path_service_ids": [
+            "svc:checkout-api",
+            "svc:payments-svc",
+            "svc:payments-db"
+          ]
+        },
+        "ok": true,
+        "rows": 1
+      },
+      "highlight": {
+        "nodes": ["INC-042", "INC-031", "INC-019"],
+        "edges": []
+      }
+    }
+  ],
+  "replay": {
+    "incident_id": "INC-051",
+    "title": "checkout-api errors: payments-db connection pool exhausted",
+    "status": "investigating",
+    "decisions": [
+      {
+        "id": "dec:INC-051:1",
+        "agent": "investigator",
+        "what": "cfg-0061 (max_pool_size 200 → 60 on payments-db) caused the incident",
+        "why": "anomaly 9.5 on payments-db; the checkout-api deploy dep-0417 scored 1.44 with anomaly 1, a victim of payments-db below it",
+        "confidence": 0.9,
+        "evidence": [
+          "cfg-0061",
+          "svc:checkout-api",
+          "svc:payments-db",
+          "svc:payments-svc"
+        ],
+        "precedents": [],
+        "policies": []
+      }
+    ],
+    "handoffs": [
+      {
+        "id": "ho:INC-051:1",
+        "ts": 1792500035,
+        "from_agent": "triage",
+        "to_agent": "investigator",
+        "note": "payments-db saturated at 0.99 and checkout-api erroring at 8.4% since 12:40:00 UTC."
+      },
+      {
+        "id": "ho:INC-051:2",
+        "ts": 1792500060,
+        "from_agent": "investigator",
+        "to_agent": "historian",
+        "note": "Cause cfg-0061 (pool cut on payments-db). Rejected the checkout-api deploy dep-0417."
+      }
+    ],
+    "event_count": 14
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "svc:api-gateway",
+        "name": "api-gateway",
+        "kind": "Service",
+        "team": "Platform",
+        "tier": 1,
+        "criticality": 0.0393443070352077,
+        "fragility": 21.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:checkout-api",
+        "name": "checkout-api",
+        "kind": "Service",
+        "team": "Checkout",
+        "tier": 1,
+        "criticality": 0.0279554463922977,
+        "fragility": 16.6666666666667,
+        "health": 0.4
+      },
+      {
+        "id": "svc:inventory-svc",
+        "name": "inventory-svc",
+        "kind": "Service",
+        "team": "Checkout",
+        "tier": 2,
+        "criticality": 0.0260190945118666,
+        "fragility": 3.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:kafka",
+        "name": "kafka",
+        "kind": "Service",
+        "team": "Platform",
+        "tier": 1,
+        "criticality": 0.123756416141987,
+        "fragility": 38.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:payments-db",
+        "name": "payments-db",
+        "kind": "Service",
+        "team": "Payments",
+        "tier": 1,
+        "criticality": 0.0313154943287373,
+        "fragility": 0.0,
+        "health": 0.15
+      },
+      {
+        "id": "svc:payments-svc",
+        "name": "payments-svc",
+        "kind": "Service",
+        "team": "Payments",
+        "tier": 1,
+        "criticality": 0.0260190945118666,
+        "fragility": 9.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:pricing-svc",
+        "name": "pricing-svc",
+        "kind": "Service",
+        "team": "Checkout",
+        "tier": 2,
+        "criticality": 0.0260190945118666,
+        "fragility": 0.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:reconciliation-job",
+        "name": "reconciliation-job",
+        "kind": "Service",
+        "team": "Ledger",
+        "tier": 2,
+        "criticality": 0.0212667118757963,
+        "fragility": 0.0,
+        "health": 1.0
+      },
+      {
+        "id": "svc:redis-cache",
+        "name": "redis-cache",
+        "kind": "Service",
+        "team": "Platform",
+        "tier": 1,
+        "criticality": 0.0917778983712196,
+        "fragility": 0.0,
+        "health": 1.0
+      },
+      {
+        "id": "alt-00061",
+        "name": "saturation 0.99",
+        "kind": "Alert",
+        "team": null,
+        "tier": null,
+        "criticality": null,
+        "fragility": null,
+        "health": null
+      },
+      {
+        "id": "alt-00062",
+        "name": "error_rate 8.4",
+        "kind": "Alert",
+        "team": null,
+        "tier": null,
+        "criticality": null,
+        "fragility": null,
+        "health": null
+      },
+      {
+        "id": "cfg-0061",
+        "name": "max_pool_size 200 → 60",
+        "kind": "ConfigChange"
+      },
+      {
+        "id": "person:tomas",
+        "name": "tomas",
+        "kind": "Person"
+      },
+      {
+        "id": "dep-0417",
+        "name": "checkout-api v2.47.3",
+        "kind": "Deploy"
+      }
+    ],
+    "links": [
+      {
+        "source": "svc:api-gateway",
+        "target": "svc:checkout-api",
+        "type": "DEPENDS_ON",
+        "weight": 40,
+        "calls_per_min": 1200
+      },
+      {
+        "source": "svc:checkout-api",
+        "target": "svc:inventory-svc",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 900
+      },
+      {
+        "source": "svc:checkout-api",
+        "target": "svc:kafka",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 900
+      },
+      {
+        "source": "svc:checkout-api",
+        "target": "svc:payments-svc",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 900
+      },
+      {
+        "source": "svc:checkout-api",
+        "target": "svc:pricing-svc",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 900
+      },
+      {
+        "source": "svc:checkout-api",
+        "target": "svc:redis-cache",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 2400
+      },
+      {
+        "source": "svc:inventory-svc",
+        "target": "svc:kafka",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 300
+      },
+      {
+        "source": "svc:inventory-svc",
+        "target": "svc:redis-cache",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 900
+      },
+      {
+        "source": "svc:payments-svc",
+        "target": "svc:kafka",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 1800
+      },
+      {
+        "source": "svc:payments-svc",
+        "target": "svc:payments-db",
+        "type": "DEPENDS_ON",
+        "weight": 15,
+        "calls_per_min": 2400
+      },
+      {
+        "source": "svc:pricing-svc",
+        "target": "svc:redis-cache",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 1800
+      },
+      {
+        "source": "svc:reconciliation-job",
+        "target": "svc:kafka",
+        "type": "DEPENDS_ON",
+        "weight": 100,
+        "calls_per_min": 30
+      },
+      {
+        "source": "svc:reconciliation-job",
+        "target": "svc:payments-db",
+        "type": "DEPENDS_ON",
+        "weight": 15,
+        "calls_per_min": 200
+      },
+      {
+        "source": "alt-00061",
+        "target": "svc:payments-db",
+        "type": "FIRED_ON",
+        "weight": null,
+        "calls_per_min": null
+      },
+      {
+        "source": "alt-00062",
+        "target": "svc:checkout-api",
+        "type": "FIRED_ON",
+        "weight": null,
+        "calls_per_min": null
+      },
+      {
+        "source": "cfg-0061",
+        "target": "svc:payments-db",
+        "type": "CHANGED"
+      },
+      {
+        "source": "person:tomas",
+        "target": "cfg-0061",
+        "type": "MADE"
+      },
+      {
+        "source": "dep-0417",
+        "target": "svc:checkout-api",
+        "type": "TARGETED"
+      }
+    ],
+    "highlight": {
+      "nodes": [
+        "svc:checkout-api",
+        "svc:payments-svc",
+        "svc:payments-db",
+        "cfg-0061",
+        "person:tomas"
+      ],
+      "edges": [
+        ["svc:checkout-api", "DEPENDS_ON", "svc:payments-svc"],
+        ["svc:payments-svc", "DEPENDS_ON", "svc:payments-db"],
+        ["cfg-0061", "CHANGED", "svc:payments-db"],
+        ["person:tomas", "MADE", "cfg-0061"]
+      ]
+    }
+  },
+  "postmortem": null
+}

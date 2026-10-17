@@ -1,0 +1,29 @@
+# Format example for company/org.yaml (the real file is task K2).
+# Every service is owned by exactly one team. On-call handles must be members of that team.
+teams:
+  - slug: platform
+    name: Platform
+    slack_channel: "#platform"
+    owns: [api-gateway, kafka]
+  - slug: checkout
+    name: Checkout
+    slack_channel: "#checkout"
+    owns: [checkout-api]
+  - slug: payments
+    name: Payments
+    slack_channel: "#payments"
+    owns: [payments-svc, payments-db]
+
+people:
+  - {handle: priya, name: Priya Raman, team: payments, role: senior engineer, timezone: Asia/Kolkata}
+  - {handle: tomas, name: Tomás Ortega, team: payments, role: engineer, timezone: Europe/Madrid}
+  - {handle: amara, name: Amara Okafor, team: checkout, role: tech lead, timezone: Africa/Lagos}
+  - {handle: jin, name: Jin Park, team: platform, role: SRE, timezone: Asia/Seoul}
+
+on_call:
+  start: 2026-10-12      # first day of week 1, UTC midnight
+  rotation_days: 7
+  teams:
+    payments: [priya, tomas]
+    checkout: [amara]
+    platform: [jin]

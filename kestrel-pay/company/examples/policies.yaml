@@ -1,0 +1,7 @@
+# Format example for company/policies.yaml (task A10). max_tier: applies to tiers <= this value.
+policies:
+  - slug: tier1-rollback-ack
+    name: Tier-1 rollback requires owner ack
+    rule: Page the owning team's on-call and wait for an ack before rolling back a tier-1 service.
+    actions: [rollback]
+    max_tier: 1

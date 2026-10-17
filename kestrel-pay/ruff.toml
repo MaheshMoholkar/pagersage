@@ -1,0 +1,2 @@
+# Same style as the backend (line length 100, Python 3.12).
+extend = "../backend/pyproject.toml"

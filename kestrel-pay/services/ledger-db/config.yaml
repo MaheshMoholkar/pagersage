@@ -1,0 +1,4 @@
+# ledger-db runtime config. A change here is a config change (cfg-*) for PagerSage.
+max_connections: 300
+statement_timeout_ms: 10000
+autovacuum_scale_factor: 0.05

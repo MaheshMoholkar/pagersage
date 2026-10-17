@@ -1,0 +1,5 @@
+# payments-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+acquirer_timeout_ms: 1500
+idempotency_ttl_h: 24
+retry_on_soft_decline: false
+replicas: 12

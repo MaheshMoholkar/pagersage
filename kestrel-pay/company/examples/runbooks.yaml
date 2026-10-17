@@ -1,0 +1,11 @@
+# Format example for company/runbooks.yaml. Success/fail counts come from incident history (K5),
+# not from this file.
+runbooks:
+  - slug: raise-payments-db-pool
+    title: Raise pool + restart payments-svc
+    service: payments-db
+    steps:
+      - Check active connections against max_pool_size on payments-db.
+      - Raise PAYMENTS_DB_POOL_MAX to the last known good value.
+      - Restart payments-svc so it picks up the new pool size.
+      - Watch checkout-api error rate return under 1% for 10 minutes.

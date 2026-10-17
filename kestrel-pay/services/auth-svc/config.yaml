@@ -1,0 +1,5 @@
+# auth-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+token_ttl_s: 3600
+session_ttl_h: 12
+bcrypt_cost: 12
+signing_key_rotation_days: 90

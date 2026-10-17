@@ -1,0 +1,25 @@
+# Kestrel Pay action policies. Format: examples/policies.yaml.
+# PagerSage's Responder checks these before acting. max_tier: applies to tiers <= this value;
+# no max_tier means every service.
+policies:
+  - slug: tier1-rollback-ack
+    name: Tier-1 rollback requires owner ack
+    rule: Page the owning team's on-call and wait for an ack before rolling back a tier-1 service.
+    actions: [rollback]
+    max_tier: 1
+
+  - slug: no-database-rollback
+    name: Databases are never rolled back automatically
+    rule: Never roll back a deploy on a database service (payments-db, ledger-db, user-db, inventory-db); schema migrations do not reverse cleanly. Open an issue for the owning team instead.
+    actions: [rollback]
+
+  - slug: page-on-call-first
+    name: Page the on-call before anyone else
+    rule: Page the owning team's current on-call first. Page a recent author only if the on-call has not acked within 5 minutes.
+    actions: [page]
+
+  - slug: issue-cites-root-cause
+    name: Incident issues cite the suspect change
+    rule: Every incident issue links the suspect deploy or config change, its commits and the dependency path from the alerting service.
+    actions: [issue]
+    max_tier: 2

@@ -1,0 +1,4 @@
+{
+  "answer": "Priya Raman knows payments-db best: 11 commits, 2 incidents resolved and 2 postmortems written, and she is on the Payments team.",
+  "evidence": ["svc:payments-db", "person:priya", "INC-042", "INC-031"]
+}

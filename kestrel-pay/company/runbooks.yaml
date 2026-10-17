@@ -1,0 +1,118 @@
+# Kestrel Pay runbooks. Format: examples/runbooks.yaml.
+# Success and fail counts are not stored here: PagerSage counts RESOLVED {worked} edges from
+# incident history (history/export/incidents.jsonl).
+#
+# Planted pattern 1: raise-payments-db-pool fixed all three past pool incidents (3/3);
+# failover-payments-db was tried once on a pool incident and did not help.
+runbooks:
+  - slug: raise-payments-db-pool
+    title: Raise pool + restart payments-svc
+    service: payments-db
+    steps:
+      - Confirm pool exhaustion - active connections on payments-db sit at max_pool_size and payments-svc logs "timeout acquiring connection".
+      - Set max_pool_size in services/payments-db/config.yaml back to the last known good value (200) and apply it.
+      - Restart payments-svc one pod at a time so every pod reconnects with the new pool size.
+      - Watch checkout-api error rate return under 1% for 10 minutes.
+
+  - slug: failover-payments-db
+    title: Fail over payments-db to the standby
+    service: payments-db
+    steps:
+      - Check replication lag on the payments-db standby is under 1 second.
+      - Promote the standby with the failover script and repoint the payments-db DNS record.
+      - Restart payments-svc so it drops connections to the old primary.
+      - Rebuild the old primary as the new standby.
+
+  - slug: restore-redis-maxmemory
+    title: Restore redis-cache maxmemory and eviction policy
+    service: redis-cache
+    steps:
+      - Compare used_memory with maxmemory and check evicted_keys in INFO memory.
+      - Set maxmemory and maxmemory_policy in services/redis-cache/config.yaml back to the last known good values (8gb, volatile-lru) and apply them.
+      - Ask auth-svc owners to confirm sessions are no longer being dropped.
+      - Watch auth-svc and checkout-api error rates for 10 minutes.
+
+  - slug: failover-redis-cache
+    title: Promote the redis-cache replica
+    service: redis-cache
+    steps:
+      - Confirm the primary is down or unresponsive (PING times out from two hosts).
+      - Promote the replica with the sentinel failover command.
+      - Restart services that pin the old primary address (auth-svc, checkout-api, webhooks-svc).
+
+  - slug: fix-inventory-db-slow-queries
+    title: Kill runaway queries and restore the inventory-db index
+    service: inventory-db
+    steps:
+      - List queries running longer than 5 seconds in pg_stat_activity on inventory-db.
+      - Cancel them with pg_cancel_backend; terminate any that do not stop within a minute.
+      - Check the last migration for a dropped or invalid index on stock_reservations and recreate it CONCURRENTLY.
+      - Watch inventory-svc p99 latency return under 50 ms.
+
+  - slug: raise-api-gateway-timeouts
+    title: Restore api-gateway upstream timeouts
+    service: api-gateway
+    steps:
+      - Check the 504 rate per upstream in the api-gateway dashboard.
+      - Set upstream_timeout_ms in services/api-gateway/config.yaml back to the last known good value and reload the gateway.
+      - Confirm 504s stop within 2 minutes.
+
+  - slug: reassign-kafka-partitions
+    title: Move partitions off a full Kafka broker
+    service: kafka
+    steps:
+      - Find the broker whose log directory is above 90% disk.
+      - Lower retention on the largest non-critical topics to free space immediately.
+      - Run the partition reassignment plan to move leaders off that broker.
+      - Check consumer lag for ledger-svc and webhooks-svc returns to normal.
+
+  - slug: restart-kafka-controller
+    title: Restore the KRaft controller quorum
+    service: kafka-controller
+    steps:
+      - Check which controller nodes are in the quorum with kafka-metadata-quorum describe.
+      - Restart the lagging controller nodes one at a time.
+      - Confirm a single active controller and no under-replicated partitions.
+
+  - slug: switch-acquirer-route
+    title: Route card traffic to the backup acquirer
+    service: acquirer-gateway
+    steps:
+      - Confirm timeouts are coming from the primary acquirer, not from acquirer-gateway itself.
+      - Set primary_acquirer in services/acquirer-gateway/config.yaml to the backup and apply it.
+      - Tell the payments channel; the backup acquirer costs more per transaction.
+      - Switch back once the primary acquirer's status page reports recovery.
+
+  - slug: fraud-rules-fallback
+    title: Switch fraud scoring to the rules-only fallback
+    service: fraud-svc
+    steps:
+      - Confirm fraud-svc p99 latency is above 150 ms or its model endpoint is erroring.
+      - Set scoring_mode to rules in services/fraud-svc/config.yaml and apply it.
+      - Tell the risk channel; manual review volume goes up while rules-only is on.
+
+  - slug: drain-webhooks-backlog
+    title: Scale webhooks-svc and drain the delivery backlog
+    service: webhooks-svc
+    steps:
+      - Check consumer lag on the payment-events topic for the webhooks consumer group.
+      - Scale webhooks-svc to twice its replica count.
+      - Pause deliveries to merchant endpoints that have failed for more than an hour.
+      - Scale back once lag is under one minute.
+
+  - slug: replay-ledger-events
+    title: Replay missed payment events into ledger-svc
+    service: ledger-svc
+    steps:
+      - Find the first payment event offset ledger-svc did not commit.
+      - Reset the ledger consumer group to that offset.
+      - Let ledger-svc replay; entries are idempotent on payment intent id.
+      - Run the balance check job and compare merchant balances with payments-db totals.
+
+  - slug: rotate-auth-signing-key
+    title: Rotate the auth-svc token signing key
+    service: auth-svc
+    steps:
+      - Check the expiry of the active signing key in the auth-svc admin endpoint.
+      - Activate the next key from the vault and keep the old key valid for verification.
+      - Restart auth-svc and confirm new tokens validate at api-gateway.

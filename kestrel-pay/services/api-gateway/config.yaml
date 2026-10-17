@@ -1,0 +1,5 @@
+# api-gateway runtime config. A change here is a config change (cfg-*) for PagerSage.
+upstream_timeout_ms: 3000
+rate_limit_per_key_rps: 100
+max_body_kb: 512
+retry_attempts: 1

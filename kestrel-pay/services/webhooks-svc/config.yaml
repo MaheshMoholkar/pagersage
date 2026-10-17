@@ -1,0 +1,5 @@
+# webhooks-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+max_retries: 8
+retry_backoff_s: 30
+delivery_timeout_ms: 5000
+consumers: 12

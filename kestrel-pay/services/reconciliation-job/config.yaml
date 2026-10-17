@@ -1,0 +1,4 @@
+# reconciliation-job runtime config. A change here is a config change (cfg-*) for PagerSage.
+schedule_utc: "02:30"
+tolerance_cents: 0
+parallelism: 4

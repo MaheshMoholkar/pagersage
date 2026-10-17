@@ -1,0 +1,5 @@
+# kafka runtime config. A change here is a config change (cfg-*) for PagerSage.
+retention_hours: 168
+local_retention_hours: 24
+default_partitions: 24
+min_insync_replicas: 2

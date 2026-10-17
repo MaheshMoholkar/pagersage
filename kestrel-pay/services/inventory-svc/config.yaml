@@ -1,0 +1,4 @@
+# inventory-svc runtime config. A change here is a config change (cfg-*) for PagerSage.
+reservation_ttl_s: 900
+db_pool_size: 40
+replicas: 8

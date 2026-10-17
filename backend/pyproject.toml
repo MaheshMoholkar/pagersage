@@ -1,0 +1,41 @@
+[project]
+name = "pagersage"
+version = "0.1.0"
+description = "Incident brain: agents that walk a FalkorDB graph to the root cause, page the owner and remember the fix."
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=1.13",
+    "falkordb>=1.7",
+    "fastapi>=0.143",
+    "fastembed>=0.9.0",
+    "httpx>=0.28.1",
+    "pydantic>=2.12",
+    "pydantic-settings>=2.15",
+    "pyyaml>=6.0",
+    "uvicorn[standard]>=0.54",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1",
+    "ruff>=0.17",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pagersage"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "../kestrel-pay/tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
